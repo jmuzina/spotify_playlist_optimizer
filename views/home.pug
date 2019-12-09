@@ -12,8 +12,7 @@ html(lang="en")
                 span   Welcome, #{name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
-                //h1(style="color:white; text-align: right;") [TEST] Loaded all playlists successfuly!:
-                //each playlist in playlist_arr
+                h1(style="color:white; text-align: right;") [TEST] Loaded all playlists successfully!:
+                each playlist in playlist_arr
                     p(style="color:white; text-align: right;") #{playlist.p_name}
-                    //-console.log(`${playlist.p_name}`)
             
