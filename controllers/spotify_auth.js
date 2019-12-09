@@ -1,7 +1,6 @@
 const CFG = require('../spotify_auth_cfg.js');
 
 exports.get_login = function(req, res, next) {
-  console.log(CFG.REDIRECT_URI);
   res.redirect('https://accounts.spotify.com/authorize' +
   '?response_type=code' +
   '&client_id=' + CFG.CLIENT_ID +
