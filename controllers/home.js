@@ -32,7 +32,7 @@ exports.get_home = function(req, res, next) {
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            res.render('home', { title: 'Spotify Playlist Optimizer', user: (new user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists))});
+                            res.render('home', { title: 'Spotify Playlist Optimizer', user: (JSON.parse(JSON.stringify(new user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists))))});
                         }
                         num_checked += 1;
                     }
