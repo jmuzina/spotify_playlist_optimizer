@@ -12,7 +12,7 @@ class playlist_info {
 }
 
 exports.get_home = function(req, res, next) {
-    if (req.session.data_acquired === "yes") {
+    if (req.session.data_acquired === '1') {
         console.log("Attempting to render page");
         res.render('home', { title: 'Spotify Playlist Optimizer', name: req.session.profile_name, pfp: req.session.profile_picture, playlist_arr: req.session.playlists });
     }
@@ -35,7 +35,7 @@ exports.get_home = function(req, res, next) {
                                 req.session.profile_name = data.body['display_name'];
                                 req.session.profile_picture = data.body['images']['0']['url'];
                                 req.session.playlists = playlists;
-                                req.session.data_acquired = "yes";
+                                req.session.data_acquired = '1';
                                 res.redirect('/home');
                             }
                             num_checked += 1;
@@ -54,7 +54,7 @@ exports.get_home = function(req, res, next) {
 }
 
 exports.post_home = function(req, res, next) {
-    req.session.data_acquired = "";
+    req.session.data_acquired = '';
     req.session.destroy()
     res.redirect('/');
 }
