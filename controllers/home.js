@@ -1,13 +1,20 @@
-const session = require('express-session');
 var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
-const WELCOME = require('./welcome.js');
 
 class playlist_info {
     constructor(id, name, images) {
         this.p_id = id;
         this.p_name = name;    
         this.p_images = images;
+    }
+}
+
+class user_info {
+    constructor(id, name, profile_picture, playlists) {
+        this.u_id = id;
+        this.p_name = name;
+        this.profile_picture = profile_picture;
+        this.u_playlists = playlists;
     }
 }
 
@@ -25,7 +32,7 @@ exports.get_home = function(req, res, next) {
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            res.render('home', { title: 'Spotify Playlist Optimizer', name: data.body['display_name'], pfp: data.body['images']['0']['url'], playlist_arr: playlists });
+                            res.render('home', { title: 'Spotify Playlist Optimizer', user: (new user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists))});
                         }
                         num_checked += 1;
                     }
@@ -42,7 +49,6 @@ exports.get_home = function(req, res, next) {
 }
 
 exports.post_home = function(req, res, next) {
-    console.log("HOME POST received, sending browser back to welcome page");
     req.session.destroy()
-    res.render('welcome', { title: 'Spotify Playlist Optimizer' });
+    res.redirect('/');
 }

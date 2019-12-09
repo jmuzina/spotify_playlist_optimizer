@@ -6,14 +6,23 @@ html(lang="en")
 
   block content
     body(style = "background-image: url('/images/background.jpg');")
-        form(method = "POST")
-            h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
-                img.rounded-circle(src = `${pfp}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span   Welcome, #{name}! |
+        h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
+            form(method = "POST")
+                img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
+                span   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
-                //h1(style="color:white; text-align: right;") [TEST] Loaded all playlists successfuly!:
-                //each playlist in playlist_arr
-                    p(style="color:white; text-align: right;") #{playlist.p_name}
-                    //-console.log(`${playlist.p_name}`)
+            div.container
+                div.row.h-100
+                    div.container.justify-content-center.align-self-center(style = "background-color: rgba(20, 20, 20, 0.35); border-radius: 25px; width: 40%;")
+                        div.row
+                            form(method = "POST")
+                                div.container.justify-content-center.form-actions.center(style = "margin:auto;")
+                                    select.form-control.mt-3.ml-5(required, style = "width: 76%;", id = "selected_playlist", name = "selected_playlist")
+                                        -var ob = user;
+                                        -for(var prop in ob['u_playlists'])
+                                            option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                                        
+                                    input(type = "hidden", name = "type", value = "playlist_select")
+                                    button.btn-primary.mt-2(type = "submit", style = "text-align: center; margin-right: 25%;") Confirm playlist selection
             

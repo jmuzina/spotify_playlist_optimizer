@@ -1,0 +1,14 @@
+html(lang="en")
+  title= `${title}`
+  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  meta(charset="UTF-8")
+  div.container.listing-reg
+
+  block content
+    body(style = "background-image: url('/images/background.jpg');")
+        h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
+            form(method = "POST")
+                img.rounded-circle(src = `${pfp}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
+                span   Welcome, #{name}! |
+                    input(type = "hidden", name = "type", value = "logout")
+                    button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
