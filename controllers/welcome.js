@@ -1,7 +1,14 @@
-const session = require('express-session');
+const SUGGESTIONS = require("./suggestions.js");
 
 exports.get_redirect = function(req, res, next) {
-  res.redirect('/');
+  if (req.body['type'] === "logout") {
+    req.session.destroy();
+    res.redirect('/');
+  } 
+  else {
+    req.session.selected_playlist = req.body['selected_playlist'];
+    SUGGESTIONS.get_suggestions(req, res, next);
+  }
 }
 
 exports.get_welcome = function(req, res, next) {
