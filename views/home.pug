@@ -10,9 +10,10 @@ html(lang="en")
             h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
                 img.rounded-circle(src = `${pfp}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
                 span   Welcome, #{name}! |
+                    input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
-                h1(style="color:white; text-align: right;") [TEST] Loaded all playlists successfuly!:
-                each playlist in playlist_arr
+                //h1(style="color:white; text-align: right;") [TEST] Loaded all playlists successfuly!:
+                //each playlist in playlist_arr
                     p(style="color:white; text-align: right;") #{playlist.p_name}
                     //-console.log(`${playlist.p_name}`)
             

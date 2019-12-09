@@ -1,6 +1,7 @@
 const session = require('express-session');
 var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
+const WELCOME = require('./welcome.js');
 
 class playlist_info {
     constructor(id, name, images) {
@@ -41,6 +42,7 @@ exports.get_home = function(req, res, next) {
 }
 
 exports.post_home = function(req, res, next) {
-  req.session.destroy()
-  res.redirect('/');
+    console.log("HOME POST received, sending browser back to welcome page");
+    req.session.destroy()
+    res.render('welcome', { title: 'Spotify Playlist Optimizer' });
 }
