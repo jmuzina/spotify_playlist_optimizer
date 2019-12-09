@@ -1,6 +1,7 @@
 const request = require('request'); // uninstall this later
 var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
+const HOME = require('./home.js');
 
 class spotify_top_tracks_options {
   constructor(term, max_tracks) {
@@ -26,7 +27,7 @@ exports.get_auth_callback = function(req, res, next) {
           req.session.key = access;
           req.session.refresh = refresh;
           req.session.user = data.body['id'];
-          res.redirect('./home');
+          HOME.get_home(req, res, next);
         },
         function(err) {
           console.log(err);
