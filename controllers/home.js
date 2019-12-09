@@ -9,6 +9,7 @@ class playlist_info {
     }
 }
 
+// revisit to see if u_id is necessary
 class user_info {
     constructor(id, name, profile_picture, playlists) {
         this.u_id = id;
