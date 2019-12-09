@@ -1,0 +1,27 @@
+{
+  "name": "spotify-tool",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js --ext js,pug,json --legacy-watch . --legacy-watch views"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.4",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "devDependencies": {
+    "connect-redis": "^4.0.3",
+    "express": "^4.16.4",
+    "express-session": "^1.17.0",
+    "http-errors": "^1.6.3",
+    "nodemon": "^1.19.4",
+    "redis": "^2.8.0",
+    "serve-favicon": "^2.5.0",
+    "simple-oauth2": "^3.1.0",
+    "spotify-web-api-node": "^4.0.0",
+    "superagent": "^5.1.0"
+  }
+}
