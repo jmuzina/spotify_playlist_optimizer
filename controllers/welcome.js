@@ -5,6 +5,11 @@ exports.get_redirect = function(req, res, next) {
     req.session.destroy();
     res.redirect('/');
   } 
+  else if (req.body['type'] === "settings") {
+    req.session.range = req.body.time_range;
+    req.session.limit = req.body.limit;
+    // Redirect to next page
+  }
   else {
     req.session.selected_playlist = req.body['selected_playlist'];
     SUGGESTIONS.get_suggestions(req, res, next);

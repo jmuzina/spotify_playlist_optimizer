@@ -5,7 +5,6 @@ class playlist_info {
     constructor(id, name, images) {
         this.p_id = id;
         this.p_name = name;    
-        this.p_images = images;
     }
 }
 
@@ -29,11 +28,13 @@ exports.get_home = function(req, res, next) {
                     num_checked = 0;
                     for (playlist in playlist_data.body['items']) {
                         if ((playlist_data.body['items'][playlist]['owner']['id'] == req.session.user || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
-                            playlists.push(new playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images']))
+                            playlists.push(new playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name']))
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            res.render('home', { title: 'Spotify Playlist Optimizer', user: (JSON.parse(JSON.stringify(new user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists))))});
+                            user_JSON = JSON.parse(JSON.stringify(new user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists)));
+                            req.session.json = user_JSON;
+                            res.render('home', { title: 'Spotify Playlist Optimizer', user: user_JSON});
                         }
                         num_checked += 1;
                     }
