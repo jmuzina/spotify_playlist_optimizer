@@ -8,7 +8,33 @@ html(lang="en")
     body(style = "background-image: url('/images/background.jpg');")
         h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
             form(method = "POST")
-                img.rounded-circle(src = `${pfp}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span   Welcome, #{name}! |
+                img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
+                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
+        div.container(style="margin-top:200px;")
+          div.row-h-100
+            div.container.justify-content-center.align-self-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
+              div.row
+                div.col-md-6.border-right.border-dark
+                  h4.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center;") #{playlist_name}
+                  img.border.border-dark(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px; margin-left:110px; margin-bottom: 10px;")
+                div.col-md-6
+                  h4.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center;") Optimization settings
+                  br
+                  form(method = "POST")
+                    input(type = "hidden", name = "type", value = "settings")
+                    p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
+                    select.form-control(id = "time_range", name = "time_range")
+                      option(value = "short_term") Short Term (Last 4 weeks)
+                      option(value = "medium_term") Medium Term (Last 6 months)
+                      option(value = "long_term") Long Term (Several Years)
+                    p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Track Limit:
+                    select.form-control(id = "limit", name = "limit")
+                      -var i = 1;
+                      while i < 51
+                        option(value = i)= i++
+                    div.container.justify-content.center.align-self-center
+                      br
+                      button.btn-success.mt-4(type = "submit", style = "text-align: center; border-radius:8px; margin-left: 35%;") Start optimization
+                    

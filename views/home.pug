@@ -9,7 +9,7 @@ html(lang="en")
         h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
             form(method = "POST")
                 img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span   Welcome, #{user.p_name}! |
+                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none;") Log out
             div.container
