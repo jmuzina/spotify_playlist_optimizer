@@ -1,5 +1,6 @@
 var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
+const CLASSES = require('../classes.js');
 
 exports.get_suggestions = function(req, res, next) {
   res.render('suggestions', { title: 'Your Suggestions' });
@@ -7,14 +8,6 @@ exports.get_suggestions = function(req, res, next) {
 
 exports.post_suggestions = function(req, res, next) {
   console.log("Suggestions post received?");
-}
-
-class track_info {
-  constructor(id, name, artists) {
-    this.id = id;
-    this.name = name;
-    this.artists = artists;
-  }
 }
 
 exports.top_tracks = function(req, res, next) {
@@ -46,7 +39,7 @@ exports.top_tracks = function(req, res, next) {
           }
           num_added += 1;
         }
-        songs.push(new track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists));
+        songs.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists));   
       }
       res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: JSON.parse(JSON.stringify(songs))});
     },

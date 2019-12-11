@@ -27,5 +27,8 @@ html(lang="en")
                 div.form-row
                   input(type = "hidden", name = "type", value = "suggestion_action")
                   button.mt-2.form-group.form-control.btn-success(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
-                  button.form.group.form-control.btn-primary(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Another button
+                  select.form-control.mt-3.ml-5(required, style = "width: 76%;", id = "selected_playlist", name = "selected_playlist")
+                    -var ob = user;
+                    -for(var prop in ob['u_playlists'])
+                        option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
         
