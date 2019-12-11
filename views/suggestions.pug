@@ -12,3 +12,6 @@ html(lang="en")
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
+        -var ob = suggestions;
+        -for(var song in ob)
+            p #{ob[song]['name']} by #{ob[song]['artists']}
