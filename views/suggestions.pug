@@ -12,17 +12,20 @@ html(lang="en")
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        div.container(style="margin-top:200px;")
-          div.row-h-100
-            div.container.justify-content-center.align-self-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
-              div.row
-                div.col-md-6.border-right.border-dark
-                  h4.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center;") Suggested Songs
-                  ul.list-group
-                  -var ob = suggestions;
-                  -for(var song in ob)
-                      li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
-                  br
-                div.col-md-6
-                  p placeholder
+        div.container(style="margin-top:70px;")
+          div.row.justify-content-center
+            div.col-md-8
+              p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
+              div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
+                ul.list-group
+                br
+                -var ob = suggestions;
+                -for(var song in ob)
+                    li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
+                br
+              form(method = "POST")
+                div.form-row
+                  input(type = "hidden", name = "type", value = "suggestion_action")
+                  button.mt-2.form-group.form-control.btn-success(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
+                  button.form.group.form-control.btn-primary(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Another button
         
