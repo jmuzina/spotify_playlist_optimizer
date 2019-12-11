@@ -39,8 +39,9 @@ exports.top_tracks = function(req, res, next) {
           }
           num_added += 1;
         }
-        songs.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists));   
+        songs.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri']));   
       }
+      req.session.suggestions = songs;
       res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: JSON.parse(JSON.stringify(songs))});
     },
     function(err) {

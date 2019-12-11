@@ -12,6 +12,15 @@ html(lang="en")
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
+        //div.modal.fade(id = "create_playlist_menu", tabindex = "-1", role = "dialog", aria-labelledby = "Update", aria-hidden = "true")
+          div.modal-dialog
+            div.modal-content
+              div.modal-header
+                h4.modal-title Test 1
+              div.modal-body
+                p Test 2
+              div.modal-footer
+                p Test 3
         div.container(style="margin-top:70px;")
           div.row.justify-content-center
             div.col-md-8
@@ -26,8 +35,10 @@ html(lang="en")
               form(method = "POST")
                 div.form-row
                   input(type = "hidden", name = "type", value = "suggestion_action")
-                  button.mt-2.form-group.form-control.btn-success(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
-                  select.form-control.mt-3.ml-5(required, style = "width: 76%;", id = "selected_playlist", name = "selected_playlist")
+                  //a.mt-2.form-group.form-control.btn-success(href = "#", data-toggle = "modal", data-target = "#create_playlist_menu", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
+                  button.mt-2.form-group.form-control.btn-success(type = "submit", value = "create_new", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
+                  select.form-control.mt-1(style = "width: 76%; margin-left: 12%; margin-bottom: 20%;", id = "selected_playlist", name = "selected_playlist")
+                    option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
                     -var ob = user;
                     -for(var prop in ob['u_playlists'])
                         option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}

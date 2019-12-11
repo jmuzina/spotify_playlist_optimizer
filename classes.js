@@ -16,9 +16,10 @@ exports.user_info = class {
 }
 
 exports.track_info = class{
-    constructor(id, name, artists) {
+    constructor(id, name, artists, uri) {
       this.id = id;
       this.name = name;
       this.artists = artists;
+      this.uri = uri;
     }
   }
