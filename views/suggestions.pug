@@ -5,13 +5,27 @@ html(lang="en")
   div.container.listing-reg
 
   block content
-    body(style = "background-image: url('/images/background.jpg');")
+    body(style = "background-image: url('images/background.jpg'); background-repeat: no-repeat; background-attachment: fixed;")
         h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
             form(method = "POST")
                 img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        -var ob = suggestions;
-        -for(var song in ob)
-            p #{ob[song]['name']} by #{ob[song]['artists']}
+        div.container(style="margin-top:70px;")
+          div.row.justify-content-center
+            div.col-md-8
+              p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
+              div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
+                ul.list-group
+                br
+                -var ob = suggestions;
+                -for(var song in ob)
+                    li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
+                br
+              form(method = "POST")
+                div.form-row
+                  input(type = "hidden", name = "type", value = "suggestion_action")
+                  button.mt-2.form-group.form-control.btn-success(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
+                  button.form.group.form-control.btn-primary(type = "submit", style = "text-align: center; width: 80%; margin-left: 10%;") Another button
+        
