@@ -12,17 +12,33 @@ html(lang="en")
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-            div.container
-                div.row.h-100
-                    div.container.justify-content-center.align-self-center(style = "background-color: rgba(20, 20, 20, 0.35); border-radius: 25px; width: 40%;")
-                        div.row
-                            form(method = "POST")
-                                div.container.justify-content-center.form-actions.center(style = "margin:auto;")
-                                    select.form-control.mt-3.ml-5(required, style = "width: 76%;", id = "selected_playlist", name = "selected_playlist")
-                                        -var ob = user;
-                                        -for(var prop in ob['u_playlists'])
-                                            option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
-                                        
-                                    input(type = "hidden", name = "type", value = "playlist_select")
-                                    button.btn-primary.mt-2(type = "submit", style = "text-align: center; margin-right: 25%; border-radius: 8px;") Confirm playlist selection
+        div.container
+            div.container.justify-content-center(style = "width: 60%; margin-top: 18%; margin-left: 18%;")
+                div
+                    style. 
+                        p{
+                            color: white;
+                            font-weight: bold;
+                            text-shadow: 1px 1px black;
+                            text-align: center;
+                            font-size: 18px;
+                        }
+                    p How deep into your roots do you want to dig?
+                    p We can suggest songs for you based on varying periods of Spotify data.
+                    p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
+                div.col-md-8(style = "margin-left: 16%;")
+                    form(method = "POST")
+                        input(type = "hidden", name = "type", value = "settings")
+                        p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
+                        select.form-control(id = "time_range", name = "time_range")
+                            option(value = "short_term") Short Term (Last 4 weeks)
+                            option(value = "medium_term") Medium Term (Last 6 months)
+                            option(value = "long_term") Long Term (Several Years)
+                        p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Track Limit:
+                        select.form-control(id = "limit", name = "limit")
+                            -var i = 1;
+                            while i < 51
+                                option(value = i)= i++
+                        div.container.justify-content.center.align-self-center
+                            button.btn-success.mt-4(type = "submit", style = "text-align: center; border-radius:8px; margin-left: 35%; font-size: 20px;") Confirm
             
