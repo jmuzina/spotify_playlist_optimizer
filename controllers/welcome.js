@@ -1,4 +1,4 @@
-const OPTIONS = require("./options.js");
+const OPTIMIZE = require("./optimize.js");
 const SUGGESTIONS = require('./suggestions.js');
 const FUNCTIONS = require('../functions.js');
 
@@ -17,7 +17,8 @@ exports.get_redirect = function(req, res, next) {
       res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json, making_new: true});
     }
     else if (req.body['button_type'] === "optimize_existing") {
-      console.log("(insert logic for optimization page)");
+      req.session.selected_playlist = req.body['selected_playlist'];
+      OPTIMIZE.get_optimize(req, res, next);
     }
   }
   else if (req.body['type'] === "submit_new") {
@@ -25,7 +26,7 @@ exports.get_redirect = function(req, res, next) {
   }
   else {
     req.session.selected_playlist = req.body['selected_playlist'];
-    OPTIONS.get_options(req, res, next);
+    OPTIMIZE.get_options(req, res, next);
   }
 }
 

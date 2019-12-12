@@ -11,7 +11,7 @@ const welcomeRouter = require('./routes/welcome.js');
 const spotifyRouter = require('./routes/spotify_auth.js');
 const spotifyCallbackRouter = require('./routes/spotify_auth_callback.js');
 const homeRouter = require('./routes/home.js');
-const optionsRouter = require('./routes/options.js');
+const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
 
 let RedisStore = require('connect-redis')(session);
@@ -54,7 +54,7 @@ app.use('/', welcomeRouter);
 app.use('/spotify_auth', spotifyRouter);
 app.use('/spotify_auth_callback', spotifyCallbackRouter);
 app.use('/home', homeRouter);
-app.use('/options', optionsRouter);
+app.use('/options', optimizeRouter);
 app.use('/suggestions', suggestionsRouter);
 
 // catch 404 and forward to error handler
