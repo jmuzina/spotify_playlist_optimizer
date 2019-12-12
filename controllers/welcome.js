@@ -13,8 +13,12 @@ exports.get_redirect = function(req, res, next) {
     SUGGESTIONS.top_tracks(req, res, next);
   }
   else if (req.body['type'] === "suggestion_action") {
-    res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json, making_new: true});
-    //FUNCTIONS.create_playlist(req);
+    if (req.body['button_type'] === "create_new") {
+      res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json, making_new: true});
+    }
+    else if (req.body['button_type'] === "optimize_existing") {
+      console.log("(insert logic for optimization page)");
+    }
   }
   else if (req.body['type'] === "submit_new") {
     FUNCTIONS.create_playlist(req, req.body.playlist_name, req.body.private);

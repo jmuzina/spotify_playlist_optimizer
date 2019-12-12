@@ -34,14 +34,19 @@ html(lang="en")
                 -for(var song in ob)
                     li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
                 br
-              form(method = "POST")
-                div.form-row
-                  input(type = "hidden", name = "type", value = "suggestion_action")
-                  if !making_new
-                    button.mt-2.form-group.form-control.btn-success(type = "submit", value = "create_new", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
-                    select.form-control.mt-1(style = "width: 76%; margin-left: 12%; margin-bottom: 20%;", id = "selected_playlist", name = "selected_playlist")
-                      option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
-                      -var ob = user;
-                      -for(var prop in ob['u_playlists'])
-                          option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                if !making_new
+                  form(method = "POST")
+                    input(type = "hidden", name = "type", value = "suggestion_action")
+                    div.row
+                      button.mt-2.form-group.form-control.btn-success(type = "submit", name = "button_type", value = "create_new", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
+                    div.row
+                      div.col-md-2
+                      div.col-md-5
+                        select.form-control.mt-1(style = "width: 100%; margin-top: 15%;", id = "selected_playlist", name = "selected_playlist")
+                          option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
+                          -var ob = user;
+                          -for(var prop in ob['u_playlists'])
+                            option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                      div.col-md-5.align-self-center
+                        button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
         
