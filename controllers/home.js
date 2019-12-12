@@ -5,7 +5,7 @@ const CLASSES = require('../classes.js');
 exports.get_home = function(req, res, next) {
     api_connection.getUser(req.session.user).then( 
         function(data) {
-            api_connection.getUserPlaylists(req.session.user).then(
+            api_connection.getUserPlaylists(req.session.user, {limit: 50}).then(
                 function(playlist_data) {
                     playlists = [];
                     num_pushed = 0;

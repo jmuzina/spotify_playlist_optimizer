@@ -42,7 +42,8 @@ exports.top_tracks = function(req, res, next) {
         songs.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri']));   
       }
       req.session.suggestions = songs;
-      res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: JSON.parse(JSON.stringify(songs))});
+      req.session.suggestions_json = JSON.parse(JSON.stringify(songs));
+      res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json});
     },
     function(err) {
       console.log("err: " + err);

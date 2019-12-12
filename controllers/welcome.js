@@ -13,7 +13,11 @@ exports.get_redirect = function(req, res, next) {
     SUGGESTIONS.top_tracks(req, res, next);
   }
   else if (req.body['type'] === "suggestion_action") {
-    FUNCTIONS.create_playlist(req);
+    res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json, making_new: true});
+    //FUNCTIONS.create_playlist(req);
+  }
+  else if (req.body['type'] === "submit_new") {
+    FUNCTIONS.create_playlist(req, req.body.playlist_name, req.body.private);
   }
   else {
     req.session.selected_playlist = req.body['selected_playlist'];
