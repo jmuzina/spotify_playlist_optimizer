@@ -1,54 +1,64 @@
 html(lang="en")
   title= `${title}`
-  link(rel='stylesheet', href='/css/bootstrap.min.css')
-  meta(charset="UTF-8")
-  div.container.listing-reg
+  head
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    meta(charset="UTF-8")
+  .container.listing-reg
 
   block content
     body(style = "background-image: url('images/background.jpg'); background-repeat: no-repeat; background-attachment: fixed;")
-        h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
-            form(method = "POST")
-                img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
-                    input(type = "hidden", name = "type", value = "logout")
-                    button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        div.container(style="margin-top:70px;")
-          if making_new
-            div.col-md-12
-              form.form-inline(method = "POST")
-                div.form-group(style = "width: 100%;")
-                  div.form-row(style = "margin-left: 30%;")
-                    input(type = "hidden", name = "type", value = "submit_new")
-                    input.form-control.ml-2(required, type = "text", id = "playlist_name", name = "playlist_name", placeholder = "New playlist name")
-                    input.form-check-input.mt-3.ml-3(type = "checkbox", id = "private", name = "private")
-                    label.form-check-label.mt-2(for = "autoSizingCheck2", style = "text-shadow: 1px 1px black; color: white;") Make this playlist private
-                  div.form-row(style = "margin-left: 43%;")
-                    button.mt-2.form-control.btn-success(type = "submit", value = "submit_new", style = "width: 100%; margin-left:") Create new playlist
-          div.row.justify-content-center
-            div.col-md-8
-              p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
-              div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
-                ul.list-group
-                br
-                -var ob = suggestions;
-                -for(var song in ob)
-                    li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
-                br
-                if !making_new
-                  form(method = "POST")
-                    input(type = "hidden", name = "type", value = "suggestion_action")
-                    div.row
-                      button.mt-2.form-group.form-control.btn-success(type = "submit", name = "button_type", value = "create_new", style = "text-align: center; width: 80%; margin-left: 10%;") Create new playlist with suggested songs
-                  form(method = "POST")
-                    input(type = "hidden", name = "type", value = "suggestion_action")
-                    div.row
-                      div.col-md-2
-                      div.col-md-5
-                        select.form-control.mt-1(required, style = "width: 100%; margin-top: 15%;", id = "selected_playlist", name = "selected_playlist")
-                          option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
-                          -var ob = user;
-                          -for(var prop in ob['u_playlists'])
-                            option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
-                      div.col-md-5.align-self-center
-                        button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
-        
+      .container
+        #exampleModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+          .modal-dialog(role='document')
+            .modal-content
+              form(method="POST")
+                .modal-header
+                  h5#exampleModalLabel.modal-title Create new playlist
+                  button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body(style="padding:0.5rem;")
+                  .form-group(style = "width: 100%;")
+                    .form-row
+                      input(type = "hidden", name = "type", value = "submit_new")
+                      input.form-control.ml-2(required, type = "text", id = "playlist_name", name = "playlist_name", placeholder = "New playlist name")
+                    .form-row.mt-2
+                      label.form-check-label(for = "autoSizingCheck2" style = "margin-left: 24px;") Make this playlist private
+                      input.form-check-input(type = "checkbox", id = "private", name = "private" style = "margin-left: 10px;")
+                .modal-footer
+                  button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+                  button.form-control.btn-primary(type = "submit", value = "submit_new") Create new playlist
+
+      h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
+          form(method = "POST")
+              img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
+              span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
+                  input(type = "hidden", name = "type", value = "logout")
+                  button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
+      div.container(style="margin-top:70px;")
+        div.row.justify-content-center
+          div.col-md-8
+            p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
+            div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
+              ul.list-group
+              br
+              -var ob = suggestions;
+              -for(var song in ob)
+                  li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
+              br
+              div.row
+                button.btn.btn-success(type='button' data-toggle='modal' data-target='#exampleModal' style = "text-align: center; width: 80%; margin-left: 10%; margin-bottom: 2%;") Create new playlist with suggested songs
+              form(method = "POST")
+                input(type = "hidden", name = "type", value = "suggestion_action")
+                div.row
+                  div.col-md-2
+                  div.col-md-5
+                    select.form-control.mt-1(required, style = "width: 100%; margin-top: 15%;", id = "selected_playlist", name = "selected_playlist")
+                      option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
+                      -var ob = user;
+                      -for(var prop in ob['u_playlists'])
+                        option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                  div.col-md-5.align-self-center
+                    button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
+      script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
+      script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+      script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
