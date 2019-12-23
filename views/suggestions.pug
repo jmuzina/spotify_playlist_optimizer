@@ -43,7 +43,7 @@ html(lang="en")
               br
               -var ob = suggestions;
               -for(var song in ob)
-                  li.list-group-item.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
+                li.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
               br
               div.row
                 button.btn.btn-success(type='button' data-toggle='modal' data-target='#exampleModal' style = "text-align: center; width: 80%; margin-left: 10%; margin-bottom: 2%;") Create new playlist with suggested songs

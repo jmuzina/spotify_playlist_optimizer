@@ -22,3 +22,31 @@ exports.create_playlist = function(req, name, private) {
         }
     );
 }
+
+exports.artist_string = function(arr) {
+    artists = "";
+    num_added = 0;
+    for (artist in arr) {
+        // If there's more than 1 artist, handle placement of commas and "and's"
+        if (Object.keys(arr).length > 1) {
+        // "and" before last artist name
+        if (num_added == Object.keys(arr).length - 1) {
+            artists += " and " + arr[artist]['name'];
+        }
+        // Comma after all artists except the second to last one
+        else if (!(num_added == Object.keys(arr).length - 2)) {
+            artists += arr[artist]['name'] + ", ";
+        }
+        // Do nothing special for second to last artist.
+        // the last artist will have an "and" placed before their name.
+        else {
+            artists += arr[artist]['name'];
+        }
+        }
+        else {
+        artists += arr[artist]['name'];
+        }
+        num_added += 1;
+    }
+    return artists;
+}
