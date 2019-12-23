@@ -1,6 +1,7 @@
 html(lang="en")
   title= `${title}`
   link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
   div.container.listing-reg
 
@@ -12,15 +13,9 @@ html(lang="en")
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        div.container(style="margin-top:200px;")
-          div.row-h-100
-            div.container.justify-content-center.align-self-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
-              div.row
-                div.col-md-6.border-right.border-dark
-                  img.border.border-dark(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px; margin-left:110px; margin-bottom: 10px;")
-                div.col-md-6
-                  h4.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center;") Optimization settings
-                  br
+        .container.playlist-image(style="margin-top:20px;")
+          img(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px;")
+
         p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") #{playlist_name}
         div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
           ul.list-group

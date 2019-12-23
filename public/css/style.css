@@ -1,0 +1,17 @@
+.playlist-image {
+    height:auto;
+    display:flex;
+    flex-flow:column nowrap;
+    align-self: center;
+}
+
+.playlist-image img {
+    max-width: 70%;
+    padding: 3px;
+    border-radius: 15px;
+    margin-top: 10px;
+    height: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-left: auto;
+    margin-right: auto;
+}
