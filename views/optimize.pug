@@ -28,7 +28,7 @@ html(lang="en")
           -var ob = playlist_tracks;
           -for(var song in ob)
             -console.log(ob[song]);
-            li.list-group-item 
+            li.list-group-item
               img(src=`${ob[song]['image']}`, height = "20px", width = "20px")
-              #{ob[song]['name']} by #{ob[song]['artists']}
+              span #{ob[song]['name']} by #{ob[song]['artists']}
           br
