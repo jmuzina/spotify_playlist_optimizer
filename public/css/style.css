@@ -19,15 +19,30 @@
 .track-list {
     display: flex;
     flex-flow: column nowrap;
+    max-width: 100%;
     /*justify-content: center;*/
+}
+
+.track-list h1{
+    color: white; 
+    font-weight: bold; 
+    text-shadow: 1px 1px black; 
+    text-align: center; 
+    font-size: 32px;
+}
+
+@media screen and (min-width: 1000px) {
+    .track-list{
+       width: 70%; 
+    }
 }
 
 .track-row {
     display: flex;
     flex-flow: row nowrap;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     background-color: rgba(20, 20, 20, 0.35);
-    border-radius: 8px;
+    border-radius: 4px;
     /*justify-content: center;*/
 }
 
