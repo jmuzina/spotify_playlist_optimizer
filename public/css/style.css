@@ -15,3 +15,31 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.track-list {
+    display: flex;
+    flex-flow: column nowrap;
+    /*justify-content: center;*/
+}
+
+.track-row {
+    display: flex;
+    flex-flow: row nowrap;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: rgba(20, 20, 20, 0.35);
+    border-radius: 8px;
+    /*justify-content: center;*/
+}
+
+.track-row img {
+    align-self: center;
+    height: 70px;
+    width: 70px;
+}
+
+.track-row span {
+    margin-left: 8px;
+    align-self: center;
+    color: white;
+    font-size: 18px;
+}

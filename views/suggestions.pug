@@ -2,6 +2,7 @@ html(lang="en")
   title= `${title}`
   head
     link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/style.css')
     meta(charset="UTF-8")
   .container.listing-reg
 
@@ -38,13 +39,12 @@ html(lang="en")
         div.row.justify-content-center
           div.col-md-8
             p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
-            div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
-              ul.list-group
-              br
+
+            .container.track-list
               -var ob = suggestions;
               -for(var song in ob)
-                li.list-group-item
-                  img(src=`${ob[song]['image']}`, height = "20px", width = "20px")
+                .track-row
+                  img(src=`${ob[song]['image']}`)
                   span #{ob[song]['name']} by #{ob[song]['artists']}
                 
               br
