@@ -14,13 +14,13 @@ exports.post_suggestions = function(req, res, next) {
 exports.top_tracks = function(req, res, next) {
   api_connection.getMyTopTracks({limit: req.body.limit, time_range: req.body.time_range}).then(
     function(data) {
-      songs = [];
+      tracks = [];
       for (song in data.body['items']) {
         artists = FUNCTIONS.artist_string(data.body['items'][song]['artists']);
-        songs.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri']));   
+        tracks.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri'], data.body['items'][song]['preview_url']));   
       }
-      req.session.suggestions = songs;
-      req.session.suggestions_json = JSON.parse(JSON.stringify(songs));
+      req.session.suggestions = tracks;
+      req.session.suggestions_json = JSON.parse(JSON.stringify(tracks));
       res.render('suggestions', { title: 'Our suggestions', user: req.session.json, suggestions: req.session.suggestions_json});
     },
     function(err) {
