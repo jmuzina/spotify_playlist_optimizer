@@ -8,8 +8,7 @@ exports.get_optimize = function(req, res, next) {
     function(data) {
       var tracks = [];
       for (track in data.body['tracks']['items']) {
-        data.body['tracks']['items'][track]['track']['name']
-        tracks.push(new CLASSES.track_info(data.body['tracks']['items'][track]['track']['id'], data.body['tracks']['items'][track]['track']['name'], FUNCTIONS.artist_string(data.body['tracks']['items'][track]['track']['artists']), data.body['tracks']['items'][track]['track']['uri'], data.body['tracks']['items'][track]['track']['preview_url']));
+        tracks.push(new CLASSES.track_info(data.body['tracks']['items'][track]['track']['id'], data.body['tracks']['items'][track]['track']['name'], FUNCTIONS.artist_string(data.body['tracks']['items'][track]['track']['artists']), data.body['tracks']['items'][track]['track']['uri'], data.body['tracks']['items'][track]['track']['preview_url'], data.body['tracks']['items'][track]['track']['album']['images'][0]['url']));
       }
        res.render('optimize', {title: 'Optimize ' + data.body['name'], user: req.session.json, playlist_tracks: JSON.parse(JSON.stringify(tracks)), playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17)});
      },

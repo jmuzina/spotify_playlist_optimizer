@@ -28,7 +28,7 @@ html(lang="en")
           -var ob = playlist_tracks;
           -for(var song in ob)
             -console.log(ob[song]);
-            li.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
-              a(href=`${ob[song]['preview']}`)  Preview
+            li.list-group-item 
+              img(src=`${ob[song]['image']}`, height = "20px", width = "20px")
+              #{ob[song]['name']} by #{ob[song]['artists']}
           br
-          iframe(src='https://open.spotify.com/embed/playlist/' + `${playlist_uri}`, width="300", height="380", frameborder="0", allowtransparency="true", allow="encrypted-media" )
