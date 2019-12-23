@@ -17,7 +17,7 @@ exports.top_tracks = function(req, res, next) {
       tracks = [];
       for (song in data.body['items']) {
         artists = FUNCTIONS.artist_string(data.body['items'][song]['artists']);
-        tracks.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri'], data.body['items'][song]['preview_url']));   
+        tracks.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri'], data.body['items'][song]['preview_url'], data.body['items'][song]['album']['images'][0]['url']));   
       }
       req.session.suggestions = tracks;
       req.session.suggestions_json = JSON.parse(JSON.stringify(tracks));
