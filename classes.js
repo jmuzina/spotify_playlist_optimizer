@@ -1,7 +1,9 @@
 exports.playlist_info = class {
-    constructor(id, name, images) {
+    constructor(id, name, images, uri) {
         this.p_id = id;
-        this.p_name = name;    
+        this.p_name = name;
+        this.images = images;   
+        this.uri = uri; 
     }
 }
 
@@ -16,10 +18,11 @@ exports.user_info = class {
 }
 
 exports.track_info = class{
-    constructor(id, name, artists, uri) {
+    constructor(id, name, artists, uri, preview) {
       this.id = id;
       this.name = name;
       this.artists = artists;
       this.uri = uri;
+      this.preview = preview;
     }
   }
