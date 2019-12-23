@@ -2,6 +2,7 @@ html(lang="en")
   title= `${title}`
   head
     link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/style.css')
     meta(charset="UTF-8")
   .container.listing-reg
 
@@ -34,31 +35,30 @@ html(lang="en")
               span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                   input(type = "hidden", name = "type", value = "logout")
                   button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-      div.container(style="margin-top:70px;")
-        div.row.justify-content-center
-          div.col-md-8
-            p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 32px;") Suggested Songs
-            div.container.justify-content-center(style = "background-color: rgba(20, 20, 20, 0.45); border-radius: 25px;")
-              ul.list-group
-              br
-              -var ob = suggestions;
-              -for(var song in ob)
-                li.list-group-item #{ob[song]['name']} by #{ob[song]['artists']}
-              br
-              div.row
-                button.btn.btn-success(type='button' data-toggle='modal' data-target='#exampleModal' style = "text-align: center; width: 80%; margin-left: 10%; margin-bottom: 2%;") Create new playlist with suggested songs
-              form(method = "POST")
-                input(type = "hidden", name = "type", value = "suggestion_action")
-                div.row
-                  div.col-md-2
-                  div.col-md-5
-                    select.form-control.mt-1(required, style = "width: 100%; margin-top: 15%;", id = "selected_playlist", name = "selected_playlist")
-                      option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
-                      -var ob = user;
-                      -for(var prop in ob['u_playlists'])
-                        option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
-                  div.col-md-5.align-self-center
-                    button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
+
+      .container.track-list
+        h1 Suggested Songs
+        -var ob = suggestions;
+        -for(var song in ob)
+          .track-row
+            img(src=`${ob[song]['image']}`)
+            span #{ob[song]['name']} by #{ob[song]['artists']}
+          
+        br
+        div.row
+          button.btn.btn-success(type='button' data-toggle='modal' data-target='#exampleModal' style = "text-align: center; width: 80%; margin-left: 10%; margin-bottom: 2%;") Create new playlist with suggested songs
+        form(method = "POST")
+          input(type = "hidden", name = "type", value = "suggestion_action")
+          div.row
+            div.col-md-2
+            div.col-md-5
+              select.form-control.mt-1(required, style = "width: 100%; margin-top: 15%;", id = "selected_playlist", name = "selected_playlist")
+                option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
+                -var ob = user;
+                -for(var prop in ob['u_playlists'])
+                  option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+            div.col-md-5.align-self-center
+              button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
       script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
       script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
