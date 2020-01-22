@@ -22,7 +22,7 @@ exports.get_redirect = function(req, res, next) {
     }
   }
   else if (req.body['type'] === "submit_new") {
-    FUNCTIONS.create_playlist(req, req.body.playlist_name, req.body.private);
+    FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
   else {
     res.send("404 Error, please contact the webmaster.");
