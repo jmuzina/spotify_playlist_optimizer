@@ -18,48 +18,24 @@ html(lang="en")
 
         p.mt-3.playlist-title Optimizing #{playlist_name}
         .track-container
-          .row
-            .col-md-6
-              .optimize-track-list
-                p.page-header Suggested tracks
-                -var ob = suggestions;
-                -//console.log(comparison);
-                -for(var song in ob)
-                  // Song to add
-                  -if (comparison["add"].includes(ob[song]['id']))
-                    -console.log("add " + ob[song]['name'] + "!\n");
-                    .track-row.add-song
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
-                  // Song to remove
-                  -if (comparison["remove"].includes(ob[song]['id']))
-                    .track-row.remove-song
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
-                  // Song to keep
-                  -if (comparison["keep"].includes(ob[song]['id']))
-                    .track-row
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
 
-            .col-md-6
-              .optimize-track-list
-                p.page-header Playlist tracks
-                -var ob = playlist_tracks;
-                -for(var song in ob)
-                  // Song to add
-                  -if (comparison["add"].includes(ob[song]['id']))
-                    -console.log("add " + ob[song]['name'] + "!\n");
-                    .track-row.add-song
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
-                  // Song to remove
-                  -if (comparison["remove"].includes(ob[song]['id']))
-                    .track-row.remove-song
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
-                  // Song to keep
-                  -if (comparison["keep"].includes(ob[song]['id']))
-                    .track-row
-                      img(src=`${ob[song]['image']}`)
-                      span #{ob[song]['name']} by #{ob[song]['artists']}
+          .optimize-track-list
+            p.page-header Suggested playlist
+            -var ob = combined_songs;
+            -for(var song in ob)
+              // Song to add
+              -if (comparison["add"].includes(ob[song]['id']))
+                .track-row.add-song
+                  img(src=`${ob[song]['image']}`)
+                  span #{ob[song]['name']} by #{ob[song]['artists']}
+              // Song to remove
+              -if (comparison["remove"].includes(ob[song]['id']))
+                .track-row.remove-song
+                  img(src=`${ob[song]['image']}`)
+                  span #{ob[song]['name']} by #{ob[song]['artists']}
+              // Song to keep
+              -if (comparison["keep"].includes(ob[song]['id']))
+                .track-row
+                  img(src=`${ob[song]['image']}`)
+                  span #{ob[song]['name']} by #{ob[song]['artists']}
+            
