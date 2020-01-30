@@ -2,6 +2,7 @@ html(lang="en")
   title= `${title}`
   link(rel='stylesheet', href='/css/bootstrap.min.css')
   link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
   meta(charset="UTF-8")
   div.container.listing-reg
 
@@ -28,14 +29,26 @@ html(lang="en")
                 .track-row.add-song
                   img(src=`${ob[song]['image']}`)
                   span #{ob[song]['name']} by #{ob[song]['artists']}
+                  button.btn(style="margin-left: auto;")
+                    i.fa.fa-plus
+                  button.btn
+                    i.fa.fa-trash-o
               // Song to remove
               -if (comparison["remove"].includes(ob[song]['id']))
                 .track-row.remove-song
                   img(src=`${ob[song]['image']}`)
                   span #{ob[song]['name']} by #{ob[song]['artists']}
+                  button.btn(style="margin-left: auto;")
+                    i.fa.fa-plus
+                  button.btn
+                    i.fa.fa-trash-o
               // Song to keep
               -if (comparison["keep"].includes(ob[song]['id']))
                 .track-row
                   img(src=`${ob[song]['image']}`)
                   span #{ob[song]['name']} by #{ob[song]['artists']}
+                  button.btn(style="margin-left: auto;")
+                    i.fa.fa-plus
+                  button.btn
+                    i.fa.fa-trash-o
             
