@@ -111,3 +111,18 @@ exports.artist_alphabetize = function(a, b){
     if (a_str > b_str) { return 1; }
     return 0;
 }
+
+exports.get_pfp = function(pfp_arr) {
+    if (pfp_arr.length != 0) {
+        return pfp_arr['0']['url']
+    }
+    else return "./images/blank_profile.png";
+}
+
+exports.minimum_playlists = function(playlist_arr) {
+    const MIN_PLAYLISTS = 1;
+    if (playlist_arr.length < MIN_PLAYLISTS) {
+        return false;
+    }
+    else return true;
+}
