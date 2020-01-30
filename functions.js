@@ -103,3 +103,11 @@ exports.remove_duplicates = function(arr) {
         return unique;
     },[])
 }
+
+exports.artist_alphabetize = function(a, b){
+    var a_str = (a.artists).toLowerCase();
+    var b_str = (b.artists).toLowerCase();
+    if (a_str < b_str) { return -1; }
+    if (a_str > b_str) { return 1; }
+    return 0;
+}

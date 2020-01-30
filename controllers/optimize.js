@@ -15,7 +15,8 @@ exports.get_optimize = function(req, res, next) {
 
       combined = req.session.selected_json;
       for (track in req.session.suggestions_json) {combined.push(req.session.suggestions_json[track])};
-      combined = JSON.parse(JSON.stringify(FUNCTIONS.remove_duplicates(combined)));
+      
+      combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
       
       res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.session.json, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared});
      },
