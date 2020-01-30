@@ -94,3 +94,12 @@ exports.playlist_compare = function(suggested, selected) {
         "keep": selected_suggested
     };
 }
+
+exports.remove_duplicates = function(arr) {
+    return arr.reduce((unique, o) => {
+        if(!unique.some(obj => obj.id === o.id && obj.name === o.name && obj.artists === o.artists && obj.uri === o.uri && obj.artists === o.artists && obj.preview === o.preview && obj.image === o.image)) {
+          unique.push(o);
+        }
+        return unique;
+    },[])
+}
