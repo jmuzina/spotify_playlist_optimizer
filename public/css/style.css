@@ -31,6 +31,21 @@
     font-size: 32px;
 }
 
+.optimize-track-list {
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 100%;
+    /*justify-content: center;*/
+}
+
+.track-container {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    max-width: 100%;
+}
+
 @media screen and (min-width: 1000px) {
     .track-list{
        width: 70%; 
@@ -46,6 +61,14 @@
     /*justify-content: center;*/
 }
 
+.add-song {
+    background-color: rgba(41, 219, 50, 0.35);
+}
+
+.remove-song {
+    background-color: rgba(206, 18, 18, 0.35);
+}
+
 .track-row img {
     align-self: center;
     height: 70px;
@@ -56,5 +79,29 @@
     margin-left: 8px;
     align-self: center;
     color: white;
+    font-size: 18px;
+}
+
+.page-header {
+    color: rgb(221, 221, 221);
+    font-weight: bold;
+    text-shadow: 2px 2px black;
+    text-align: center;
+    font-size: 24px;
+}
+
+.playlist-title {
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px black;
+    text-align: center;
+    font-size: 28px;
+}
+
+.explanation-text {
+    color: rgb(221, 221, 221);
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    text-align: center;
     font-size: 18px;
 }
