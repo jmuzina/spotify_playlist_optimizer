@@ -4,7 +4,7 @@ const CLASSES = require('../classes.js');
 
 exports.get_home = function(req, res, next) {
     api_connection.getUser(req.session.user).then( 
-        function(data) {
+        function(user_data) {
             api_connection.getUserPlaylists(req.session.user, {limit: 50}).then(
                 function(playlist_data) {
                     playlists = [];
@@ -16,20 +16,19 @@ exports.get_home = function(req, res, next) {
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            user_JSON = JSON.parse(JSON.stringify(new CLASSES.user_info(data.body['id'], data.body['display_name'], data.body['images']['0']['url'], playlists)));
-                            req.session.json = user_JSON;
-                            res.render('home', { title: 'Spotify Playlist Optimizer', user: user_JSON});
+                            req.session.json = JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], user_data.body['images']['0']['url'], playlists)));
+                            res.render('home', { title: 'Spotify Playlist Optimizer', user: JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], user_data.body['images']['0']['url'], playlists)))});
                         }
                         num_checked += 1;
                     }
                 },
-                function(err) {
-                    console.log(err);
+                function(playlist_err) {
+                    console.log(playlist_err);
                 }
             )
         },
-        function(err) {
-            console.log(err);
+        function(user_err) {
+            console.log(user_err);
         }
     );
 }

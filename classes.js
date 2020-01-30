@@ -7,7 +7,6 @@ exports.playlist_info = class {
     }
 }
 
-// revisit to see if u_id is necessary
 exports.user_info = class {
     constructor(id, name, profile_picture, playlists) {
         this.u_id = id;
@@ -26,4 +25,11 @@ exports.track_info = class{
       this.preview = preview;
       this.image = image;
     }
+  }
+
+  exports.track_comparison = class{
+      constructor(id, suggested) {
+          this.id = id;
+          this.suggested = suggested;
+      }
   }

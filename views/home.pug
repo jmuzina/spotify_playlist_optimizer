@@ -1,6 +1,7 @@
 html(lang="en")
   title= `${title}`
   link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
   div.container.listing-reg
 
@@ -15,17 +16,12 @@ html(lang="en")
         div.container
             div.container.justify-content-center(style = "width: 60%; margin-top: 18%; margin-left: 18%;")
                 div
-                    style. 
-                        p{
-                            color: white;
-                            font-weight: bold;
-                            text-shadow: 1px 1px black;
-                            text-align: center;
-                            font-size: 18px;
-                        }
-                    p How deep into your roots do you want to dig?
-                    p We can suggest songs for you based on varying periods of Spotify data.
-                    p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
+                    if creation_success
+                        h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
+                        br
+                    p.explanation-text How deep into your roots do you want to dig?
+                    p.explanation-text We can suggest songs for you based on varying periods of Spotify data.
+                    p.explanation-text We can also limit the number of suggestions you get, if you don't want to shake things up too much!
                 div.col-md-8(style = "margin-left: 16%;")
                     form(method = "POST")
                         input(type = "hidden", name = "type", value = "settings")
