@@ -22,7 +22,7 @@ html(lang="en")
 
           .optimize-track-list
             p.page-header Suggested playlist
-            form(method="POST")
+            form(method="POST" style="text-align:center;")
               input(type = "hidden", name = "type", value = "save_changes")
               .track-header.row
                 .col-1.img-col
@@ -83,6 +83,6 @@ html(lang="en")
                           .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
                             input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
                             label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
-            button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
+              button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
                   
             

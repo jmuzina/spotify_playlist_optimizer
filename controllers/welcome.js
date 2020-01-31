@@ -25,10 +25,12 @@ exports.get_redirect = function(req, res, next) {
     FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
   else if (req.body['type'] === "save_changes") {
-    console.log("songs to add:");
-    console.log(req.body['add_song']);
-    console.log("songs to remove:");
-    console.log(req.body['remove_song']);
+    if (req.body['remove_song']) {
+      FUNCTIONS.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
+    }
+    if (req.body['add_song']) {
+      FUNCTIONS.add_tracks(req.session.selected_playlist, req.body['add_song']);
+    }
     res.send("Save changes received");
   }
   else {

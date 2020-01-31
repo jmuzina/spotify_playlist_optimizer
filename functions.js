@@ -25,6 +25,34 @@ exports.create_playlist = function(req, res, name, private) {
     );
 }
 
+exports.remove_tracks = function(playlist, tracks) {
+    for (track in tracks) {
+        tracks[track] = {uri: "spotify:track:" + tracks[track]};
+    }
+    api_connection.removeTracksFromPlaylist(playlist, tracks).then(
+        function (data) {
+            console.log("Tracks successfully removed!");
+        },
+        function (err) {
+            console.log(err);
+        }
+    );
+}
+
+exports.add_tracks = function (playlist, tracks) {
+    for (track in tracks) {
+        tracks[track] = "spotify:track:" + tracks[track];
+    }
+    api_connection.addTracksToPlaylist(playlist, tracks).then(
+        function (data) {
+            console.log("Tracks successfully added!");
+        },
+        function (err) {
+            console.log(err);
+        }
+    );
+}
+
 exports.artist_string = function(arr) {
     artists = "";
     num_added = 0;
