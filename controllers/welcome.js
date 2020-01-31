@@ -24,8 +24,15 @@ exports.get_redirect = function(req, res, next) {
   else if (req.body['type'] === "submit_new") {
     FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
+  else if (req.body['type'] === "save_changes") {
+    console.log("songs to add:");
+    console.log(req.body['add_song']);
+    console.log("songs to remove:");
+    console.log(req.body['remove_song']);
+    res.send("Save changes received");
+  }
   else {
-    res.send("404 Error, please contact the webmaster.");
+    res.send("404 Error, please contact me at joe.muzina@gmail.com.");
   }
 }
 

@@ -34,7 +34,7 @@
 .optimize-track-list {
     display: flex;
     flex-flow: column nowrap;
-    max-width: 100%;
+    width: 70%;
     /*justify-content: center;*/
 }
 
@@ -46,6 +46,13 @@
     max-width: 100%;
 }
 
+.slider-label {
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 @media screen and (min-width: 1000px) {
     .track-list{
        width: 70%; 
@@ -54,19 +61,19 @@
 
 .track-row {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-    background-color: rgba(20, 20, 20, 0.35);
+    background-color: rgba(20, 20, 20, 0.459);
     border-radius: 4px;
     /*justify-content: center;*/
 }
 
 .add-song {
-    background-color: rgba(41, 219, 50, 0.35);
+    background-color: rgba(13, 102, 17, 0.45);
 }
 
 .remove-song {
-    background-color: rgba(206, 18, 18, 0.35);
+    background-color: rgba(206, 18, 18, 0.45);
 }
 
 .track-row img {
@@ -80,6 +87,7 @@
     align-self: center;
     color: white;
     font-size: 18px;
+    text-shadow: 2px 1px 1px black;
 }
 
 .page-header {
