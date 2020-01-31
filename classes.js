@@ -1,9 +1,10 @@
 exports.playlist_info = class {
-    constructor(id, name, images, uri) {
+    constructor(id, name, images, uri, snapshot) {
         this.p_id = id;
         this.p_name = name;
         this.images = images;   
         this.uri = uri; 
+        this.snapshot = snapshot;
     }
 }
 

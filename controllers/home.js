@@ -17,11 +17,11 @@ exports.get_home = function(req, res, next) {
                     num_checked = 0;
                     for (playlist in playlist_data.body['items']) {
                         if ((playlist_data.body['items'][playlist]['owner']['id'] == req.session.user || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
-                            playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']))
+                            playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri'], playlist_data.body['items'][playlist]['snapshot_id']));
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            profile_pic = FUNCTIONS.get_pfp(user_data.body['images']);
+                            profile_pic = FUNCTIONS.get_image(res, user_data.body['images'], "profile_picture");
                             req.session.json = JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)));
                             res.render('home', { title: 'Spotify Playlist Optimizer', user: JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)))});
                         }

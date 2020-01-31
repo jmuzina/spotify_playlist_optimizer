@@ -13,6 +13,7 @@
     "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {
+    "body-parser": "^1.19.0",
     "connect-redis": "^4.0.3",
     "express": "^4.16.4",
     "express-session": "^1.17.0",

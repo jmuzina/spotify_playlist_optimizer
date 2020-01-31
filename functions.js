@@ -2,6 +2,10 @@ var spotify_handler = require('./spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('./classes.js');
 
+exports.calls_needed = function(limit_per_call, n) {
+    return Math.ceil(n / limit_per_call);
+}
+
 exports.create_playlist = function(req, res, name, private) {
     api_connection.createPlaylist(req.session.user, name, {'public': !private}).then(
         function(data) {
@@ -25,21 +29,43 @@ exports.create_playlist = function(req, res, name, private) {
     );
 }
 
-exports.remove_tracks = function(playlist, tracks) {
+exports.remove_tracks = function(playlist, playlist_snapshot, tracks) {
+    snapshot = { snapshot_id: playlist_snapshot };
+    console.log("remove_tracks called, removing " + tracks.length + " tracks");
     for (track in tracks) {
         tracks[track] = {uri: "spotify:track:" + tracks[track]};
     }
-    api_connection.removeTracksFromPlaylist(playlist, tracks).then(
-        function (data) {
-            console.log("Tracks successfully removed!");
-        },
-        function (err) {
-            console.log(err);
+    const NUM_REMOVE = tracks.length;
+    const CALLS_NEEDED = this.calls_needed(100, NUM_REMOVE);
+
+    for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
+        if (i === (CALLS_NEEDED - 1)) {
+            api_connection.removeTracksFromPlaylist(playlist, tracks.slice(i * 100), snapshot).then(
+                function (data) {
+                    console.log("Tracks successfully removed!");
+                },
+                function (err) {
+                    console.log("Error in removing tracks: ")
+                    console.log(err);
+                }
+            )
         }
-    );
+        else {
+            api_connection.removeTracksFromPlaylist(playlist, tracks.slice((i * 100), ((i * 100) + 100)), snapshot).then(
+                function (data) {
+                    console.log("Tracks successfully removed!");
+                },
+                function (err) {
+                    console.log("Error in removing tracks: ")
+                    console.log(err);
+                }
+            )
+        }
+    }
 }
 
 exports.add_tracks = function (playlist, tracks) {
+    console.log("add_tracks called, adding " + tracks.length + " tracks");
     for (track in tracks) {
         tracks[track] = "spotify:track:" + tracks[track];
     }
@@ -48,6 +74,7 @@ exports.add_tracks = function (playlist, tracks) {
             console.log("Tracks successfully added!");
         },
         function (err) {
+            console.log("Error in adding tracks: \n");
             console.log(err);
         }
     );
@@ -140,11 +167,22 @@ exports.artist_alphabetize = function(a, b){
     return 0;
 }
 
-exports.get_pfp = function(pfp_arr) {
-    if (pfp_arr.length != 0) {
-        return pfp_arr['0']['url']
+exports.get_image = function(res, arr, type) {
+    if (type === "profile_picture") {
+        if (arr.length != 0) {
+            return arr['0']['url']
+        }
+        else return "./images/blank_profile.png"; 
     }
-    else return "./images/blank_profile.png";
+    else if (type === "album_art") {
+        if (arr.length != 0) {
+            return arr['0']['url']
+        }
+        else return "./images/mystery.png"; 
+    }
+    else {
+        res.send("Invalid get_image parameters: received: " + type + "<br> Please contact me at joe.muzina@gmail.com");
+    }
 }
 
 exports.minimum_playlists = function(playlist_arr) {
