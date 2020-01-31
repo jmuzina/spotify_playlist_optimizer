@@ -3,6 +3,7 @@ var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('../classes.js');
 const FUNCTIONS = require('../functions.js');
 
+// Gets sets of playlist tracks 1 <= n <= 100 until end of playlist is reached
 function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
   var songNum = 100;
   for (var api_offset = 1; api_offset < CALLS_NEEDED; api_offset = api_offset + 1) {
