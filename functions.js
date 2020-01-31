@@ -25,6 +25,34 @@ exports.create_playlist = function(req, res, name, private) {
     );
 }
 
+exports.remove_tracks = function(playlist, tracks) {
+    for (track in tracks) {
+        tracks[track] = {uri: "spotify:track:" + tracks[track]};
+    }
+    api_connection.removeTracksFromPlaylist(playlist, tracks).then(
+        function (data) {
+            console.log("Tracks successfully removed!");
+        },
+        function (err) {
+            console.log(err);
+        }
+    );
+}
+
+exports.add_tracks = function (playlist, tracks) {
+    for (track in tracks) {
+        tracks[track] = "spotify:track:" + tracks[track];
+    }
+    api_connection.addTracksToPlaylist(playlist, tracks).then(
+        function (data) {
+            console.log("Tracks successfully added!");
+        },
+        function (err) {
+            console.log(err);
+        }
+    );
+}
+
 exports.artist_string = function(arr) {
     artists = "";
     num_added = 0;
@@ -110,4 +138,19 @@ exports.artist_alphabetize = function(a, b){
     if (a_str < b_str) { return -1; }
     if (a_str > b_str) { return 1; }
     return 0;
+}
+
+exports.get_pfp = function(pfp_arr) {
+    if (pfp_arr.length != 0) {
+        return pfp_arr['0']['url']
+    }
+    else return "./images/blank_profile.png";
+}
+
+exports.minimum_playlists = function(playlist_arr) {
+    const MIN_PLAYLISTS = 1;
+    if (playlist_arr.length < MIN_PLAYLISTS) {
+        return false;
+    }
+    else return true;
 }

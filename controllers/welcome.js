@@ -24,8 +24,17 @@ exports.get_redirect = function(req, res, next) {
   else if (req.body['type'] === "submit_new") {
     FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
+  else if (req.body['type'] === "save_changes") {
+    if (req.body['remove_song']) {
+      FUNCTIONS.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
+    }
+    if (req.body['add_song']) {
+      FUNCTIONS.add_tracks(req.session.selected_playlist, req.body['add_song']);
+    }
+    res.send("Save changes received");
+  }
   else {
-    res.send("404 Error, please contact the webmaster.");
+    res.send("404 Error, please contact me at joe.muzina@gmail.com.");
   }
 }
 

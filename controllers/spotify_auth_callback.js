@@ -26,8 +26,7 @@ exports.get_auth_callback = function(req, res, next) {
       )
     }, 
     function(err) {
-      res.status(err.code);
-      res.write(err.message);
+      console.log(err);
       res.redirect('/');
       res.end();
     }

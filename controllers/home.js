@@ -1,12 +1,17 @@
 var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('../classes.js');
+const FUNCTIONS = require('../functions.js');
 
 exports.get_home = function(req, res, next) {
     api_connection.getUser(req.session.user).then( 
         function(user_data) {
             api_connection.getUserPlaylists(req.session.user, {limit: 50}).then(
                 function(playlist_data) {
+                    if (!FUNCTIONS.minimum_playlists(playlist_data.body['items'])) {
+                        res.send("[Error] You must have at least one playlist on your account to use the playlist optimizer!");
+                        return;
+                    }
                     playlists = [];
                     num_pushed = 0;
                     num_checked = 0;
@@ -16,8 +21,9 @@ exports.get_home = function(req, res, next) {
                             num_pushed += 1;
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                            req.session.json = JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], user_data.body['images']['0']['url'], playlists)));
-                            res.render('home', { title: 'Spotify Playlist Optimizer', user: JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], user_data.body['images']['0']['url'], playlists)))});
+                            profile_pic = FUNCTIONS.get_pfp(user_data.body['images']);
+                            req.session.json = JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)));
+                            res.render('home', { title: 'Spotify Playlist Optimizer', user: JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)))});
                         }
                         num_checked += 1;
                     }
