@@ -20,7 +20,6 @@
     display: flex;
     flex-flow: column nowrap;
     max-width: 100%;
-    /*justify-content: center;*/
 }
 
 .track-list h1{
@@ -35,12 +34,17 @@
     display: flex;
     flex-flow: column nowrap;
     width: 70%;
-    /*justify-content: center;*/
+}
+
+.optimize-track-list button {
+    width: 30%;
+    align-self: center;
+    margin-bottom: 30px;
 }
 
 .track-container {
     display: flex;
-    text-align: center;
+    text-align: left;
     justify-content: center;
     flex-flow: row wrap;
     max-width: 100%;
@@ -65,7 +69,22 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     background-color: rgba(20, 20, 20, 0.459);
     border-radius: 4px;
-    /*justify-content: center;*/
+}
+
+.track-header {
+    display: flex;
+    flex-flow: row wrap;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    background-color: rgba(7, 7, 7, 0.658);
+    border-radius: 4px;
+}
+
+.track-header span {
+    align-self: center;
+    color: white;
+    font-size: 18px;
+    text-shadow: 2px 1px 1px black;
+    text-align: center;
 }
 
 .add-song {
@@ -76,14 +95,65 @@
     background-color: rgba(206, 18, 18, 0.45);
 }
 
+.img-col {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.title-col {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin-left: -30px;
+}
+
+.title-header {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin-left: -30px;
+}
+
+.artists-col {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.artists-header {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.button-col {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.button-header {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
 .track-row img {
-    align-self: center;
+    align-self: flex-start;
     height: 70px;
     width: 70px;
+    left: 0;
 }
 
 .track-row span {
-    margin-left: 8px;
     align-self: center;
     color: white;
     font-size: 18px;

@@ -24,29 +24,53 @@ html(lang="en")
             p.page-header Suggested playlist
             form(method="POST")
               input(type = "hidden", name = "type", value = "save_changes")
+              .track-header.row
+                .col-1.img-col
+
+                .col-5.title-header.border-right.border-dark
+                  span Title
+                .col-4.artists-header.border-right.border-dark
+                  span Artist
+                .col-2.button-header
+                  span Optimization action
               -var ob = combined_songs;
               -for(var song in ob)
                 -if (comparison["add"].includes(ob[song]['id']))
-                  .track-row.add-song
-                    img(src=`${ob[song]['image']}`)
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                    .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                      input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
-                      label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Add
+                  .track-row.add-song.row
+                    .col-1.img-col
+                      img(src=`${ob[song]['image']}`)
+                    .col-5.title-col.border-right.border-dark
+                      span #{ob[song]['name']}
+                    .col-4.artists-col.border-right.border-dark
+                      span #{ob[song]['artists']}
+                    .col-2.button-col
+                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
+                        input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
+                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Add
                 -if (comparison["remove"].includes(ob[song]['id']))
-                  .track-row.remove-song
-                    img(src=`${ob[song]['image']}`)
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                    .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                      input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                      label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
+                  .track-row.remove-song.row
+                    .col-1.img-col
+                      img(src=`${ob[song]['image']}`)
+                    .col-5.title-col.border-right.border-dark
+                      span #{ob[song]['name']}
+                    .col-4.artists-col.border-right.border-dark
+                      span #{ob[song]['artists']}
+                    .col-2.button-col
+                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
+                        input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
                 -if (comparison["keep"].includes(ob[song]['id']))
-                  .track-row
-                    img(src=`${ob[song]['image']}`)
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                    .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                      input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                      label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
-              button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
+                  .track-row.row
+                    .col-1.img-col
+                      img(src=`${ob[song]['image']}`)
+                    .col-5.title-col.border-right.border-dark
+                      span #{ob[song]['name']}
+                    .col-4.artists-col.border-right.border-dark
+                      span #{ob[song]['artists']}
+                    .col-2.button-col
+                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
+                        input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
+            button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
                   
             
