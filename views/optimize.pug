@@ -44,9 +44,13 @@ html(lang="en")
                     .col-4.artists-col.border-right.border-dark
                       span #{ob[song]['artists']}
                     .col-2.button-col
-                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                        input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
-                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Add
+                      .row(style="width:100%;")
+                        .col-9.button-col
+                          span.slider-label Add
+                        .col-3.button-col
+                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                            input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
+                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
                 -if (comparison["remove"].includes(ob[song]['id']))
                   .track-row.remove-song.row
                     .col-1.img-col
@@ -56,11 +60,15 @@ html(lang="en")
                     .col-4.artists-col.border-right.border-dark
                       span #{ob[song]['artists']}
                     .col-2.button-col
-                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                        input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
+                      .row(style="width:100%;")
+                        .col-9.button-col
+                          span.slider-label Remove
+                        .col-3.button-col
+                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                            input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
                 -if (comparison["keep"].includes(ob[song]['id']))
-                  .track-row.row
+                  .track-row.song.row
                     .col-1.img-col
                       img(src=`${ob[song]['image']}`)
                     .col-5.title-col.border-right.border-dark
@@ -68,9 +76,13 @@ html(lang="en")
                     .col-4.artists-col.border-right.border-dark
                       span #{ob[song]['artists']}
                     .col-2.button-col
-                      .custom-control.custom-switch(style="margin-left: auto; margin-right: 5px; align-self: center;")
-                        input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                        label.custom-control-label.slider-label(for=`${ob[song]['id']}`) Remove
+                      .row(style="width:100%;")
+                        .col-9.button-col
+                          span.slider-label Remove
+                        .col-3.button-col
+                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                            input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
             button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
                   
             
