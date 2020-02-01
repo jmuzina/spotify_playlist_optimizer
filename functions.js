@@ -28,7 +28,7 @@ exports.create_playlist = function(req, res, name, private) {
     );
 }
 
-exports.remove_tracks = function(req) {
+exports.remove_tracks = async function(req) {
     const playlist = req.session.selected_playlist
     var tracks = req.body['remove_song']
     console.log("remove_tracks called, removing " + tracks.length + " tracks");
@@ -40,20 +40,13 @@ exports.remove_tracks = function(req) {
     const CALLS_NEEDED = this.calls_needed(100, NUM_REMOVE);
 
     for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
+        // Last batch of tracks
+        // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
         if (i === (CALLS_NEEDED - 1)) {
-            api_connection.removeTracksFromPlaylist(playlist, tracks.slice(i * 100), req.session.snapshot_ob).then(
+            var list = tracks.slice(i * 100);
+            api_connection.removeTracksFromPlaylist(playlist, list).then(
                 function (data) {
                     console.log("Tracks successfully removed!");
-                    api_connection.getPlaylist(playlist).then(
-                        function(check_data) {
-                            if (check_data.body['snapshot_id'] !== req.session.snapshot_ob['snapshot_id']) {
-                                req.session.snapshot_ob['snapshot_id'] = check_data.body['snapshot_id'];
-                            }
-                        },
-                        function(check_err) {
-                            console.log(check_err);
-                        }
-                    )
                 },
                 function (err) {
                     console.log("Error in removing tracks, last call: ")
@@ -61,20 +54,14 @@ exports.remove_tracks = function(req) {
                 }
             )
         }
+        // Either :
+        // the first (and only) batch of tracks, containing 1-100 tracks
+        // a subsequent (but not final) batch of tracks, containing exactly 100 tracks.
         else {
-            api_connection.removeTracksFromPlaylist(playlist, tracks.slice((i * 100), ((i * 100) + 100)), req.session.snapshot_ob).then(
+            var list = tracks.slice((i * 100), ((i * 100) + 100));
+            api_connection.removeTracksFromPlaylist(playlist, list).then(
                 function (data) {
                     console.log("Tracks successfully removed!");
-                    api_connection.getPlaylist(playlist).then(
-                        function (check_data) {
-                            if (check_data.body['snapshot_id'] !== req.session.snapshot_ob['snapshot_id']) {
-                                req.session.snapshot_ob['snapshot_id'] = check_data.body['snapshot_id'];
-                            }
-                        },
-                        function (check_err) {
-                            console.log(check_err);
-                        }
-                    )
                 },
                 function (err) {
                     console.log("Error in removing tracks, normal call: ")

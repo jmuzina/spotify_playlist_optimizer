@@ -56,7 +56,7 @@ html(lang="en")
                 option(value = "", hidden, style = "text-align: center;") Optimize existing playlist
                 -var ob = user;
                 -for(var prop in ob['u_playlists'])
-                  option(value = `${ob['u_playlists'][prop]['p_id'] + ";" + ob['u_playlists'][prop]['snapshot']}`) #{ob['u_playlists'][prop]['p_name']}
+                  option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
             div.col-md-5.align-self-center
               button.mt-1.form-group.form-control.btn-primary(type = "submit", name = "button_type", value = "optimize_existing", style = "width: 50%;") Go
       script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
