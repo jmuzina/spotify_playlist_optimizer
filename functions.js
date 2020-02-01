@@ -15,7 +15,6 @@ exports.create_playlist = function(req, res, name, private) {
             }
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
-                    console.log("Playlist created and songs inserted successfully!");
                     res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json, creation_success: true});
                 },
                 function(track_err) {
@@ -29,9 +28,11 @@ exports.create_playlist = function(req, res, name, private) {
     );
 }
 
-exports.remove_tracks = function(playlist, playlist_snapshot, tracks) {
-    snapshot = { snapshot_id: playlist_snapshot };
+exports.remove_tracks = function(req) {
+    const playlist = req.session.selected_playlist
+    var tracks = req.body['remove_song']
     console.log("remove_tracks called, removing " + tracks.length + " tracks");
+
     for (track in tracks) {
         tracks[track] = {uri: "spotify:track:" + tracks[track]};
     }
@@ -40,23 +41,43 @@ exports.remove_tracks = function(playlist, playlist_snapshot, tracks) {
 
     for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
         if (i === (CALLS_NEEDED - 1)) {
-            api_connection.removeTracksFromPlaylist(playlist, tracks.slice(i * 100), snapshot).then(
+            api_connection.removeTracksFromPlaylist(playlist, tracks.slice(i * 100), req.session.snapshot_ob).then(
                 function (data) {
                     console.log("Tracks successfully removed!");
+                    api_connection.getPlaylist(playlist).then(
+                        function(check_data) {
+                            if (check_data.body['snapshot_id'] !== req.session.snapshot_ob['snapshot_id']) {
+                                req.session.snapshot_ob['snapshot_id'] = check_data.body['snapshot_id'];
+                            }
+                        },
+                        function(check_err) {
+                            console.log(check_err);
+                        }
+                    )
                 },
                 function (err) {
-                    console.log("Error in removing tracks: ")
+                    console.log("Error in removing tracks, last call: ")
                     console.log(err);
                 }
             )
         }
         else {
-            api_connection.removeTracksFromPlaylist(playlist, tracks.slice((i * 100), ((i * 100) + 100)), snapshot).then(
+            api_connection.removeTracksFromPlaylist(playlist, tracks.slice((i * 100), ((i * 100) + 100)), req.session.snapshot_ob).then(
                 function (data) {
                     console.log("Tracks successfully removed!");
+                    api_connection.getPlaylist(playlist).then(
+                        function (check_data) {
+                            if (check_data.body['snapshot_id'] !== req.session.snapshot_ob['snapshot_id']) {
+                                req.session.snapshot_ob['snapshot_id'] = check_data.body['snapshot_id'];
+                            }
+                        },
+                        function (check_err) {
+                            console.log(check_err);
+                        }
+                    )
                 },
                 function (err) {
-                    console.log("Error in removing tracks: ")
+                    console.log("Error in removing tracks, normal call: ")
                     console.log(err);
                 }
             )
@@ -66,6 +87,7 @@ exports.remove_tracks = function(playlist, playlist_snapshot, tracks) {
 
 exports.add_tracks = function (playlist, tracks) {
     console.log("add_tracks called, adding " + tracks.length + " tracks");
+    ////console.log(tracks);
     for (track in tracks) {
         tracks[track] = "spotify:track:" + tracks[track];
     }

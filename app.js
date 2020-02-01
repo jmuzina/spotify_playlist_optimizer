@@ -68,6 +68,7 @@ app.post('/spotify_auth_callback', jsonParser, function(req, res, next) {
     else if (req.body['button_type'] === "optimize_existing") {
       req.session.selected_playlist = req.body['selected_playlist'].substr(0, req.body['selected_playlist'].indexOf(';'));
       req.session.playlist_snapshot = req.body['selected_playlist'].substr(req.body['selected_playlist'].indexOf(';') + 1);
+      req.session.snapshot_ob = { snapshot_id: req.body['selected_playlist'].substr(req.body['selected_playlist'].indexOf(';') + 1)};
       OPTIMIZE.get_optimize(req, res, next);
     }
   }
@@ -76,7 +77,7 @@ app.post('/spotify_auth_callback', jsonParser, function(req, res, next) {
   }
   else if (req.body['type'] === "save_changes") {
     if (req.body['remove_song']) {
-      FUNCTIONS.remove_tracks(req.session.selected_playlist, req.session.playlist_snapshot, req.body['remove_song']);
+      FUNCTIONS.remove_tracks(req);
     }
     if (req.body['add_song']) {
       FUNCTIONS.add_tracks(req.session.selected_playlist, req.body['add_song']);
