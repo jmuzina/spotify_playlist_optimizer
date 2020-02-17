@@ -25,6 +25,7 @@ exports.get_redirect = function(req, res, next) {
     FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
   else if (req.body['type'] === "save_changes") {
+    console.log("\n\n\nsave changes recevied\n\n\n");
     if (req.body['remove_song']) {
       FUNCTIONS.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
     }

@@ -12,7 +12,7 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
         for (track in offset_data.body['items']) {
           if (offset_data.body['items'][track]['track']['id']) {
             songNum = songNum + 1;
-            tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], offset_data.body['items'][track]['track']['album']['images'][0]['url']));
+            tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(res, offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
           if (songNum === (data.body['tracks']['total'] - 1)) {
             req.session.selected_json = JSON.parse(JSON.stringify(tracks));
@@ -38,9 +38,11 @@ exports.get_optimize = function(req, res, next) {
   api_connection.getPlaylist(req.session.selected_playlist).then(
     function(data) {
       var tracks = [];
-      const CALLS_NEEDED = Math.ceil(data.body['tracks']['total'] / 100);
+      const CALLS_NEEDED = FUNCTIONS.calls_needed(100, data.body['tracks']['total']);
       for (track in data.body['tracks']['items']) {
-        tracks.push(new CLASSES.track_info(data.body['tracks']['items'][track]['track']['id'], data.body['tracks']['items'][track]['track']['name'], FUNCTIONS.artist_string(data.body['tracks']['items'][track]['track']['artists']), data.body['tracks']['items'][track]['track']['uri'], data.body['tracks']['items'][track]['track']['preview_url'], data.body['tracks']['items'][track]['track']['album']['images'][0]['url']));
+        if (data.body['tracks']['items'][track]['track']['id']) {
+          tracks.push(new CLASSES.track_info(data.body['tracks']['items'][track]['track']['id'], data.body['tracks']['items'][track]['track']['name'], FUNCTIONS.artist_string(data.body['tracks']['items'][track]['track']['artists']), data.body['tracks']['items'][track]['track']['uri'], data.body['tracks']['items'][track]['track']['preview_url'], FUNCTIONS.get_image(res, data.body['tracks']['items'][track]['track']['album']['images'], "album_art")));
+        }
       }
       // Handle playlists larger than 100 tracks
       if (CALLS_NEEDED != 1) {

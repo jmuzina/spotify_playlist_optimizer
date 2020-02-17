@@ -1,3 +1,88 @@
+.bg-img {
+    background-image: url("/images/background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.vertical-center{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.logo-container{
+    border-right: 1px solid #a7a7a7;
+    padding-right: 0px;
+}
+
+.hook-container{
+    
+}
+
+.hook-container h1{
+    color: white; 
+    font-weight: bold; 
+    text-shadow: 1px 1px black;
+    text-align: center;
+    font-size: 1.8rem
+}
+
+.hook-container p{
+    margin-top: 4%;
+    color: white; 
+    font-weight: bold; 
+    text-shadow: 1px 1px black;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.hook-container a{
+    width: 40%;
+    align-self: center;
+    font-size: 0.95rem;
+}
+
+.logo{
+    width: 90%;
+    max-height: 620px;
+    max-width: 620px;
+    display: flex;
+    align-self: center;
+}
+
+.welcome{
+    background-color: rgba(20, 20, 20, 0.45); 
+    border-radius: 25px;
+    width: 75%;
+    padding: 2%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-self: center;
+}
+
+@media screen and (max-width: 992px) {
+    .logo-container{
+        border-right: none;
+        border-bottom: 1px solid #a7a7a7;
+    }
+    .welcome{
+        width: 90%;
+    }
+    .logo{
+        width: 90%;
+    }
+    .hook-container{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}
+
 .playlist-image {
     height:auto;
     display:flex;
