@@ -24,6 +24,14 @@
     
 }
 
+.nav-logo{
+    height: 24px;
+}
+
+.nav-profile{
+    height: 24px;
+}
+
 .hook-container h1{
     color: white; 
     font-weight: bold; 
@@ -55,7 +63,7 @@
     align-self: center;
 }
 
-.welcome{
+.rounded-black{
     background-color: rgba(20, 20, 20, 0.45); 
     border-radius: 25px;
     width: 75%;
@@ -81,6 +89,19 @@
         padding-top: 15px;
         padding-bottom: 15px;
     }
+}
+
+.home-explanation{
+    border-right: 1px solid #a7a7a7;
+    padding-right: 0px;
+}
+
+.home-explanation p{
+    color: rgb(221, 221, 221);
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    text-align: center;
+    font-size: 18px;
 }
 
 .playlist-image {
@@ -272,12 +293,4 @@ button-col + custom-control::before {
     text-shadow: 2px 2px black;
     text-align: center;
     font-size: 28px;
-}
-
-.explanation-text {
-    color: rgb(221, 221, 221);
-    font-weight: bold;
-    text-shadow: 1px 1px black;
-    text-align: center;
-    font-size: 18px;
 }

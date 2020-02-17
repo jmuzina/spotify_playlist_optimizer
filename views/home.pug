@@ -6,24 +6,42 @@ html(lang="en")
   div.container.listing-reg
 
   block content
-    body(style = "background-image: url('images/background.jpg'); background-repeat: no-repeat; background-attachment: fixed;")
-        h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
+    body.bg-img
+        header
+            nav.navbar.navbar-expand-lg.bg-dark.fixed-top
+                a.navbar-brand(href="./")
+                    img.nav-logo(src="/images/logo_no_text.png")
+                button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation")
+                    span.navbar-toggler-icon
+                .collapse.navbar-collapse(id="navbarNavDropdown")
+                    ul.navbar-nav
+                        li.nav-item.dropdown.active
+                            a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                                img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
+                                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! 
+                            .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
+                                form(method="POST")
+                                    input(type = "hidden", name = "type", value = "logout")
+                                    button.btn-link.dropdown-item(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
+
+            h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
             form(method = "POST")
                 img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
                     input(type = "hidden", name = "type", value = "logout")
                     button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        div.container
-            div.container.justify-content-center(style = "width: 60%; margin-top: 18%; margin-left: 18%;")
-                div
-                    if creation_success
-                        h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
-                        br
-                    p.explanation-text How deep into your roots do you want to dig?
-                    p.explanation-text We can suggest songs for you based on varying periods of Spotify data.
-                    p.explanation-text We can also limit the number of suggestions you get, if you don't want to shake things up too much!
-                div.col-md-8(style = "margin-left: 16%;")
-                    form(method = "POST")
+        div.container-fluid.vertical-center
+            if creation_success
+                h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
+                br
+            div.rounded-black
+                div.row
+                    div.col-lg-6.vertical-center.home-explanation
+                        p How deep into your roots do you want to dig?
+                        p We can suggest songs for you based on varying periods of Spotify data.
+                        p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
+                    div.col-lg-6.vertical-center.hook-container
+                        form(method = "POST")
                         input(type = "hidden", name = "type", value = "settings")
                         p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
                         select.form-control(id = "time_range", name = "time_range")
@@ -37,4 +55,3 @@ html(lang="en")
                                 option(value = i)= i++
                         div.container.justify-content.center.align-self-center
                             button.btn-success.mt-4(type = "submit", style = "text-align: center; border-radius:8px; margin-left: 35%; font-size: 20px;") Confirm
-            
