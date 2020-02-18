@@ -190,7 +190,7 @@ exports.get_image = function(res, arr, type) {
         else return "./images/mystery.png"; 
     }
     else {
-        res.send("Invalid get_image parameters: received: " + type + "<br> Please contact me at joe.muzina@gmail.com");
+        page_not_found(res);
     }
 }
 
@@ -200,4 +200,33 @@ exports.minimum_playlists = function(playlist_arr) {
         return false;
     }
     else return true;
+}
+
+exports.logout = function(req, res) {
+    console.log("[LOGOUT]: " + req.session.json['u_id'])
+    console.log("[SESSION DESTROY] " + req.sessionID);
+    req.session.destroy(function() {
+        res.redirect('./');
+    });
+}
+
+exports.page_not_found = function(res) {
+    res.send("Error, please contact me at joe.muzina@gmail.com");
+}
+
+exports.set_json = function(req, data) {
+    let set_promise = new Promise((resolve, reject) =>{
+        req.session.json = JSON.parse(JSON.stringify(data));
+        if (req.session.json) resolve("success!"); else reject("error!");
+    });
+
+    set_promise.then(
+        function(success){
+            console.log(success);
+        },
+        function(failure) {
+            console.log(failure);
+            console.log("something went wrong!");
+        }
+    );
 }

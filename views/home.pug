@@ -20,9 +20,9 @@ html(lang="en")
                                 img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
                                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! 
                             .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
-                                form.logout(method="POST", style="margin-block-end: 0px;")
+                                form.logout(method="POST", style="margin-block-end: 0px;", onsubmit="window.open('https://accounts.spotify.com/en/logout', '_blank')")
                                     input(type = "hidden", name = "type", value = "logout")
-                                    button.btn-link.dropdown-item(type = "submit" onclick="window.open('https://accounts.spotify.com/en/logout', '_blank');") Log out
+                                    button.btn-link.dropdown-item(type = "submit") Log out
                     ul.navbar-nav.mr-auto.order-md-1
                         li.nav-item.active
                             a.nav-link(href='./') Home 

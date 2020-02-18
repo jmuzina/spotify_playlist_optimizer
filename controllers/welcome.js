@@ -4,7 +4,7 @@ const FUNCTIONS = require('../functions.js');
 
 exports.get_redirect = function(req, res, next) {
   if (req.body['type'] === "logout") {
-    req.session.destroy();
+    FUNCTIONS.logout(req, res);
   } 
   else if (req.body['type'] === "settings") {
     req.session.range = req.body.time_range;
@@ -24,7 +24,6 @@ exports.get_redirect = function(req, res, next) {
     FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
   }
   else if (req.body['type'] === "save_changes") {
-    console.log("\n\n\nsave changes recevied\n\n\n");
     if (req.body['remove_song']) {
       FUNCTIONS.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
     }
@@ -34,7 +33,7 @@ exports.get_redirect = function(req, res, next) {
     res.send("Save changes received");
   }
   else {
-    res.send("404 Error, please contact me at joe.muzina@gmail.com.");
+    FUNCTIONS.page_not_found(res);
   }
 }
 
@@ -48,5 +47,5 @@ exports.get_welcome = function(req, res, next) {
 }
 
 exports.post_welcome = function(req, res, next) {
-  console.log("Welcome post received?");
+  FUNCTIONS.logout(req, res);
 }
