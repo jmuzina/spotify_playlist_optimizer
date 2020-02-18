@@ -46,19 +46,8 @@ exports.get_auth_callback = function(req, res, next) {
 
                   set_json.then(
                     function(set_success) {
-                      console.log("ID: " + req.sessionID);
-
-                      //console.log("full session IN CALLBACK(): \n");
-                      //console.log(req.session);
-                      
-                      //console.log("COOKIES IN CALLBACK: \n");
-                      //console.log(req['cookies']);
-
-                      console.log("callback req");
-                      console.log((req['sessionID']));
-
-                      req.session.save(function(){
-                        res.redirect('/home');
+                      req.session.save(function(err){
+                        res.redirect(200, '/home');
                       });
                     },
                     function(set_error){
