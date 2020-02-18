@@ -5,7 +5,6 @@ const FUNCTIONS = require('../functions.js');
 exports.get_redirect = function(req, res, next) {
   if (req.body['type'] === "logout") {
     req.session.destroy();
-    res.redirect('/');
   } 
   else if (req.body['type'] === "settings") {
     req.session.range = req.body.time_range;

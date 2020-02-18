@@ -6,6 +6,22 @@ html(lang="en")
 
   block content
     body.bg-img
+        header
+            nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
+                a.navbar-brand(href='./') 
+                    img.nav-logo(src="/images/logo_no_text.png")
+                button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarNavDropdown.collapse.navbar-collapse
+                    ul.navbar-nav.mr-auto
+                        li.nav-item.active
+                            a.nav-link(href='./') Home 
+                        li.nav-item.active
+                            a.nav-link(href='#') About
+                        li.nav-item.active
+                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
+                        li.nav-item.active
+                            a.nav-link(href='#') Contact
         .container-fluid.vertical-center
             .rounded-black
                 .row

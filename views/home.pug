@@ -22,7 +22,7 @@ html(lang="en")
                             .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
                                 form.logout(method="POST", style="margin-block-end: 0px;")
                                     input(type = "hidden", name = "type", value = "logout")
-                                    button.btn-link.dropdown-item(type = "submit") Log out
+                                    button.btn-link.dropdown-item(type = "submit" onclick="window.open('https://accounts.spotify.com/en/logout', '_blank');") Log out
                     ul.navbar-nav.mr-auto.order-md-1
                         li.nav-item.active
                             a.nav-link(href='./') Home 
