@@ -11,7 +11,12 @@ exports.post_home = function(req, res, next) {
     if (req.body['type'] === "logout") {
         FUNCTIONS.logout(req, res);
     }
+    else if (req.body['type'] === "settings") {
+        req.session.range = req.body.time_range;
+        req.session.limit = req.body.limit;
+        res.redirect(200, '/suggestions');
+    }
     else {
-        FUNCTIONS.page_not_found(res);
+        FUNCTIONS.page_not_found(res, req.body['type']);
     }
 }

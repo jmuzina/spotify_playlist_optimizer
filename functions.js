@@ -210,8 +210,8 @@ exports.logout = function(req, res) {
     });
 }
 
-exports.page_not_found = function(res) {
-    res.send("Error, please contact me at joe.muzina@gmail.com");
+exports.page_not_found = function(res, type) {
+    res.send("Error, please contact me at joe.muzina@gmail.com. " + type);
 }
 
 exports.set_json = function(req, data) {
