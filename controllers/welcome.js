@@ -39,7 +39,12 @@ exports.get_redirect = function(req, res, next) {
 }
 
 exports.get_welcome = function(req, res, next) {
-  res.render('welcome', { title: 'Spotify Playlist Optimizer' });
+  if (!req.session.name) {
+    res.render('welcome', { title: 'Spotify Playlist Optimizer' });
+  }
+  else {
+    res.render('welcome', { title: 'Spotify Playlist Optimizer', name: req.session.name, profile_pic: req.session.pfp});
+  }
 }
 
 exports.post_welcome = function(req, res, next) {

@@ -22,6 +22,8 @@ exports.get_home = function(req, res, next) {
                         }
                         else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
                             profile_pic = FUNCTIONS.get_image(res, user_data.body['images'], "profile_picture");
+                            req.session.name = user_data.body['display_name'];
+                            req.session.pfp = profile_pic;
                             req.session.json = JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)));
                             res.render('home', { title: 'Spotify Playlist Optimizer', user: JSON.parse(JSON.stringify(new CLASSES.user_info(user_data.body['id'], user_data.body['display_name'], profile_pic, playlists)))});
                         }
