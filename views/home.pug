@@ -1,6 +1,6 @@
 html(lang="en")
   title= `${title}`
-  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
   div.container.listing-reg
@@ -8,50 +8,58 @@ html(lang="en")
   block content
     body.bg-img
         header
-            nav.navbar.navbar-expand-lg.bg-dark.fixed-top
-                a.navbar-brand(href="./")
+            nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
+                a.navbar-brand(href='./') 
                     img.nav-logo(src="/images/logo_no_text.png")
-                button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation")
+                button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
                     span.navbar-toggler-icon
-                .collapse.navbar-collapse(id="navbarNavDropdown")
-                    ul.navbar-nav
+                #navbarNavDropdown.collapse.navbar-collapse
+                    ul.navbar-nav.ml-auto.order-12
                         li.nav-item.dropdown.active
                             a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
                                 img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
                                 span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! 
                             .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
-                                form(method="POST")
+                                form.logout(method="POST", style="margin-block-end: 0px;")
                                     input(type = "hidden", name = "type", value = "logout")
-                                    button.btn-link.dropdown-item(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-
-            h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
-            form(method = "POST")
-                img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
-                    input(type = "hidden", name = "type", value = "logout")
-                    button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        div.container-fluid.vertical-center
+                                    button.btn-link.dropdown-item(type = "submit") Log out
+                    ul.navbar-nav.mr-auto.order-md-1
+                        li.nav-item.active
+                            a.nav-link(href='./') Home 
+                        li.nav-item.active
+                            a.nav-link(href='#') About
+                        li.nav-item.active
+                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
+                        li.nav-item.active
+                            a.nav-link(href='#') Contact
+                    
+        .vertical-center
             if creation_success
                 h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
                 br
-            div.rounded-black
-                div.row
-                    div.col-lg-6.vertical-center.home-explanation
-                        p How deep into your roots do you want to dig?
-                        p We can suggest songs for you based on varying periods of Spotify data.
-                        p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
-                    div.col-lg-6.vertical-center.hook-container
-                        form(method = "POST")
-                        input(type = "hidden", name = "type", value = "settings")
-                        p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
-                        select.form-control(id = "time_range", name = "time_range")
-                            option(value = "short_term") Short Term (Last 4 weeks)
-                            option(value = "medium_term") Medium Term (Last 6 months)
-                            option(value = "long_term") Long Term (Several Years)
-                        p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Track Limit:
-                        select.form-control(id = "limit", name = "limit")
-                            -var i = 1;
-                            while i < 51
-                                option(value = i)= i++
-                        div.container.justify-content.center.align-self-center
-                            button.btn-success.mt-4(type = "submit", style = "text-align: center; border-radius:8px; margin-left: 35%; font-size: 20px;") Confirm
+            .rounded-black
+                .row
+                    .col-lg-6.home-explanation
+                        .vertical-center
+                            p How deep into your roots do you want to dig?
+                            p We can suggest songs for you based on varying periods of Spotify data.
+                            p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
+                    .col-lg-6.hook-container
+                        .vertical-center
+                            form(method = "POST")
+                                input(type = "hidden", name = "type", value = "settings")
+                                p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
+                                select.form-control(id = "time_range", name = "time_range")
+                                    option(value = "short_term") Short Term (Last 4 weeks)
+                                    option(value = "medium_term") Medium Term (Last 6 months)
+                                    option(value = "long_term") Long Term (Several Years)
+                                p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Track Limit:
+                                select.form-control(id = "limit", name = "limit")
+                                    -var i = 1;
+                                    while i < 51
+                                        option(value = i)= i++
+                                .container.justify-content.center.align-self-center
+                                    button.btn-success.mt-4(type = "submit", style = "text-align: center; border-radius:8px; margin-left: 35%; font-size: 20px;") Confirm
+        script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
+        script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')

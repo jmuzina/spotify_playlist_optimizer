@@ -3,9 +3,6 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
     min-height: 100%;
 }
 
@@ -13,6 +10,7 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
+    height: 100%;
 }
 
 .logo-container{
@@ -24,12 +22,39 @@
     
 }
 
+.nav-dark-bg {
+    background-color: #1d1d1d86;
+}
+
+.nav-item .dropdown-menu {
+    background-color: #1d1d1d86;
+    margin-top: 4%;
+}
+
 .nav-logo{
     height: 24px;
 }
 
 .nav-profile{
     height: 24px;
+}
+
+.nav-item:hover, .logout > .dropdown-item:hover{
+    background-color: #154ea386;
+    border-radius: 5px;
+    transition: 0.3s background-color;
+}
+
+.logout > .dropdown-item{
+    font-weight: bold;
+    text-shadow: 1px 1px black; 
+    color: white;
+}
+
+.spotify-button{
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    background-color: rgba(0, 0, 0, 0.068);
 }
 
 .hook-container h1{
@@ -57,8 +82,8 @@
 
 .logo{
     width: 90%;
-    max-height: 620px;
-    max-width: 620px;
+    max-height: 650px;
+    max-width: 650px;
     display: flex;
     align-self: center;
 }
@@ -79,7 +104,7 @@
         border-right: none;
         border-bottom: 1px solid #a7a7a7;
     }
-    .welcome{
+    .rounded-black{
         width: 90%;
     }
     .logo{
@@ -89,6 +114,16 @@
         padding-top: 15px;
         padding-bottom: 15px;
     }
+    .hook-container h1{
+        font-size: 2.4rem;
+    }
+    .hook-container p{
+        font-size: 1.7rem;
+    }
+    .hook-container a{
+        font-size: 1.5rem;
+    }
+
 }
 
 .home-explanation{

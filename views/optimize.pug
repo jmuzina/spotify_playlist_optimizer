@@ -1,6 +1,6 @@
 html(lang="en")
   title= `${title}`
-  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet', href='/css/style.css')
   link(rel='stylesheet', href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
   meta(charset="UTF-8")
@@ -8,80 +8,83 @@ html(lang="en")
 
   block content
     body(style = "background-image: url('images/background.jpg'); background-repeat: no-repeat; background-attachment: fixed;")
-        h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
-            form(method = "POST")
-                img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
-                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
-                    input(type = "hidden", name = "type", value = "logout")
-                    button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
-        .container.playlist-image(style="margin-top:20px;")
-          img(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px;")
+      h4.mr-2.mt-2(style = "color:white; text-align:right; font-size:18px;")
+          form(method = "POST")
+              img.rounded-circle(src = `${user.profile_picture}`, class = "img-fluid", style = "height: 4%; width: 2%;") 
+              span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! |
+                  input(type = "hidden", name = "type", value = "logout")
+                  button.btn-link(type = "submit", style = "background-color: transparent; border: none; font-weight: bold; text-shadow: 1px 1px black; color: #92B6FF;") Log out
+      .container.playlist-image(style="margin-top:20px;")
+        img(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px;")
 
-        p.mt-3.playlist-title Optimizing #{playlist_name}
-        .track-container
-          .optimize-track-list
-            p.page-header Suggested playlist
-            form(method="POST" style="text-align:center;")
-              input(type = "hidden", name = "type", value = "save_changes")
-              .track-header.row
-                .col-1.img-col
+      p.mt-3.playlist-title Optimizing #{playlist_name}
+      .track-container
+        .optimize-track-list
+          p.page-header Suggested playlist
+          form(method="POST" style="text-align:center;")
+            input(type = "hidden", name = "type", value = "save_changes")
+            .track-header.row
+              .col-1.img-col
 
-                .col-5.title-header.border-right.border-dark
-                  span Title
-                .col-4.artists-header.border-right.border-dark
-                  span Artist
-                .col-2.button-header
-                  span Action
-              -var ob = combined_songs;
-              -for(var song in ob)
-                -if (comparison["add"].includes(ob[song]['id']))
-                  .track-row.add-song.row
-                    .col-1.img-col
-                      img(src=`${ob[song]['image']}`)
-                    .col-5.title-col.border-right.border-dark
-                      span #{ob[song]['name']}
-                    .col-4.artists-col.border-right.border-dark
-                      span #{ob[song]['artists']}
-                    .col-2.button-col
-                      .row(style="width:100%;")
-                        .col-9.button-col
-                          span.slider-label Add
-                        .col-3.button-col
-                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
-                            input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
-                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
-                -if (comparison["remove"].includes(ob[song]['id']))
-                  .track-row.remove-song.row
-                    .col-1.img-col
-                      img(src=`${ob[song]['image']}`)
-                    .col-5.title-col.border-right.border-dark
-                      span #{ob[song]['name']}
-                    .col-4.artists-col.border-right.border-dark
-                      span #{ob[song]['artists']}
-                    .col-2.button-col
-                      .row(style="width:100%;")
-                        .col-9.button-col
-                          span.slider-label Remove
-                        .col-3.button-col
-                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
-                            input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
-                -if (comparison["keep"].includes(ob[song]['id']))
-                  .track-row.song.row
-                    .col-1.img-col
-                      img(src=`${ob[song]['image']}`)
-                    .col-5.title-col.border-right.border-dark
-                      span #{ob[song]['name']}
-                    .col-4.artists-col.border-right.border-dark
-                      span #{ob[song]['artists']}
-                    .col-2.button-col
-                      .row(style="width:100%;")
-                        .col-9.button-col
-                          span.slider-label Remove
-                        .col-3.button-col
-                          .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
-                            input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
-                            label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
-              button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
-                  
-            
+              .col-5.title-header.border-right.border-dark
+                span Title
+              .col-4.artists-header.border-right.border-dark
+                span Artist
+              .col-2.button-header
+                span Action
+            -var ob = combined_songs;
+            -for(var song in ob)
+              -if (comparison["add"].includes(ob[song]['id']))
+                .track-row.add-song.row
+                  .col-1.img-col
+                    img(src=`${ob[song]['image']}`)
+                  .col-5.title-col.border-right.border-dark
+                    span #{ob[song]['name']}
+                  .col-4.artists-col.border-right.border-dark
+                    span #{ob[song]['artists']}
+                  .col-2.button-col
+                    .row(style="width:100%;")
+                      .col-9.button-col
+                        span.slider-label Add
+                      .col-3.button-col
+                        .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                          input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="add_song" value=`${ob[song]['id']}`)
+                          label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
+              -if (comparison["remove"].includes(ob[song]['id']))
+                .track-row.remove-song.row
+                  .col-1.img-col
+                    img(src=`${ob[song]['image']}`)
+                  .col-5.title-col.border-right.border-dark
+                    span #{ob[song]['name']}
+                  .col-4.artists-col.border-right.border-dark
+                    span #{ob[song]['artists']}
+                  .col-2.button-col
+                    .row(style="width:100%;")
+                      .col-9.button-col
+                        span.slider-label Remove
+                      .col-3.button-col
+                        .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                          input.custom-control-input(checked type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                          label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
+              -if (comparison["keep"].includes(ob[song]['id']))
+                .track-row.song.row
+                  .col-1.img-col
+                    img(src=`${ob[song]['image']}`)
+                  .col-5.title-col.border-right.border-dark
+                    span #{ob[song]['name']}
+                  .col-4.artists-col.border-right.border-dark
+                    span #{ob[song]['artists']}
+                  .col-2.button-col
+                    .row(style="width:100%;")
+                      .col-9.button-col
+                        span.slider-label Remove
+                      .col-3.button-col
+                        .custom-control.custom-switch(style="margin-right: 5px; padding: 0; align-self: center;")
+                          input.custom-control-input(type='checkbox' id = `${ob[song]['id']}` name="remove_song" value=`${ob[song]['id']}`)
+                          label.custom-control-label.slider-label(for=`${ob[song]['id']}`)
+            button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
+      script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
+      script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+      script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
+
+          
