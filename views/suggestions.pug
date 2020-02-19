@@ -36,31 +36,32 @@ html(lang="en")
               li.nav-item.active
                 a.nav-link(href='#') Contact
       .container
-        #create.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        #create.modal.fade(tabindex='-1' role='dialog' aria-labelledby='create' aria-hidden='true')
           .modal-dialog(role='document')
-            .modal-content
+            .modal-content.create-form
               form(method="POST")
                 .modal-header
-                  h5#exampleModalLabel.modal-title Create new playlist
+                  h5#create.modal-title Create new playlist
                   button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
-                .modal-body(style="padding:0.5rem;")
-                  .form-group(style = "width: 100%;")
-                    .form-row
-                      input(type = "hidden", name = "type", value = "submit_new")
-                      input.form-control.ml-2(required, type = "text", id = "playlist_name", name = "playlist_name", placeholder = "New playlist name")
-                    .form-row.mt-2
-                      label.form-check-label(for = "autoSizingCheck2" style = "margin-left: 24px;") Make this playlist private
-                      input.form-check-input(type = "checkbox", id = "private", name = "private" style = "margin-left: 10px;")
-                .modal-footer
-                  button.btn.btn-secondary(type='button' data-dismiss='modal') Close
-                  button.form-control.btn-primary(type = "submit", value = "submit_new") Create new playlist
-        #optimize.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+                .modal-body(style="padding:3%;")
+                  .form-row.modal-row
+                    input(type = "hidden", name = "type", value = "submit_new")
+                    input.form-control.create-text-field(required, type = "text", id = "playlist_name", name = "playlist_name", placeholder = "New playlist name")
+                    .check-modal
+                      label.form-check-label(for = "private") Public
+                      .custom-control.custom-switch(style="padding-left: 45%;")
+                          input.custom-control-input(type='checkbox' id = `public` name="public" value='true')
+                          label.custom-control-label.slider-label(for=`public`)
+                .modal-footer.modal-buttons
+                  button.btn.btn-outline-danger(type='button' data-dismiss='modal') Close
+                  button.btn.btn-outline-primary(type = "submit", value = "submit_new") Create
+        #optimize.modal.fade(tabindex='-1' role='dialog' aria-labelledby='optimize' aria-hidden='true')
           .modal-dialog(role='document')
             .modal-content
               form(method="POST")
                 .modal-header
-                  h5#exampleModalLabel.modal-title Optimize existing playlist
+                  h5#optimize.modal-title Optimize existing playlist
                   button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body(style="padding:0.5rem;")

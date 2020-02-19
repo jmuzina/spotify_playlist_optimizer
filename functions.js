@@ -6,8 +6,19 @@ exports.calls_needed = function(limit_per_call, n) {
     return Math.ceil(n / limit_per_call);
 }
 
-exports.create_playlist = function(req, res, name, private) {
-    api_connection.createPlaylist(req.session.json['u_id'], name, {'public': !private}).then(
+exports.logged_in = function(session) {
+    if (session.json) return true;
+    else return false;
+}
+
+exports.log = function(msg) {
+    console.log("\n" + msg + "\n");
+}
+
+exports.create_playlist = function(req, res, name, public) {
+    name = name.substring(0, 180);
+    console.log("name length: " + name.length);
+    api_connection.createPlaylist(req.session.json['u_id'], name, {'public': public}).then(
         function(data) {
             songs_to_add = [];
             for (song in req.session.suggestions) {
@@ -16,6 +27,9 @@ exports.create_playlist = function(req, res, name, private) {
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
                     req.session.playlist_created = true;
+                    var public_str = "private";
+                    if (public) public_str = "public";
+                    console.log("\n[PLAYLIST CREATION]: " + req.session.json['u_id'] + " created " + public_str + " playlist '" + name + "'\n");
                     res.redirect(200, '/home');
                 },
                 function(track_err) {
@@ -260,7 +274,10 @@ exports.post_handler = function(req, res, type) {
         )
     }
     else if (type === "submit_new") {
-        this.create_playlist(req, res, req.body.playlist_name, req.body.private);
+        var public = false;
+        if (req.body.public == 'true') public = true;
+
+        this.create_playlist(req, res, req.body.playlist_name, public);
       }
     else {
         this.page_not_found(res, type);

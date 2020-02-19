@@ -21,7 +21,7 @@ exports.get_redirect = function(req, res, next) {
     }
   }
   else if (req.body['type'] === "submit_new") {
-    FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.private);
+    FUNCTIONS.create_playlist(req, res, req.body.playlist_name, req.body.public);
   }
   else if (req.body['type'] === "save_changes") {
     if (req.body['remove_song']) {
@@ -38,11 +38,11 @@ exports.get_redirect = function(req, res, next) {
 }
 
 exports.get_welcome = function(req, res, next) {
-  if (!req.session.name) {
+  if (!req.session.json) {
     res.render('welcome', { title: 'Spotify Playlist Optimizer' });
   }
   else {
-    res.render('welcome', { title: 'Spotify Playlist Optimizer', name: req.session.name, profile_pic: req.session.pfp});
+    res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.json});
   }
 }
 

@@ -30,6 +30,59 @@
     
 }
 
+.modal-content h5, label{
+    color: white;
+}
+
+.modal-content input {
+    background-color: #828282fe;
+}
+
+.modal-content input::placeholder {
+    color: rgb(210, 210, 210);
+}
+
+.modal-content input:focus {
+    background-color: #a9a9a9fe;
+    transition: 0.2s background-color;
+}
+
+.create-text-field {
+    width: 80%;
+}
+
+.modal-row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.check-modal{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    width: 20%;
+}
+
+.check-modal *{
+    align-self: center;
+}
+
+.check-modal .form-check-input{
+    align-self: center;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.create-form {
+    background-color: #4a4a4afe;
+}
+
 .nav-dark-bg {
     background-color: #1d1d1d86;
 }

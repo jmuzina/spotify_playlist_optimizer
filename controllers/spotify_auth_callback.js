@@ -47,7 +47,11 @@ exports.get_auth_callback = function(req, res, next) {
                   set_json.then(
                     function(set_success) {
                       req.session.save(function(err){
-                        res.redirect(200, '/home');
+                        if (req.session.reauth) {
+                          req.session.reauth = false;
+                          res.redirect(200, '/suggestions');
+                        }
+                        else res.redirect(200, '/home');
                       });
                     },
                     function(set_error){
