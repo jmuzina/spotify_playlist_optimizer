@@ -24,13 +24,6 @@ let RedisStore = require('connect-redis')(session);
 const app = express();
 app.set('trust proxy', 1) // trust first proxy
 
-app.use(bodyParser.urlencoded({
-  extended: false,
-  parameterLimit: 4500
-}));
-
-app.use(bodyParser.json({ limit: '150mb' }));
-
 let client = redis.createClient({
   host: 'localhost',
   port: 6379,
@@ -47,10 +40,20 @@ app.use(session({
   saveUninitialized: false,
   rolling: true,
   unset: 'destroy',
-  cookie: { maxAge: 3600000, sameSite: true } // 1 hr
+  cookie: { maxAge: 3600000, sameSite: true, secure: false, httpOnly: false } // 1 hr
 }))
 
+app.use(bodyParser.urlencoded({
+  extended: false,
+  parameterLimit: 4500
+}));
+
+app.use(bodyParser.json({ limit: '150mb' }));
+
 var jsonParser = bodyParser.json();
+
+/*
+
 app.post('/spotify_auth_callback', jsonParser, function(req, res, next) {
   if (req.body['type'] === "logout") {
     req.session.destroy();
@@ -86,7 +89,7 @@ app.post('/spotify_auth_callback', jsonParser, function(req, res, next) {
     res.send("404 Error, please contact me at joe.muzina@gmail.com.");
   }
 })
-
+*/
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
