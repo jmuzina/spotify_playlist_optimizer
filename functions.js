@@ -7,7 +7,7 @@ exports.calls_needed = function(limit_per_call, n) {
 }
 
 exports.create_playlist = function(req, res, name, private) {
-    api_connection.createPlaylist(req.session.user, name, {'public': !private}).then(
+    api_connection.createPlaylist(req.session.json['u_id'], name, {'public': !private}).then(
         function(data) {
             songs_to_add = [];
             for (song in req.session.suggestions) {
@@ -15,7 +15,8 @@ exports.create_playlist = function(req, res, name, private) {
             }
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
-                    res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json, creation_success: true});
+                    req.session.playlist_created = true;
+                    res.redirect(200, '/home');
                 },
                 function(track_err) {
                     console.log(track_err);
@@ -204,7 +205,6 @@ exports.minimum_playlists = function(playlist_arr) {
 
 exports.logout = function(req, res) {
     console.log("[LOGOUT]: " + req.session.json['u_id'])
-    console.log("[SESSION DESTROY] " + req.sessionID);
     req.session.destroy(function() {
         res.redirect('./');
     });
@@ -217,7 +217,7 @@ exports.page_not_found = function(res, type) {
 exports.set_json = function(req, data) {
     let set_promise = new Promise((resolve, reject) =>{
         req.session.json = JSON.parse(JSON.stringify(data));
-        if (req.session.json) resolve("success!"); else reject("error!");
+        if (req.session.json) resolve(); else reject("error!");
     });
 
     set_promise.then(
@@ -229,4 +229,40 @@ exports.set_json = function(req, data) {
             console.log("something went wrong!");
         }
     );
+}
+
+exports.post_handler = function(req, res, type) {
+    if (type === "logout") {
+        this.logout(req, res);
+    }
+    else if (type === "settings") {
+        req.session.range = req.body.time_range;
+        req.session.limit = req.body.limit;
+
+        let set_suggestion_params = new Promise((resolve, reject) =>{
+            req.session.range = req.body.time_range;
+            req.session.limit = req.body.limit;
+            if ((req.session.range != null) && (req.session.limit != null)) {
+                resolve();
+            }
+            else reject("error setting suggestion parameters. Values: range = " + req.session.range + ", limit = " + req.session.limit);
+        });
+
+        set_suggestion_params.then(
+            function(success) {
+                req.session.save(function(err) {
+                    res.redirect(200, '/suggestions');
+                })
+            },
+            function(failure) {
+                console.log(failure);
+            }
+        )
+    }
+    else if (type === "submit_new") {
+        this.create_playlist(req, res, req.body.playlist_name, req.body.private);
+      }
+    else {
+        this.page_not_found(res, type);
+    }
 }

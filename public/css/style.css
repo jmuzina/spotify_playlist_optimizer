@@ -4,11 +4,19 @@
     background-attachment: fixed;
     background-size: cover;
     min-height: 100%;
+    padding-top: 70px;
 }
 
 .vertical-center{
     display: flex;
     flex-flow: column nowrap;
+    justify-content: center;
+    height: 100%;
+}
+
+.horizontal-center{
+    display: flex;
+    flex-flow: row nowrap;
     justify-content: center;
     height: 100%;
 }
@@ -54,7 +62,7 @@
 .spotify-button{
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
-    background-color: rgba(0, 0, 0, 0.068);
+    background-color: rgba(0, 0, 0, 0.208);
 }
 
 .hook-container h1{
@@ -169,6 +177,33 @@
     text-shadow: 1px 1px black; 
     text-align: center; 
     font-size: 32px;
+}
+
+.suggestions-buttons-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.suggestion-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    align-self: center;
+    justify-content: space-evenly;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    width: 30%;
+}
+
+@media screen and (max-width: 768px) {
+    .suggestion-buttons button{
+        font-size: 0.5rem;
+    }
+    .suggestion-buttons {
+        width: 100%;
+        margin-top: 5%;
+        margin-bottom: 5%;
+    }
 }
 
 .optimize-track-list {
@@ -300,19 +335,40 @@ button-col + custom-control::before {
     justify-content: center;
 }
 
+.track-row .track-details-container {
+    width: calc(96% - 7.8vh);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
 .track-row img {
     align-self: flex-start;
-    height: 70px;
-    width: 70px;
+    height: 7.8vh;
     left: 0;
 }
 
 .track-row span {
     align-self: center;
     color: white;
-    font-size: 18px;
+    font-size: 2vh;
     text-shadow: 2px 1px 1px black;
 }
+
+@media screen and (max-width: 768px) {
+    .track-row img {
+        height: 12vh;
+    }
+    .track-row .track-details-container {
+        width: calc(98% - 12vh);
+        padding-left: 1%;
+        padding-right: 1%;
+    }
+}
+
+
 
 .page-header {
     color: rgb(221, 221, 221);

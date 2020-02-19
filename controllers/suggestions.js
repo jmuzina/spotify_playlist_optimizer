@@ -4,7 +4,7 @@ const CLASSES = require('../classes.js');
 const FUNCTIONS = require('../functions.js')
 
 exports.get_suggestions = function(req, res, next) {
-  api_connection.getMyTopTracks({limit: req.body.limit, time_range: req.body.time_range}).then(
+  api_connection.getMyTopTracks({limit: req.session.limit, time_range: req.session.range}).then(
     function(data) {
       tracks = [];
       for (song in data.body['items']) {
@@ -22,5 +22,5 @@ exports.get_suggestions = function(req, res, next) {
 }
 
 exports.post_suggestions = function(req, res, next) {
-  console.log("Suggestions post received?");
+  FUNCTIONS.post_handler(req, res, req.body['type']);
 }
