@@ -16,8 +16,7 @@ exports.log = function(msg) {
 }
 
 exports.create_playlist = function(req, res, name, public) {
-    name = name.substring(0, 180);
-    console.log("name length: " + name.length);
+    if (name.length > 200) name = name.substring(0, 200);
     api_connection.createPlaylist(req.session.json['u_id'], name, {'public': public}).then(
         function(data) {
             songs_to_add = [];
