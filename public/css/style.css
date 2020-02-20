@@ -301,10 +301,9 @@ select#selected_playlist{
 }
 
 .slider-label {
-    color: white;
-    text-shadow: 2px 2px 2px black;
-    font-size: 18px;
     font-weight: bold;
+    align-self: center !important;
+    margin-right: 24%;
 }
 
 @media screen and (min-width: 1000px) {
@@ -350,6 +349,8 @@ select#selected_playlist{
     flex-flow: row nowrap;
     justify-content: flex-start;
     padding: 0;
+    width: 7.8vh;
+    height: 7.8vh;
 }
 
 button-col + custom-control::before {
@@ -358,10 +359,17 @@ button-col + custom-control::before {
 
 .title-col {
     display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding: 0 5px 0 0;
+    /*margin-left: -30px;*/
+}
+
+.title-text-container {
+    display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
-    padding: 0;
-    margin-left: -30px;
+    padding: 5px 0px 5px 5px;
 }
 
 .title-header {
@@ -369,15 +377,13 @@ button-col + custom-control::before {
     flex-flow: column wrap;
     justify-content: flex-start;
     padding: 0;
-    margin-left: -30px;
 }
 
 .artists-col {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
-    padding: 0;
-    margin-left: 10px;
+    padding: 5px;
 }
 
 .artists-header {
@@ -385,13 +391,12 @@ button-col + custom-control::before {
     flex-flow: column wrap;
     justify-content: flex-start;
     padding: 0;
-    margin-left: 10px;
 }
 
 .button-col {
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
+    flex-flow: column nowrap;
+    justify-content: center;
     padding: 0;
 }
 
@@ -427,6 +432,11 @@ button-col + custom-control::before {
     border-radius: 4px;
 }
 
+.optimize-img {
+    height: 7.8vh;
+    width: 7.8vh;
+}
+
 .track-row span {
     align-self: center;
     color: white;
@@ -435,6 +445,10 @@ button-col + custom-control::before {
 }
 
 @media screen and (max-width: 768px) {
+    .optimize-img {
+        height: 8.5vh !important;
+        width: 8.5vh !important;
+    }
     .track-row img {
         height: 12vh;
         width: 12vh;
@@ -443,6 +457,13 @@ button-col + custom-control::before {
         width: calc(98% - 12vh);
         padding-left: 1%;
         padding-right: 1%;
+    }
+    .img-col {
+        height: 12vh;
+        width: 12vh;
+    }
+    .optimize-track-list{
+        width: 90%;
     }
 }
 

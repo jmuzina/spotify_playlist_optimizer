@@ -29,8 +29,7 @@ exports.get_suggestions = function(req, res, next) {
     );
   }
   else { // user not logged in, send to login page
-    console.log("suggestions user not logged in");
-    res.redirect('./');
+    FUNCTIONS.re_auth(req, res, next);
   }
 }
 
