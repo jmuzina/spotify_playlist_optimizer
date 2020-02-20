@@ -22,9 +22,7 @@ exports.get_suggestions = function(req, res, next) {
         console.log(err);
         // If Authentication has failed, re-authenticate
         if (err.statusCode == 401) {
-          FUNCTIONS.log("[RE-AUTHENTICATION] User " + req.session.json['u_id'] + " authentication failed in suggestions, starting re-authentication process.")
-          req.session.reauth = true;
-          AUTH.get_login(req, res, next);
+          FUNCTIONS.re_auth(req, res, next);
         }
         else res.redirect('./');
       }

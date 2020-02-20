@@ -62,6 +62,7 @@ exports.get_optimize = function(req, res, next) {
      },
     function(err) {
       console.log("err: " + err);
+      FUNCTIONS.re_auth(req, res, next);
     }
   ); 
 }

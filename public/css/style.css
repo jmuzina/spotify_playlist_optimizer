@@ -38,6 +38,35 @@
     background-color: #828282fe;
 }
 
+select#selected_playlist{
+    background-color: #828282fe;
+}
+
+.modal-row select {
+    width: 90%;
+    align-self: center;
+    background-color: #828282fe;
+    color: white;
+}
+
+.modal-row select:focus {
+    background-color: #828282fe;
+    color: white;
+}
+
+
+.modal-row label {
+    align-self: center;
+}
+
+.modal-header span {
+    color: white;
+}
+
+.modal-row .form-control {
+    
+}
+
 .modal-content input::placeholder {
     color: rgb(210, 210, 210);
 }

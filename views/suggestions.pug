@@ -56,19 +56,27 @@ html(lang="en")
                 .modal-footer.modal-buttons
                   button.btn.btn-outline-danger(type='button' data-dismiss='modal') Close
                   button.btn.btn-outline-primary(type = "submit", value = "submit_new") Create
-        #optimize.modal.fade(tabindex='-1' role='dialog' aria-labelledby='optimize' aria-hidden='true')
+        #optimize.modal.fade(tabindex='-1' role='dialog' aria-labelledby='create' aria-hidden='true')
           .modal-dialog(role='document')
-            .modal-content
+            .modal-content.create-form
               form(method="POST")
                 .modal-header
-                  h5#optimize.modal-title Optimize existing playlist
+                  h5#create.modal-title Optimize existing playlist
                   button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
-                .modal-body(style="padding:0.5rem;")
-                  p placeholder
-                .modal-footer
-                  button.btn.btn-secondary(type='button' data-dismiss='modal') Close
-                  button.form-control.btn-primary(type = "submit", value = "submit_new") Create new playlist
+                .modal-body(style="padding:3%;")
+                  .form-row.modal-row
+                    input(type = "hidden", name = "type", value = "optimize_existing")
+                    .form-group
+                      .vertical-center
+                        label(for='selected_playlist') Playlist:
+                        select.form-control(id="selected_playlist", name="selected_playlist")
+                          -var ob = user;
+                          -for(var prop in ob['u_playlists'])
+                            option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                .modal-footer.modal-buttons
+                  button.btn.btn-outline-danger(type='button' data-dismiss='modal') Close
+                  button.btn.btn-outline-primary(type = "submit", value = "optimize_existing") Confirm
       .container.track-list
         h1.page-header Suggested Songs
         -var ob = suggestions;
