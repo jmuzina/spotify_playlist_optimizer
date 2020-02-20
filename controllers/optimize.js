@@ -66,3 +66,7 @@ exports.get_optimize = function(req, res, next) {
     }
   ); 
 }
+
+exports.post_optimize = function(req, res, next) {
+  FUNCTIONS.post_handler(req, res, req.body['type']);
+}

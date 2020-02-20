@@ -26,10 +26,6 @@
     padding-right: 0px;
 }
 
-.hook-container{
-    
-}
-
 .modal-content h5, label{
     color: white;
 }
@@ -61,10 +57,6 @@ select#selected_playlist{
 
 .modal-header span {
     color: white;
-}
-
-.modal-row .form-control {
-    
 }
 
 .modal-content input::placeholder {
@@ -113,7 +105,7 @@ select#selected_playlist{
 }
 
 .nav-dark-bg {
-    background-color: #1d1d1d86;
+    background-color: #1d1d1ddc;
 }
 
 .nav-item .dropdown-menu {
@@ -242,7 +234,7 @@ select#selected_playlist{
     border-radius: 15px;
     margin-top: 10px;
     height: auto;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 4px 4px 1px black;
     margin-left: auto;
     margin-right: auto;
 }
@@ -429,7 +421,10 @@ button-col + custom-control::before {
 .track-row img {
     align-self: flex-start;
     height: 7.8vh;
+    width: 7.8vh;
     left: 0;
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
 }
 
 .track-row span {
@@ -442,6 +437,7 @@ button-col + custom-control::before {
 @media screen and (max-width: 768px) {
     .track-row img {
         height: 12vh;
+        width: 12vh;
     }
     .track-row .track-details-container {
         width: calc(98% - 12vh);
