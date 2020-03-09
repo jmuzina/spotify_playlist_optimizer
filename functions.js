@@ -20,6 +20,8 @@ exports.create_playlist = function(req, res, name, public) {
     if (name.length > 200) name = name.substring(0, 200);
     api_connection.createPlaylist(req.session.json['u_id'], name, {'public': public}).then(
         function(data) {
+            new_playlist = new CLASSES.playlist_info(data.body['id'], name, data.body['images'], data.body['uri']);
+            req.session.json['u_playlists'].unshift(new_playlist);
             songs_to_add = [];
             for (song in req.session.suggestions) {
                 songs_to_add.push(req.session.suggestions[song]['uri']);
@@ -228,7 +230,7 @@ exports.page_not_found = function(res, type) {
     res.send("Error, please contact me at joe.muzina@gmail.com. " + type);
 }
 
-exports.set_json = function(req, data) {
+let set_json = function(req, data) {
     let set_promise = new Promise((resolve, reject) =>{
         req.session.json = JSON.parse(JSON.stringify(data));
         if (req.session.json) resolve(); else reject("error!");
@@ -292,4 +294,49 @@ exports.re_auth = function(req, res, next) {
     this.log("[RE-AUTHENTICATION] User " + req.session.json['u_id'] + " authentication failed, starting re-authentication process.")
     req.session.reauth = true;
     AUTH.get_login(req, res, next);
+}
+
+exports.update_playlists = function(req, res, next, user) {
+    api_connection.getUserPlaylists(user.u_id, {limit: 50}).then(
+        function(playlist_data) {
+            if (playlist_data.body['items'].length === 0) {
+                res.send("[Error] You must have at least one playlist on your account to use the playlist optimizer!");
+                return;
+            }
+            playlists = [];
+            num_pushed = 0;
+            num_checked = 0;
+            for (playlist in playlist_data.body['items']) {
+                if ((playlist_data.body['items'][playlist]['owner']['id'] == user.u_id || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
+                    playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']));
+                    num_pushed += 1;
+                }
+                else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1) && (!req.session.json))  {
+                    console.log("[LOGIN]: " + user.u_id);
+                    let set_user_json = new Promise((resolve, reject) =>{
+                        set_json(req, new CLASSES.user_info(user.u_id, user.p_name, user.profile_picture, playlists));
+                        if (req.session.json) resolve(); else reject("error setting JSON");
+                    })
+                    set_user_json.then(
+                        function(set_success) {
+                            req.session.save(function(err){
+                                if (req.session.reauth) {
+                                    req.session.reauth = false;
+                                    res.redirect(200, '/suggestions');
+                                }
+                                else res.redirect(200, '/home');
+                            });
+                        },
+                        function(set_error){
+                            console.log(set_error);
+                        }
+                    );
+                }
+                num_checked += 1;
+            }
+        },
+        function(playlist_err) {
+            console.log(playlist_err);
+        }
+    );
 }

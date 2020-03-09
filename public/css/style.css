@@ -163,9 +163,7 @@ select#selected_playlist{
 }
 
 .logo{
-    width: 90%;
-    max-height: 650px;
-    max-width: 650px;
+    max-width: 95%;
     display: flex;
     align-self: center;
 }
@@ -174,7 +172,7 @@ select#selected_playlist{
     background-color: rgba(20, 20, 20, 0.45); 
     border-radius: 25px;
     width: 75%;
-    padding: 2%;
+    padding: 1.5%;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;

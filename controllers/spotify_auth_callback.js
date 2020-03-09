@@ -22,50 +22,7 @@ exports.get_auth_callback = function(req, res, next) {
           var user_id = user_data.body['id'];
           var display_name = user_data.body['display_name'];
           var profile_picture = FUNCTIONS.get_image(res, user_data.body['images'], "profile_picture");
-          api_connection.getUserPlaylists(user_id, {limit: 50}).then(
-            function(playlist_data) {
-              if (!FUNCTIONS.minimum_playlists(playlist_data.body['items'])) {
-                  res.send("[Error] You must have at least one playlist on your account to use the playlist optimizer!");
-                  return;
-              }
-              playlists = [];
-              num_pushed = 0;
-              num_checked = 0;
-              for (playlist in playlist_data.body['items']) {
-                if ((playlist_data.body['items'][playlist]['owner']['id'] == user_id || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
-                  playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']));
-                  num_pushed += 1;
-                }
-                else if (num_checked == Object.keys(playlist_data.body['items']).length - 1) {
-                  console.log("[LOGIN]: " + user_id);
-
-                  let set_json = new Promise((resolve, reject) =>{
-                    FUNCTIONS.set_json(req, new CLASSES.user_info(user_id, display_name, profile_picture, playlists));
-                    if (req.session.json) resolve(); else reject("error setting JSON");
-                  })
-
-                  set_json.then(
-                    function(set_success) {
-                      req.session.save(function(err){
-                        if (req.session.reauth) {
-                          req.session.reauth = false;
-                          res.redirect(200, '/suggestions');
-                        }
-                        else res.redirect(200, '/home');
-                      });
-                    },
-                    function(set_error){
-                      console.log(set_error);
-                    }
-                  );
-                }
-                num_checked += 1;
-              }
-            },
-            function(playlist_err) {
-              console.log(playlist_err);
-            }
-          );
+          FUNCTIONS.update_playlists(req, res, next, new CLASSES.user_info(user_id, display_name, profile_picture, null));
         },
         function(user_err) {
           console.log(user_err);
