@@ -45,9 +45,7 @@ exports.create_playlist = function(req, res, name, public) {
     );
 }
 
-exports.remove_tracks = async function(req) {
-    const playlist = req.session.selected_playlist
-    var tracks = req.body['remove_song']
+exports.remove_tracks = function(playlist, tracks) {
     console.log("remove_tracks called, removing " + tracks.length + " tracks");
 
     for (track in tracks) {
@@ -285,6 +283,15 @@ exports.post_handler = function(req, res, type) {
         req.session.selected_playlist = req.body['selected_playlist'];
         res.redirect(200, '/optimize');
     }  
+    else if (type === "save_changes") {
+        if (req.body['remove_song']) {
+          this.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
+        }
+        if (req.body['add_song']) {
+          this.add_tracks(req.session.selected_playlist, req.body['add_song']);
+        }
+        res.send("Save changes received");
+    }
     else {
         this.page_not_found(res, type);
     }

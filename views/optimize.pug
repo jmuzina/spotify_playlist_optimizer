@@ -40,40 +40,45 @@ html(lang="en")
       .container.track-list
         h1.mt-3.playlist-title Optimizing #{playlist_name}
         -var ob = combined_songs;
-        -for(var song in ob)
-          -if (comparison["add"].includes(ob[song]['id']))
-            .track-row.add-song.row
-              .col-9.title-col.border-right.border-dark
-                .track-img-container
-                  img.optimize-img(src=`${ob[song]['image']}`)
-                .title-text-container
-                  span #{ob[song]['name']} by #{ob[song]['artists']}
-              .col-1.button-col
-                i.fas.fa-plus-circle
-          -if (comparison["remove"].includes(ob[song]['id']))
-            .track-row.remove-song.row
-              .col-9.title-col.border-right.border-dark
-                .track-img-container
-                  img.optimize-img(src=`${ob[song]['image']}`)
-                .title-text-container
-                  span #{ob[song]['name']} by #{ob[song]['artists']}
-              .col-1.button-col
-                i.far.fa-trash-alt
-          -if (comparison["keep"].includes(ob[song]['id']))
-            .track-row.song.row
-              .col-9.title-col.border-right.border-dark
-                .track-img-container
-                  img.optimize-img(src=`${ob[song]['image']}`)
-                .title-text-container
-                  span #{ob[song]['name']} by #{ob[song]['artists']}
-              .col-1.button-col
-                i.far.fa-trash-alt
-          
-         
-        button.btn.btn-primary.mt-2(type="submit" name = "button_type", value = "save_changes") Save Changes
+        form.optimize-form(method="POST")
+          input(type = "hidden", name = "type", value = "save_changes")
+          -for(var song in ob)
+            -if (comparison["add"].includes(ob[song]['id']))
+              .track-row.add-song.row
+                .col-9.title-col.border-right.border-dark
+                  .track-img-container
+                    img.optimize-img(src=`${ob[song]['image']}`)
+                  .title-text-container
+                    span #{ob[song]['name']} by #{ob[song]['artists']}
+                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                  label.btn.btn-info.active.add-label Add
+                    input(type="checkbox", checked, id = `${ob[song]['id']}`, name="add_song", value=`${ob[song]['id']}`)
+            -if (comparison["remove"].includes(ob[song]['id']))
+              .track-row.remove-song.row
+                .col-9.title-col.border-right.border-dark
+                  .track-img-container
+                    img.optimize-img(src=`${ob[song]['image']}`)
+                  .title-text-container
+                    span #{ob[song]['name']} by #{ob[song]['artists']}
+                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                  label.btn.btn-warning.active.remove-label Remove
+                    input(type="checkbox", checked, id = `${ob[song]['id']}`, name="remove_song", value=`${ob[song]['id']}`)
+            -if (comparison["keep"].includes(ob[song]['id']))
+              .track-row.song.row
+                .col-9.title-col.border-right.border-dark
+                  .track-img-container
+                    img.optimize-img(src=`${ob[song]['image']}`)
+                  .title-text-container
+                    span #{ob[song]['name']} by #{ob[song]['artists']}
+                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                  label.btn.btn-primary.active.keep-label Keep
+                    input(type="checkbox", id = `${ob[song]['id']}`, name="remove_song", value=`${ob[song]['id']}`)
+        
+          button.btn.btn-primary.mt-4(type="submit" name = "button_type", value = "save_changes") Save Changes
 
       script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
       script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
+      script(src="js/optimize_button.js")
 
           

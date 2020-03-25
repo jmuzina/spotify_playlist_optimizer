@@ -406,6 +406,29 @@ button-col + custom-control::before {
     text-align: right;
 }
 
+.btn-info:focus{
+    background-color:#17a2b8;
+}
+
+.button-col label {
+    width: 90%;
+    align-self: center;
+}
+
+.button-col label:hover{
+    background-color: #858585;
+}
+
+.optimize-form {
+    display:flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.optimize-form button {
+    align-self: center;
+}
+
 .button-header {
     display: flex;
     flex-flow: column nowrap;
