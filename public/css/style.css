@@ -22,8 +22,16 @@
 }
 
 .logo-container{
+    /*
     border-right: 1px solid #a7a7a7;
     padding-right: 0px;
+    */
+}
+
+.hook-container > .vertical-center > * {
+    display: flex;
+    align-self: center;
+    text-align: center;
 }
 
 .modal-content h5, label{
