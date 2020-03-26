@@ -12,6 +12,7 @@
     flex-flow: column nowrap;
     justify-content: center;
     height: 100%;
+    width: 100%;
 }
 
 .horizontal-center{
@@ -21,17 +22,28 @@
     height: 100%;
 }
 
-.logo-container{
-    /*
-    border-right: 1px solid #a7a7a7;
-    padding-right: 0px;
-    */
+.splash{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
-.hook-container > .vertical-center > * {
+.welcome-title {
     display: flex;
-    align-self: center;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.welcome-title h1, h2 {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
     text-align: center;
+    font-size: 3vw; 
+}
+
+.welcome-title h2 {
+    font-size: 2vw;
 }
 
 .modal-content h5, label{
@@ -154,33 +166,71 @@ select#selected_playlist{
     background-color: rgba(0, 0, 0, 0.208);
 }
 
-.hook-container h1{
-    color: white; 
-    font-weight: bold; 
-    text-shadow: 1px 1px black;
-    text-align: center;
-    font-size: 1.8rem
+.hook-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    border-top: 1px solid white;
 }
 
-.hook-container p{
-    margin-top: 4%;
+.data-container{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.hook-container span{
+    margin: 1%;
     color: white; 
     font-weight: bold; 
     text-shadow: 1px 1px black;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.4vw;
 }
 
 .hook-container a{
-    width: 40%;
+    width: 30%;
     align-self: center;
     font-size: 0.95rem;
+    text-align: center;
+}
+
+.welcome {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.logo-title{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
+    padding-bottom: 4%;
+}
+
+.logo-container{
+    /*
+    border-right: 1px solid #a7a7a7;
+    padding-right: 0px;
+    */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
 }
 
 .logo{
-    max-width: 95%;
-    display: flex;
-    align-self: center;
+    max-height: 286px;
+    max-width: 439px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
 }
 
 .rounded-black{
@@ -195,30 +245,42 @@ select#selected_playlist{
 }
 
 @media screen and (max-width: 992px) {
-    .logo-container{
-        border-right: none;
-        border-bottom: 1px solid #a7a7a7;
-    }
     .rounded-black{
-        width: 90%;
+        width: 100%;
     }
     .logo{
-        width: 90%;
+        width: 95%;
     }
     .hook-container{
         padding-top: 15px;
         padding-bottom: 15px;
     }
-    .hook-container h1{
-        font-size: 2.4rem;
+    .welcome-title h1 {
+        font-size: 5.5vw;
     }
-    .hook-container p{
-        font-size: 1.7rem;
+    .welcome-title h2 {
+        font-size: 3.7vw;
+    }
+    .hook-container span{
+        font-size: 3vw;
     }
     .hook-container a{
-        font-size: 1.5rem;
+        font-size: 3vw;
+        margin-top: 2%;
+        width: 55%;
     }
+}
 
+@media screen and (orientation:portrait) {
+    .welcome{
+        height: 90vh;
+    }
+}
+
+@media screen and (max-width:768px){
+    .logo {
+        width: 100%;
+    }
 }
 
 .home-explanation{

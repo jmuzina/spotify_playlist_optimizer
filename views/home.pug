@@ -3,6 +3,7 @@ html(lang="en")
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
+  meta(name="viewport" content="width=device-width, initial-scale=1")
   div.container.listing-reg
 
   block content
@@ -47,7 +48,7 @@ html(lang="en")
                             p How deep into your roots do you want to dig?
                             p We can suggest songs for you based on varying periods of Spotify data.
                             p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
-                    .col-lg-6.hook-container
+                    .col-lg-6.data-container
                         .vertical-center
                             form(method = "POST")
                                 input(type = "hidden", name = "type", value = "settings")
