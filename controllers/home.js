@@ -5,8 +5,12 @@ const FUNCTIONS = require('../functions.js');
 
 exports.get_home = function(req, res, next) {
     if (FUNCTIONS.logged_in(req.session)) {
-        if (!req.session.playlist_created) {
+        if ((!req.session.playlist_created) && (!req.session.playlist_optimized)) {
             res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json});
+        }
+        else if (req.session.playlist_optimized) {
+            req.session.playlist_optimized = false;
+            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json, optimization_success: true});
         }
         else {
             req.session.playlist_created = false;

@@ -36,7 +36,7 @@ html(lang="en")
               li.nav-item.active
                 a.nav-link(href='#') Contact
       .container.playlist-image(style="margin-top:20px;")
-        img(src = `${playlist_images['0']['url']}`, style = "width: 300px; height: 300px;")
+        img(src = `${playlist_images['0']['url']}`)
       .container.track-list
         h1.mt-3.playlist-title Optimizing #{playlist_name}
         -var ob = combined_songs;

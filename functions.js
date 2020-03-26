@@ -276,7 +276,6 @@ exports.post_handler = function(req, res, type) {
     else if (type === "submit_new") {
         var public = false;
         if (req.body.public == 'true') public = true;
-
         this.create_playlist(req, res, req.body.playlist_name, public);
       }
     else if (type === "optimize_existing") {
@@ -290,7 +289,9 @@ exports.post_handler = function(req, res, type) {
         if (req.body['add_song']) {
           this.add_tracks(req.session.selected_playlist, req.body['add_song']);
         }
-        res.send("Save changes received");
+        console.log("\n[PLAYLIST OPTIMIZATION]: " + req.session.json['u_id'] + " optimized playlist '" + req.session.selected_playlist + "'\n");
+        req.session.playlist_optimized = true;
+        res.redirect(200, '/home');
     }
     else {
         this.page_not_found(res, type);

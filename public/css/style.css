@@ -104,6 +104,13 @@ select#selected_playlist{
     background-color: #4a4a4afe;
 }
 
+@media screen and (max-width: 350px) {
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+}
+
+
 .nav-dark-bg {
     background-color: #1d1d1ddc;
 }
@@ -230,17 +237,23 @@ select#selected_playlist{
     max-width: 70%;
     padding: 3px;
     border-radius: 15px;
-    margin-top: 10px;
-    height: auto;
+    margin-top: 20px;
     box-shadow: 1px 4px 4px 1px black;
     margin-left: auto;
     margin-right: auto;
 }
 
+@media screen and (min-width: 768px) {
+    .playlist-image img{
+        width: 25%;
+        margin-top: 10px;
+    }
+}
+
 .track-list {
     display: flex;
     flex-flow: column nowrap;
-    max-width: 100%;
+    max-width: 97%;
 }
 
 .track-list h1{
@@ -415,9 +428,13 @@ button-col + custom-control::before {
     align-self: center;
 }
 
-.button-col label:hover{
-    background-color: #858585;
+@media screen and (min-width: 769px) {
+    .button-col label:hover{
+        background-color: #858585;
+    }
 }
+
+
 
 .optimize-form {
     display:flex;
@@ -488,6 +505,11 @@ button-col + custom-control::before {
     }
 }
 
+@media screen and (max-width: 768px) {
+    .keep-label, .remove-label, .add-label {
+        font-size: 0.8rem;
+    }
+}
 
 
 .page-header {

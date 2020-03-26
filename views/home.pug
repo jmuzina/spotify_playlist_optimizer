@@ -9,8 +9,7 @@ html(lang="en")
     body.bg-img
         header
             nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
-                a.navbar-brand(href='./') 
-                    img.nav-logo(src="/images/logo_no_text.png")
+                h2.navbar-brand Spotify Playlist Optimizer
                 button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
                     span.navbar-toggler-icon
                 #navbarNavDropdown.collapse.navbar-collapse
@@ -37,6 +36,9 @@ html(lang="en")
         .vertical-center
             if creation_success
                 h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
+                br
+            else if optimization_success
+                h2.page-header Playlist successfully optimized! Thank you for using Spotify Playlist Optimizer!
                 br
             .rounded-black
                 .row
