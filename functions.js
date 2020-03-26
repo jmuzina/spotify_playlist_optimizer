@@ -46,60 +46,104 @@ exports.create_playlist = function(req, res, name, public) {
 }
 
 exports.remove_tracks = function(playlist, tracks) {
-    console.log("remove_tracks called, removing " + tracks.length + " tracks");
-
-    for (track in tracks) {
-        tracks[track] = {uri: "spotify:track:" + tracks[track]};
+    var LENGTH = 0, ARR = [];
+    // Handle removing only 1 track
+    if (typeof(tracks) === "string") {
+        LENGTH = 1;
+        var track = [{uri: "spotify:track:" + tracks}];
+        api_connection.removeTracksFromPlaylist(playlist, track).then(
+            function (data) {
+                console.log("Track successfully removed!");
+            },
+            function (err) {
+                console.log("Error in removing tracks, single track: ")
+                console.log(err);
+                console.log("playlist: ");
+                console.log(playlist);
+                console.log("track: ");
+                console.log(track);
+            }
+        )
     }
-    const NUM_REMOVE = tracks.length;
-    const CALLS_NEEDED = this.calls_needed(100, NUM_REMOVE);
-
-    for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
-        // Last batch of tracks
-        // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
-        if (i === (CALLS_NEEDED - 1)) {
-            var list = tracks.slice(i * 100);
-            api_connection.removeTracksFromPlaylist(playlist, list).then(
-                function (data) {
-                    console.log("Tracks successfully removed!");
-                },
-                function (err) {
-                    console.log("Error in removing tracks, last call: ")
-                    console.log(err);
-                }
-            )
+    else {
+        LENGTH = tracks.length;
+        for (track in tracks) {
+            ARR[track] = {uri: "spotify:track:" + tracks[track]};
         }
-        // Either :
-        // the first (and only) batch of tracks, containing 1-100 tracks
-        // a subsequent (but not final) batch of tracks, containing exactly 100 tracks.
-        else {
-            var list = tracks.slice((i * 100), ((i * 100) + 100));
-            api_connection.removeTracksFromPlaylist(playlist, list).then(
-                function (data) {
-                    console.log("Tracks successfully removed!");
-                },
-                function (err) {
-                    console.log("Error in removing tracks, normal call: ")
-                    console.log(err);
-                }
-            )
-        }
+        const NUM_REMOVE = LENGTH;
+        const CALLS_NEEDED = this.calls_needed(100, NUM_REMOVE);
+        for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
+            // Last batch of tracks
+            // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
+            if (i === (CALLS_NEEDED - 1)) {
+                api_connection.removeTracksFromPlaylist(playlist, ARR.slice(i * 100)).then(
+                    function (data) {
+                        console.log("Tracks successfully removed!");
+                    },
+                    function (err) {
+                        console.log("Error in removing tracks, last call: ")
+                        console.log(err);
+                        console.log("playlist: ");
+                        console.log(playlist);
+                        console.log("tracks: ");
+                        console.log(ARR.slice(i * 100));
+                        console.log("CALLS_NEEDED: ");
+                        console.log(CALLS_NEEDED);
+                    }
+                )
+            }
+            // Either :
+            // the first (and only) batch of tracks, containing 1-100 tracks
+            // a subsequent (but not final) batch of tracks, containing exactly 100 tracks.
+            else {
+                var list = ARR.slice((i * 100), ((i * 100) + 100));
+                api_connection.removeTracksFromPlaylist(playlist, list).then(
+                    function (data) {
+                        console.log("Tracks successfully removed!");
+                    },
+                    function (err) {
+                        console.log("Error in removing tracks, normal call: ")
+                        console.log(err);
+                        console.log("playlist: ");
+                        console.log(playlist);
+                        console.log("tracks: ");
+                        console.log(ARR.slice((i * 100), ((i * 100) + 100)));
+                        console.log("CALLS_NEEDED: ");
+                        console.log(CALLS_NEEDED);
+                    }
+                )
+            }
+        } 
     }
+    console.log("remove_tracks called, removing " + LENGTH + " tracks");
 }
 
 exports.add_tracks = function (playlist, tracks) {
-    console.log("add_tracks called, adding " + tracks.length + " tracks");
-    ////console.log(tracks);
-    for (track in tracks) {
-        tracks[track] = "spotify:track:" + tracks[track];
+    var LENGTH = 0, ARR = [];
+    // Handle adding only 1 track
+    if (typeof(tracks) === "string") {
+        LENGTH = 1;
+        ARR = [{"uri": "spotify:track:" + tracks}];
     }
-    api_connection.addTracksToPlaylist(playlist, tracks).then(
+    else {
+        LENGTH = tracks.length;
+        for (track in tracks) {
+            ARR[track] = "spotify:track:" + tracks[track];
+        }
+    }
+    console.log("add_tracks called, adding " + LENGTH + " tracks");
+    
+    api_connection.addTracksToPlaylist(playlist, ARR).then(
         function (data) {
             console.log("Tracks successfully added!");
         },
         function (err) {
             console.log("Error in adding tracks: \n");
             console.log(err);
+            console.log("playlist: ");
+            console.log(playlist);
+            console.log("tracks:" );
+            console.log(ARR);
         }
     );
 }
