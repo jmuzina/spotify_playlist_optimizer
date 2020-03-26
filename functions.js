@@ -336,7 +336,8 @@ exports.update_playlists = function(req, res, next, user) {
                             });
                         },
                         function(set_error){
-                            console.log(set_error);
+                            console.log("set_error in update_playlists");
+                            this.page_not_found(req, "set_error in update_playlists");
                         }
                     );
                 }
