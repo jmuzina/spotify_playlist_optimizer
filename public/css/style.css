@@ -553,6 +553,17 @@ button-col + custom-control::before {
     align-self: center;
 }
 
+.site-stats {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.site-stats span {
+    color: white;
+    align-self: flex-start;
+}
+
 .optimize-form {
     display:flex;
     flex-flow: column nowrap;
