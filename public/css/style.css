@@ -553,14 +553,6 @@ button-col + custom-control::before {
     align-self: center;
 }
 
-@media screen and (min-width: 769px) {
-    .button-col label:hover{
-        background-color: #858585;
-    }
-}
-
-
-
 .optimize-form {
     display:flex;
     flex-flow: column nowrap;

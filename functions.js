@@ -3,11 +3,22 @@ var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('./classes.js');
 const AUTH = require('./controllers/spotify_auth.js');
 
+exports.default_session = function(session) {
+    if (session.range) delete session.range;
+    if (session.limit) delete session.limit;
+    if (session.suggestions) delete session.suggestions; // deprecate
+    if (session.suggestions_json) delete session.suggestions_json;
+    if (session.selected_playlist_id) delete session.selected_playlist_id;
+    if (session.selected_playlist_json) delete session.selected_playlist_json;
+}
+
 exports.calls_needed = function(limit_per_call, n) {
     return Math.ceil(n / limit_per_call);
 }
 
 exports.logged_in = function(session) {
+    console.log("checking for login on:");
+    console.log(session);
     if (session.json) return true;
     else return false;
 }
@@ -23,8 +34,8 @@ exports.create_playlist = function(req, res, name, public) {
             new_playlist = new CLASSES.playlist_info(data.body['id'], name, data.body['images'], data.body['uri']);
             req.session.json['u_playlists'].unshift(new_playlist);
             songs_to_add = [];
-            for (song in req.session.suggestions) {
-                songs_to_add.push(req.session.suggestions[song]['uri']);
+            for (song in req.session.suggestions_json) {
+                songs_to_add.push(req.session.suggestions_json[song]['uri']);
             }
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
@@ -283,6 +294,8 @@ let set_json = function(req, data) {
     set_promise.then(
         function(success){
             console.log(success);
+            //console.log(req);
+            //console.log(data);
         },
         function(failure) {
             console.log(failure);
@@ -325,17 +338,17 @@ exports.post_handler = function(req, res, type) {
         this.create_playlist(req, res, req.body.playlist_name, public);
       }
     else if (type === "optimize_existing") {
-        req.session.selected_playlist = req.body['selected_playlist'];
+        req.session.selected_playlist_id = req.body['selected_playlist'];
         res.redirect(200, '/optimize');
     }  
     else if (type === "save_changes") {
         if (req.body['remove_song']) {
-          this.remove_tracks(req.session.selected_playlist, req.body['remove_song']);
+          this.remove_tracks(req.session.selected_playlist_id, req.body['remove_song']);
         }
         if (req.body['add_song']) {
-          this.add_tracks(req.session.selected_playlist, req.body['add_song']);
+          this.add_tracks(req.session.selected_playlist_id, req.body['add_song']);
         }
-        console.log("\n[PLAYLIST OPTIMIZATION]: " + req.session.json['u_id'] + " optimized playlist '" + req.session.selected_playlist + "'\n");
+        console.log("\n[PLAYLIST OPTIMIZATION]: " + req.session.json['u_id'] + " optimized playlist '" + req.session.selected_playlist_id + "'\n");
         req.session.playlist_optimized = true;
         res.redirect(200, '/home');
     }
@@ -350,12 +363,38 @@ exports.re_auth = function(req, res, next) {
     AUTH.get_login(req, res, next);
 }
 
+function save_login(req, res) {
+    req.session.save(function(err){
+        if (req.session.reauth) {
+            req.session.reauth = false;
+            res.redirect(200, '/suggestions');
+        }
+        else res.redirect(200, '/home');
+    });
+}
+
 exports.update_playlists = function(req, res, next, user) {
     api_connection.getUserPlaylists(user.u_id, {limit: 50}).then(
         function(playlist_data) {
             if (playlist_data.body['items'].length === 0) {
+                /*
                 res.send("[Error] You must have at least one playlist on your account to use the playlist optimizer!");
                 return;
+                */
+                let set_user_json = new Promise((resolve, reject) =>{
+                    set_json(req, new CLASSES.user_info(user.u_id, user.p_name, user.profile_picture, []));
+                    if (req.session.json) resolve(); else reject();
+                })
+                set_user_json.then(
+                    function(set_success) {
+                        console.log("[LOGIN]: " + user.u_id);
+                        save_login(req, res);
+                    },
+                    function(set_error){
+                        console.log("set_error in update_playlists");
+                        this.page_not_found(req, "set_error in update_playlists");
+                    }
+                );
             }
             playlists = [];
             num_pushed = 0;
@@ -373,13 +412,7 @@ exports.update_playlists = function(req, res, next, user) {
                     })
                     set_user_json.then(
                         function(set_success) {
-                            req.session.save(function(err){
-                                if (req.session.reauth) {
-                                    req.session.reauth = false;
-                                    res.redirect(200, '/suggestions');
-                                }
-                                else res.redirect(200, '/home');
-                            });
+                            save_login(req, res);
                         },
                         function(set_error){
                             console.log("set_error in update_playlists");

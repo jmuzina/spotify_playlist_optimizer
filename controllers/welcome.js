@@ -1,10 +1,12 @@
 const FUNCTIONS = require('../functions.js');
 
 exports.get_welcome = function(req, res, next) {
-  if (!req.session.json) {
+  console.log("get welcome called");
+  if (!FUNCTIONS.logged_in(req.session)) {
     res.render('welcome', { title: 'Spotify Playlist Optimizer' });
   }
   else {
+    FUNCTIONS.default_session(req.session);
     res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.json});
   }
 }

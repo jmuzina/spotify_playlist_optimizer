@@ -5,6 +5,7 @@ const FUNCTIONS = require('../functions.js');
 const CLASSES = require('../classes.js');
 
 exports.get_auth_callback = function(req, res, next) {
+  console.log("get callback called");
   api_connection.authorizationCodeGrant(req.query.code).then(
     function(auth_data) {
       var access = auth_data.body['access_token'];

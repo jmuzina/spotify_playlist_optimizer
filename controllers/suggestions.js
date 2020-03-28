@@ -6,7 +6,9 @@ const CFG = require('../spotify_auth_cfg.js');
 const AUTH = require('./spotify_auth.js');
 
 exports.get_suggestions = function(req, res, next) {
+  console.log("get suggestions called");
   if (FUNCTIONS.logged_in(req.session)) {
+    api_connection.setAccessToken(req.session.key); // ensure the right access key is being used
     api_connection.getMyTopTracks({limit: req.session.limit, time_range: req.session.range}).then(
       function(data) {
         tracks = [];

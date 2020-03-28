@@ -7,7 +7,7 @@ const FUNCTIONS = require('../functions.js');
 function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
   var songNum = 100;
   for (var api_offset = 1; api_offset < CALLS_NEEDED; api_offset = api_offset + 1) {
-    api_connection.getPlaylistTracks(req.session.selected_playlist, { offset: api_offset * 100 }).then(
+    api_connection.getPlaylistTracks(req.session.selected_playlist_id, { offset: api_offset * 100 }).then(
       function (offset_data) {
         for (track in offset_data.body['items']) {
           if (offset_data.body['items'][track]['track']['id']) {
@@ -15,10 +15,10 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
             tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(res, offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
           if (songNum === (data.body['tracks']['total'] - 1)) {
-            req.session.selected_json = JSON.parse(JSON.stringify(tracks));
-            compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.session.suggestions_json, req.session.selected_json)));
+            req.session.selected_playlist_json = JSON.parse(JSON.stringify(tracks));
+            compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.session.suggestions_json, req.session.selected_playlist_json)));
 
-            combined = req.session.selected_json;
+            combined = req.session.selected_playlist_json;
             for (track in req.session.suggestions_json) { combined.push(req.session.suggestions_json[track]) };
 
             combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
@@ -35,8 +35,9 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
 }
 
 exports.get_optimize = function(req, res, next) {
+  console.log("get optimize called");
   if (FUNCTIONS.logged_in(req.session)) {
-    api_connection.getPlaylist(req.session.selected_playlist).then(
+    api_connection.getPlaylist(req.session.selected_playlist_id).then(
       function(data) {
         var tracks = [];
         const CALLS_NEEDED = FUNCTIONS.calls_needed(100, data.body['tracks']['total']);
@@ -50,10 +51,10 @@ exports.get_optimize = function(req, res, next) {
           offset_loop(req, res, data, CALLS_NEEDED, tracks);
         }
         else {
-          req.session.selected_json = JSON.parse(JSON.stringify(tracks));
-          compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.session.suggestions_json, req.session.selected_json)));
+          req.session.selected_playlist_json = JSON.parse(JSON.stringify(tracks));
+          compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.session.suggestions_json, req.session.selected_playlist_json)));
 
-          combined = req.session.selected_json;
+          combined = req.session.selected_playlist_json;
           for (track in req.session.suggestions_json) {combined.push(req.session.suggestions_json[track])};
           
           combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
