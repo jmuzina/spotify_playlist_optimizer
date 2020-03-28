@@ -1,4 +1,5 @@
 const FUNCTIONS = require('../functions.js');
+const SQL = require('../mysql_cfg.js');
 
 exports.get_welcome = function(req, res, next) {
   console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));
