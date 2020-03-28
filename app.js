@@ -89,5 +89,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-app.listen(3000);
-console.log("Started sever on port 3000.");
+port = 80;
+app.listen(port);
+console.log("Started sever on port " + port);
