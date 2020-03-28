@@ -10,7 +10,7 @@ html(lang="en")
     body.bg-img
         header
             nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
-                h2.navbar-brand ALPHA V 1.0
+                a.navbar-brand(href="./") ALPHA V 1.1
                 button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
                     span.navbar-toggler-icon
                 #navbarNavDropdown.collapse.navbar-collapse
@@ -33,37 +33,31 @@ html(lang="en")
                             a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
                         li.nav-item.active
                             a.nav-link(href='#') Contact
-                    
-        .vertical-center
+        .main
             if creation_success
                 h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
                 br
             else if optimization_success
                 h2.page-header Playlist successfully optimized! Thank you for using Spotify Playlist Optimizer!
                 br
-            .rounded-black
-                .row
-                    .col-lg-6.home-explanation
-                        .vertical-center
-                            p How deep into your roots do you want to dig?
-                            p We can suggest songs for you based on varying periods of Spotify data.
-                            p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
-                    .col-lg-6.data-container
-                        .vertical-center
-                            form(method = "POST")
-                                input(type = "hidden", name = "type", value = "settings")
-                                p(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Data Range:
-                                select.form-control(id = "time_range", name = "time_range")
-                                    option(value = "short_term") Short Term (Last 4 weeks)
-                                    option(value = "medium_term") Medium Term (Last 6 months)
-                                    option(value = "long_term") Long Term (Several Years)
-                                p.mt-3(style = "color: white; font-weight: bold; text-shadow: 1px 1px black; text-align: center; font-size: 22px;") Track Limit:
-                                select.form-control(id = "limit", name = "limit")
-                                    -var i = 1;
-                                    while i < 51
-                                        option(value = i)= i++
-                                .container.horizontal-center.mt-2
-                                    button.btn.btn-outline-success.spotify-button(type = "submit") Confirm
+            .rounded-black.row
+                .col-lg-7.home-explanation
+                    p How deep into your roots do you want to dig?
+                    p We can suggest songs for you based on varying periods of Spotify data.
+                    p We can also limit the number of suggestions you get, if you don't want to shake things up too much!
+                .col-lg-5.data-container        
+                    form.optimization-data(method = "POST")
+                        input(type = "hidden", name = "type", value = "settings")
+                        p Data Range:
+                        select.form-control(id = "time_range", name = "time_range")
+                            option(value = "short_term") Short Term (Last 4 weeks)
+                            option(value = "medium_term") Medium Term (Last 6 months)
+                            option(value = "long_term") Long Term (Several Years)
+                        p.mt-3 Track Limit:
+                        select.form-control(id = "limit", name = "limit")
+                            -var i = 1;
+                            while i < 51
+                                option(value = i)= i++
+                        button.mt-4.btn.btn-outline-success.spotify-button(type = "submit") Confirm
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
-        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')

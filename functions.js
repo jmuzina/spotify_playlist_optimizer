@@ -35,11 +35,13 @@ exports.create_playlist = function(req, res, name, public) {
                     res.redirect(200, '/home');
                 },
                 function(track_err) {
+                    console.log("[ERROR] [Create Playlist] [Add Tracks]:");
                     console.log(track_err);
                 }
             );
         },
         function(err) {
+            console.log("[ERROR] [Create Playlist]");
             console.log(err);
         }
     );
@@ -275,7 +277,7 @@ exports.page_not_found = function(res, type) {
 let set_json = function(req, data) {
     let set_promise = new Promise((resolve, reject) =>{
         req.session.json = JSON.parse(JSON.stringify(data));
-        if (req.session.json) resolve(); else reject("error!");
+        if (req.session.json) resolve("JSON successfully set"); else reject("error!");
     });
 
     set_promise.then(
@@ -389,6 +391,7 @@ exports.update_playlists = function(req, res, next, user) {
             }
         },
         function(playlist_err) {
+            console.log("[ERROR] [Update Playlists]:");
             console.log(playlist_err);
         }
     );

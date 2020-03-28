@@ -5,9 +5,7 @@ const FUNCTIONS = require('../functions.js');
 const CLASSES = require('../classes.js');
 
 exports.get_auth_callback = function(req, res, next) {
-  var code  = req.query.code;
-  
-  api_connection.authorizationCodeGrant(code).then(
+  api_connection.authorizationCodeGrant(req.query.code).then(
     function(auth_data) {
       var access = auth_data.body['access_token'];
       var refresh = auth_data.body['refresh_token']
@@ -25,11 +23,13 @@ exports.get_auth_callback = function(req, res, next) {
           FUNCTIONS.update_playlists(req, res, next, new CLASSES.user_info(user_id, display_name, profile_picture, null));
         },
         function(user_err) {
+          console.log("[ERROR] [Get Me]:");
           console.log(user_err);
         }
       );
     },
     function(auth_err) {
+      console.log("[ERROR] [Authorization Code Grant]:");
       FUNCTIONS.page_not_found(res);
     }
   )
