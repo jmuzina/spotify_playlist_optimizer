@@ -15,11 +15,11 @@ exports.get_welcome = function(req, res, next) {
       if (err) throw err;
       else {
         if (!FUNCTIONS.logged_in(req.session)) {
-          res.render('welcome', { title: 'Spotify Playlist Optimizer', visits: result['0']['connections']});
+          res.render('welcome', { title: 'Spotify Playlist Optimizer'});
         }
         else {
           FUNCTIONS.default_session(req.session);
-          res.render('welcome', { title: 'Spotify Playlist Optimizer', visits: result['0']['connections'], user: req.session.json});
+          res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.json});  
         }
       } 
   })
