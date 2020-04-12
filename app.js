@@ -102,11 +102,10 @@ passport.use(
       passReqToCallback: true
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
-
       User.findOrCreate({id: profile.id}, function(err, user) {
+        console.log("finished executing findorcreate");
         return done(err, user);
       })
-
     }
   )
 )
