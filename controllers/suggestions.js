@@ -2,11 +2,12 @@ var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('../classes.js');
 const FUNCTIONS = require('../functions.js')
+const CRYPTO = require('../crypto.js');
 const CFG = require('../spotify_auth_cfg.js');
 const AUTH = require('./spotify_auth.js');
 
 exports.get_suggestions = function(req, res, next) {
-  console.log(req.session);
+  api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
   api_connection.getMyTopTracks({limit: req.session.limit, time_range: req.session.range}).then(
     function(data) {
       tracks = [];
@@ -15,7 +16,7 @@ exports.get_suggestions = function(req, res, next) {
         tracks.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri'], data.body['items'][song]['preview_url'], data.body['items'][song]['album']['images'][0]['url']));   
       }
       req.session.suggestions_json = JSON.parse(JSON.stringify(tracks.sort(FUNCTIONS.artist_alphabetize)));
-      res.render('suggestions', { title: 'Our suggestions', user: req.session.profile, suggestions: req.session.suggestions_json, playlists: req.session.playlists, pfp: req.session.pfp});
+      res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.session.suggestions_json, playlists: req.session.playlists});
     },
     function(err) {
       console.log(err);

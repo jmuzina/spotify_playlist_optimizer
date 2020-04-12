@@ -3,6 +3,7 @@ var session = require("express-session");
 var passport = require('passport');
 const mongoose = require('mongoose');
 const MONGO_CFG = require('./mongo_cfg.js');
+const CRYPTO = require('./crypto.js');
 bodyParser = require("body-parser");
 const app = express();
 app.set('trust proxy', 1) // trust first proxy
@@ -101,9 +102,8 @@ passport.use(
       callbackURL: "http://playlist-optimizer.joemuzina.com/spotify_auth_callback",
       passReqToCallback: true
     },
-    function(accessToken, refreshToken, expires_in, profile, done) {
-      User.findOrCreate({id: profile.id}, function(err, user) {
-        console.log("finished executing findorcreate");
+    function(req, accessToken, refreshToken, expires_in, profile, done) {
+      User.findOrCreate({id: profile.id, displayName: profile.displayName, profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}}, function(err, user) {
         return done(err, user);
       })
     }
@@ -158,6 +158,9 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    //User.updateKey()
+
+    console.log(req.user);
     console.log("sending home");
     res.redirect('/home');
   }

@@ -2,6 +2,7 @@ var spotify_handler = require('./spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('./classes.js');
 const AUTH = require('./controllers/spotify_auth.js');
+const CRYPTO = require('./crypto.js');
 
 exports.default_session = function(session) {
     if (session.range) delete session.range;
@@ -29,10 +30,11 @@ exports.log = function(msg) {
 
 exports.create_playlist = function(req, res, name, public) {
     if (name.length > 200) name = name.substring(0, 200);
-    api_connection.createPlaylist(req.session.profile.id, name, {'public': public}).then(
+    api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
+    api_connection.createPlaylist(req.user.id, name, {'public': public}).then(
         function(data) {
             new_playlist = new CLASSES.playlist_info(data.body['id'], name, data.body['images'], data.body['uri']);
-            (req.session.playlists).unshift(new_playlist);
+            (req.session.playlists).unshift(new_playlist); // fix this
             songs_to_add = [];
             for (song in req.session.suggestions_json) {
                 songs_to_add.push(req.session.suggestions_json[song]['uri']);
@@ -60,6 +62,7 @@ exports.create_playlist = function(req, res, name, public) {
 
 exports.remove_tracks = function(playlist, tracks) {
     var LENGTH = 0, ARR = [];
+    api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
     // Handle removing only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
@@ -133,6 +136,7 @@ exports.remove_tracks = function(playlist, tracks) {
 
 exports.add_tracks = function (playlist, tracks) {
     var LENGTH = 0, ARR = [];
+    api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
     // Handle adding only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
@@ -249,6 +253,8 @@ exports.artist_alphabetize = function(a, b){
 }
 
 exports.get_image = function(arr, type) {
+    console.log("get_image called on");
+    console.log(arr);
     if (type === "profile_picture") {
         if (arr.length != 0) {
             return arr['0']
@@ -341,9 +347,8 @@ exports.re_auth = function(req, res, next) {
     AUTH.get_login(req, res, next);
 }
 
-exports.update_playlists = function(req, res, next, profile) {
-    console.log(profile.id);
-    api_connection.getUserPlaylists(profile.id, {limit: 50}).then(
+exports.update_playlists = function(req, res, next) {
+    api_connection.getUserPlaylists(req.user.id, {limit: 50}).then(
         function(playlist_data) {
             if (playlist_data.body['items'].length === 0) {
                 return res.redirect(200, '/home');
@@ -352,12 +357,12 @@ exports.update_playlists = function(req, res, next, profile) {
             num_pushed = 0;
             num_checked = 0;
             for (playlist in playlist_data.body['items']) {
-                if ((playlist_data.body['items'][playlist]['owner']['id'] == profile.id || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
+                if ((playlist_data.body['items'][playlist]['owner']['id'] == req.user.id || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
                     playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']));
                     num_pushed += 1;
                 }
                 else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1) && (!req.session.json))  {
-                    console.log("[LOGIN]: " + profile.id);
+                    console.log("[LOGIN]: " + req.user.id);
                     req.session.playlists = playlists;
                     return res.redirect(200, '/home');
                 }

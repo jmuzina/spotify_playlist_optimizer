@@ -23,7 +23,7 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
 
             combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
 
-            res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.session.profile, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared });
+            res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared });
           }
         }
       },
@@ -58,7 +58,7 @@ exports.get_optimize = function(req, res, next) {
         
         combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
         
-        res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.session.profile, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, pfp: req.session.pfp});
+        res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared});
       }
     },
     function(err) {

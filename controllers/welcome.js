@@ -15,7 +15,7 @@ exports.get_welcome = function(req, res, next) {
       if (err) throw err;
       else {
         FUNCTIONS.default_session(req.session);
-        res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.profile, pfp: req.session.pfp});  
+        res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user});  
       } 
   })
 }

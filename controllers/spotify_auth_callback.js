@@ -21,7 +21,7 @@ exports.get_auth_callback = function(req, res, next) {
           var user_id = user_data.body['id'];
           var display_name = user_data.body['display_name'];
           var profile_picture = FUNCTIONS.get_image(user_data.body['images'], "profile_picture");
-          FUNCTIONS.update_playlists(req, res, next, req.session.user.profile);
+          FUNCTIONS.update_playlists(req, res, next);
         },
         function(user_err) {
           console.log("[ERROR] [Get Me]:");
