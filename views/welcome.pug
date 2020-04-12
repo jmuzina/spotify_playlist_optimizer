@@ -17,8 +17,8 @@ html(lang="en")
                         ul.navbar-nav.ml-auto.order-12
                             li.nav-item.dropdown.active
                                 a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-                                    img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
-                                    span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! 
+                                    img.rounded-circle.img-fluid.nav-profile(src = `${pfp}`) 
+                                    span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.displayName}! 
                                 .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
                                     script(src="js/logout.js")
                                     form.logout(method="POST", style="margin-block-end: 0px;", onsubmit="logout()")
