@@ -1,14 +1,53 @@
-const createError = require('http-errors');
 const express = require('express');
+var session = require("express-session");
+var passport = require('passport');
+const mongoose = require('mongoose');
+const MONGO_CFG = require('./mongo_cfg.js');
+bodyParser = require("body-parser");
+const app = express();
+app.set('trust proxy', 1) // trust first proxy
 const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
+//mongo connect
+mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false}, function() {
+  console.log("Mongo connected!");
+});
+
+const redis = require('redis');
+
+let RedisStore = require('connect-redis')(session);
+
+let client = redis.createClient({
+  host: 'localhost',
+  port: 6379,
+  //password: REDIS_KEY,
+  db: 1
+})
+client.unref();
+client.on('error', console.log)
+
+const REDIS_KEY = require('./redis_session_cfg.js').REDIS_SECRET;
+
+app.use(session({
+  store: new RedisStore({ client }),
+  secret: REDIS_KEY,
+  resave: false,
+  saveUninitialized: false,
+  rolling: true,
+  unset: 'destroy',
+  cookie: { maxAge: 3600000, sameSite: true, secure: false, httpOnly: false } // 1 hr
+}))
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '150mb' }));
+var jsonParser = bodyParser.json();
+app.use(passport.initialize());
+app.use(passport.session());
+const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const redis = require('redis');
-const session = require('express-session');
-const REDIS_KEY = require('./redis_session_cfg.js').REDIS_SECRET;
-const bodyParser = require('body-parser');
 
-var passport = require('passport');
 var SpotifyStrategy = require('./node_modules/passport-spotify/lib/passport-spotify/index').Strategy;
 
 const OPTIMIZE = require("./controllers/optimize.js");
@@ -31,39 +70,6 @@ const suggestionsRouter = require('./routes/suggestions.js');
 const callback_ctr = require('./controllers/spotify_auth_callback.js');
 const WELCOME_CTR = require('./controllers/welcome.js');
 
-let RedisStore = require('connect-redis')(session);
-
-const app = express();
-app.set('trust proxy', 1) // trust first proxy
-
-let client = redis.createClient({
-  host: 'localhost',
-  port: 6379,
-  //password: REDIS_KEY,
-  db: 1
-})
-client.unref();
-client.on('error', console.log)
-
-app.use(session({
-  store: new RedisStore({ client }),
-  secret: REDIS_KEY,
-  resave: false,
-  saveUninitialized: false,
-  rolling: true,
-  unset: 'destroy',
-  cookie: { maxAge: 3600000, sameSite: true, secure: false, httpOnly: false } // 1 hr
-}))
-
-app.use(bodyParser.urlencoded({
-  extended: false,
-  parameterLimit: 4500
-}));
-
-app.use(bodyParser.json({ limit: '150mb' }));
-
-var jsonParser = bodyParser.json();
-
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -72,19 +78,35 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+/*
+const User = new SpotifyUser({
+  spotifyID: spotifyID,
+  displayName: displayName,
+  email: email,
+  profileURL: profileURL,
+  accessToken: accessToken,
+  refreshToken: refreshToken,
+  country: country,
+  accountType: accountType
+})
+*/
+
+User = require('./models/user.js');
+
 passport.use(
   new SpotifyStrategy(
     {
       clientID: SPOTIFY_CFG.CLIENT_ID,
       clientSecret: SPOTIFY_CFG.CLIENT_SECRET,
-      callbackURL: "http://playlist-optimizer.joemuzina.com/spotify_auth_callback"
+      callbackURL: "http://playlist-optimizer.joemuzina.com/spotify_auth_callback",
+      passReqToCallback: true
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
-      process.nextTick(function() {
-        var profile_pic = FUNCTIONS.get_image(profile.photos, "profile_picture");
-        return done(null, {accessToken, refreshToken, profile, profile_pic});
-      });
-      
+
+      User.findOrCreate({id: profile.id}, function(err, user) {
+        return done(err, user);
+      })
+
     }
   )
 )
@@ -97,12 +119,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(REDIS_KEY));
-app.use(express.static(path.join(__dirname, 'public')));
 var favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.get(
   '/spotify_auth',
@@ -116,6 +134,7 @@ app.get(
   }
 );
 
+/*
 app.get('/spotify_auth_callback', function(req, res, next) {
   passport.authenticate('spotify', function(err, user, info) {
     if (err) { return next(err); }
@@ -133,7 +152,17 @@ app.get('/spotify_auth_callback', function(req, res, next) {
     });
   })(req, res, next);
 });
-  
+*/
+
+app.get(
+  '/spotify_auth_callback',
+  passport.authenticate('spotify', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    console.log("sending home");
+    res.redirect('/home');
+  }
+);
 
 app.get('/', function(req, res, next) {
   console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));

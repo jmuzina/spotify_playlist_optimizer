@@ -1,8 +1,6 @@
 const FUNCTIONS = require('../functions.js');
 
 exports.get_home = function(req, res, next) {
-    console.log("session in home:\n");
-    console.log(req.session);
     if (req.session.limit) FUNCTIONS.default_session(req.session);
     if ((!req.session.playlist_created) && (!req.session.playlist_optimized)) {
         res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.profile, pfp: req.session.pfp});
