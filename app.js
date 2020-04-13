@@ -71,12 +71,16 @@ const suggestionsRouter = require('./routes/suggestions.js');
 const callback_ctr = require('./controllers/spotify_auth_callback.js');
 const WELCOME_CTR = require('./controllers/welcome.js');
 
+User = require('./models/user.js');
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function(user, done) {
+  User.find({id: user.id}, function(err, obj) {
+    done(err, obj);
+  })
 });
 
 /*
@@ -92,8 +96,6 @@ const User = new SpotifyUser({
 })
 */
 
-User = require('./models/user.js');
-
 passport.use(
   new SpotifyStrategy(
     {
@@ -103,7 +105,7 @@ passport.use(
       passReqToCallback: true
     },
     function(req, accessToken, refreshToken, expires_in, profile, done) {
-      User.findOrCreate({id: profile.id, displayName: profile.displayName, profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}}, function(err, user) {
+      User.findOrCreate({id: profile.id, displayName: profile.displayName, profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}, suggestions: null}, function(err, user) {
         return done(err, user);
       })
     }
@@ -158,10 +160,6 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    //User.updateKey()
-
-    console.log(req.user);
-    console.log("sending home");
     res.redirect('/home');
   }
 );

@@ -33,18 +33,16 @@ exports.create_playlist = function(req, res, name, public) {
     api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
     api_connection.createPlaylist(req.user.id, name, {'public': public}).then(
         function(data) {
-            new_playlist = new CLASSES.playlist_info(data.body['id'], name, data.body['images'], data.body['uri']);
-            (req.session.playlists).unshift(new_playlist); // fix this
             songs_to_add = [];
-            for (song in req.session.suggestions_json) {
-                songs_to_add.push(req.session.suggestions_json[song]['uri']);
+            for (song in req.user.suggestions) {
+                songs_to_add.push(req.user.suggestions[song]['uri']);
             }
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
                     req.session.playlist_created = true;
                     var public_str = "private";
                     if (public) public_str = "public";
-                    console.log("\n[PLAYLIST CREATION]: " + req.session.profile.id + " created " + public_str + " playlist '" + name + "'\n");
+                    console.log("\n[PLAYLIST CREATION]: " + req.user.id + " created " + public_str + " playlist '" + name + "'\n");
                     res.redirect(200, '/home');
                 },
                 function(track_err) {
@@ -253,8 +251,6 @@ exports.artist_alphabetize = function(a, b){
 }
 
 exports.get_image = function(arr, type) {
-    console.log("get_image called on");
-    console.log(arr);
     if (type === "profile_picture") {
         if (arr.length != 0) {
             return arr['0']
