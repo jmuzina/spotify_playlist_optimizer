@@ -10,10 +10,14 @@ const app = express();
 app.set('trust proxy', 1) // trust first proxy
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
+User = require('./models/user.js');
 
 //mongo connect
 mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false}, function() {
   console.log("Mongo connected!");
+  User.deleteAll(function() {
+    console.log("All previous userdata deleted!");
+  })
 });
 
 const redis = require('redis');
@@ -58,8 +62,6 @@ const SPOTIFY_CFG = require('./spotify_auth_cfg');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
-
-User = require('./models/user.js');
 
 // Add user to DB
 passport.serializeUser(function(user, done) {
@@ -171,6 +173,8 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  console.log("[ERROR] Sent user back to homepage due to authentication failure");
-  res.redirect('/');
+  User.deleteUser(req, function() {
+    console.log("[ERROR] Sent user back to homepage due to authentication failure");
+    res.redirect('/');
+  })
 }
