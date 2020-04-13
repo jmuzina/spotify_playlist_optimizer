@@ -1,38 +1,42 @@
 html(lang="en")
-  title= `${title}`
-  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
-  link(rel='stylesheet', href='/css/style.css')
-  meta(charset="UTF-8")
-  meta(name="viewport" content="width=device-width, initial-scale=1")
-  div.container.listing-reg
+    title= `${title}`
+    head
+        script(src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous")
+        script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
+        link(rel='stylesheet', href='/css/style.css')
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+    .container.listing-reg
 
-  block content
-    body.bg-img
-        header
-            nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
-                a.navbar-brand(href="./") #{version}
-                button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
-                    span.navbar-toggler-icon
-                #navbarNavDropdown.collapse.navbar-collapse
-                    ul.navbar-nav.ml-auto.order-12
-                        li.nav-item.dropdown.active
-                            a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-                                img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`)  
-                                span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.displayName}! 
-                            .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
-                                script(src="js/logout.js")
-                                form.logout(method="POST", style="margin-block-end: 0px;", onsubmit="logout()")
-                                    input(type = "hidden", name = "type", value = "logout")
-                                    button.btn-link.dropdown-item(type = "submit") Log out
-                    ul.navbar-nav.mr-auto.order-md-1
-                        li.nav-item.active
-                            a.nav-link(href='./') Home 
-                        li.nav-item.active
-                            a.nav-link(href='#') About
-                        li.nav-item.active
-                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-                        li.nav-item.active
-                            a.nav-link(href='#') Contact
+    block content
+        body.bg-img
+            header
+                nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
+                    a.navbar-brand(href="./") #{version}
+                    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
+                        span.navbar-toggler-icon
+                    #navbarNavDropdown.collapse.navbar-collapse
+                        ul.navbar-nav.ml-auto.order-12
+                            li.nav-item.dropdown.active
+                                a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                                    img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
+                                    span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.displayName}! 
+                                .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
+                                    script(src="js/logout.js")
+                                    form.logout(method="POST", style="margin-block-end: 0px;", onsubmit="logout()")
+                                        input(type = "hidden", name = "type", value = "logout")
+                                        button.btn-link.dropdown-item(type = "submit") Log out
+                        ul.navbar-nav.mr-auto.order-md-1
+                            li.nav-item.active
+                                a.nav-link(href='./') Home 
+                            li.nav-item.active
+                                a.nav-link(href='#') About
+                            li.nav-item.active
+                                a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
+                            li.nav-item.active
+                                a.nav-link(href='#') Contact
         .main
             if creation_success
                 h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!
@@ -59,5 +63,4 @@ html(lang="en")
                             while i < 51
                                 option(value = i)= i++
                         button.mt-4.btn.btn-outline-success.spotify-button(type = "submit") Confirm
-        script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
-        script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+
