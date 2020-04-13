@@ -7,3 +7,7 @@ public/js/.DS_Store
 public/stylesheets/.DS_Store
 redis_session_cfg.js
 spotify_auth_cfg.js
+mongo_cfg.js
+mysql_cfg.js
+redis_session_cfg.js
+spotify_auth_cfg.js
