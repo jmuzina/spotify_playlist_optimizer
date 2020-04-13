@@ -74,29 +74,19 @@ const WELCOME_CTR = require('./controllers/welcome.js');
 
 User = require('./models/user.js');
 
+// Add user to DB
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
+// Pull user from DB
 passport.deserializeUser(function(user, done) {
   User.find({id: user.id}, function(err, obj) {
     done(err, obj);
   })
 });
 
-/*
-const User = new SpotifyUser({
-  spotifyID: spotifyID,
-  displayName: displayName,
-  email: email,
-  profileURL: profileURL,
-  accessToken: accessToken,
-  refreshToken: refreshToken,
-  country: country,
-  accountType: accountType
-})
-*/
-
+// Passport configuration
 passport.use(
   new SpotifyStrategy(
     {
@@ -106,7 +96,16 @@ passport.use(
       passReqToCallback: true
     },
     function(req, accessToken, refreshToken, expires_in, profile, done) {
-      User.findOrCreate({id: profile.id, displayName: profile.displayName, profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}, suggestions: null}, function(err, user) {
+      // Create initial user state
+      User.findOrCreate({
+        id: profile.id, 
+        displayName: profile.displayName, 
+        profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), 
+        keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}, // Encrypted API keys
+        playlists: null,
+        suggestions: null
+      }, 
+      function(err, user) {
         return done(err, user);
       })
     }
@@ -135,26 +134,6 @@ app.get(
     // function will not be called.
   }
 );
-
-/*
-app.get('/spotify_auth_callback', function(req, res, next) {
-  passport.authenticate('spotify', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/'); }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      req.session.key = user.accessToken;
-      req.session.refresh = user.refreshToken;
-      req.session.profile = user.profile;
-      req.session.playlists = [];
-      req.session.pfp = user.profile_pic;
-      api_connection.setAccessToken(user.accessToken);
-      api_connection.setRefreshToken(user.refreshToken);
-      return FUNCTIONS.update_playlists(req, res, next, user.profile);
-    });
-  })(req, res, next);
-});
-*/
 
 app.get(
   '/spotify_auth_callback',

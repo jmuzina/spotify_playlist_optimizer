@@ -3,6 +3,7 @@ var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('./classes.js');
 const AUTH = require('./controllers/spotify_auth.js');
 const CRYPTO = require('./crypto.js');
+let User = require('./models/user.js');
 
 exports.default_session = function(session) {
     if (session.range) delete session.range;
@@ -343,7 +344,7 @@ exports.re_auth = function(req, res, next) {
     AUTH.get_login(req, res, next);
 }
 
-exports.update_playlists = function(req, res, next) {
+exports.update_playlists = function(req, res, next, callback) {
     api_connection.getUserPlaylists(req.user.id, {limit: 50}).then(
         function(playlist_data) {
             if (playlist_data.body['items'].length === 0) {
@@ -358,9 +359,7 @@ exports.update_playlists = function(req, res, next) {
                     num_pushed += 1;
                 }
                 else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1) && (!req.session.json))  {
-                    console.log("[LOGIN]: " + req.user.id);
-                    req.session.playlists = playlists;
-                    return res.redirect(200, '/home');
+                    User.updatePlaylists(req, playlists, callback);
                 }
                 num_checked += 1;
             }

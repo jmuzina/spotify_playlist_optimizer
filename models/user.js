@@ -7,6 +7,7 @@ const userSchema = new Schema(
         displayName: String,
         profile_picture: String,
         keys: {},
+        playlists: [],
         suggestions: []
      },
     {collection: "users"}
@@ -18,7 +19,7 @@ usr = this.User
 
 exports.findOrCreate = async function(user, done) {
     var query = { id: user.id },
-    update = { id: user.id, displayName: user.displayName, profile_picture: user.profile_picture, keys: user.keys, suggestions: user.suggestions },
+    update = { id: user.id, displayName: user.displayName, profile_picture: user.profile_picture, keys: user.keys, playlists: user.playlists, suggestions: user.suggestions },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
     // Find the document
@@ -45,6 +46,20 @@ exports.updateKey = async function(user, keys, done) {
 exports.updateSuggestions = async function(req, arr, done) {
     var query = { id: req.user.id }, 
     update = { suggestions: JSON.parse(JSON.stringify(arr)) };
+
+    usr.updateOne(query, update, {}, async function(error, result) {
+        usr.findOne(query, function(err, updated_user){
+            req.login(updated_user, function(err){
+                // handle this later
+            })
+            done(error, updated_user);
+        })
+    });
+}
+
+exports.updatePlaylists = async function(req, arr, done) {
+    var query = { id: req.user.id }, 
+    update = { playlists: JSON.parse(JSON.stringify(arr)) };
 
     usr.updateOne(query, update, {}, async function(error, result) {
         usr.findOne(query, function(err, updated_user){

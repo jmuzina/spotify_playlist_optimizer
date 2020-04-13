@@ -21,7 +21,9 @@ exports.get_suggestions = function(req, res, next) {
       USERS.updateSuggestions(req, suggestions, function(error, result) {
         if (error) res.redirect('./');
         else {
-          res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.user.suggestions, playlists: req.session.playlists, version: APP.VERSION});
+          FUNCTIONS.update_playlists(req, res, next, function(err, obj) {
+            res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.user.suggestions, playlists: req.session.playlists, version: APP.VERSION});
+          });
         }
       })
     },
