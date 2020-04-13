@@ -3,7 +3,6 @@ const APP = require('../app.js');
 const User = require('../models/user.js');
 
 exports.get_home = function(req, res, next) {
-    //console.log(req);
     if (req.session.limit) FUNCTIONS.default_session(req.session);
     if ((!req.user.playlist_created) && (!req.user.playlist_optimized)) {
         res.render('home', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP.VERSION});

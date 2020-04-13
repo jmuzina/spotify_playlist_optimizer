@@ -143,7 +143,7 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/home');
+    res.redirect(200, '/home');
   }
 );
 
@@ -183,9 +183,9 @@ console.log("Started sever on port " + port);
 
 
 function ensureAuthenticated(req, res, next) {
-  if (req.user) {
+  if (req.isAuthenticated()) {
     return next();
   }
-  console.log("[ERROR] Sent user back to homepage due to authentication expiring");
+  console.log("[ERROR] Sent user back to homepage due to authentication failure");
   res.redirect('/');
 }
