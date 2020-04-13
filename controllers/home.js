@@ -1,23 +1,22 @@
 const FUNCTIONS = require('../functions.js');
+const APP = require('../app.js');
+const User = require('../models/user.js');
 
 exports.get_home = function(req, res, next) {
-    console.log("get home called");
-    if (FUNCTIONS.logged_in(req.session)) {
-        if (req.session.limit) FUNCTIONS.default_session(req.session);
-        if ((!req.session.playlist_created) && (!req.session.playlist_optimized)) {
-            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json});
-        }
-        else if (req.session.playlist_optimized) {
-            req.session.playlist_optimized = false;
-            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json, optimization_success: true});
-        }
-        else {
-            req.session.playlist_created = false;
-            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.session.json, creation_success: true});
-        }
+    //console.log(req);
+    if (req.session.limit) FUNCTIONS.default_session(req.session);
+    if ((!req.user.playlist_created) && (!req.user.playlist_optimized)) {
+        res.render('home', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP.VERSION});
     }
-    else { // User not logged in, re_auth
-        FUNCTIONS.re_auth(req, res, next);
+    else if (req.user.playlist_optimized) {
+        User.updateOptimized(req, false, function() {
+            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.user, optimization_success: true, version: APP.VERSION});
+        })
+    }
+    else {
+        User.updateCreated(req, false, function() {
+            res.render('home', { title: 'Spotify Playlist Optimizer', user: req.user, creation_success: true, version: APP.VERSION});
+        }) 
     }
 }
 

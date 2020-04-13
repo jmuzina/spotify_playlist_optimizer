@@ -14,15 +14,15 @@ html(lang="en")
     body.bg-img
       header
         nav.navbar.navbar-expand-lg.navbar-light.navbar-dark.nav-dark-bg.fixed-top
-          a.navbar-brand(href="./") ALPHA V 1.1
+          a.navbar-brand(href="./") #{version}
           button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
             span.navbar-toggler-icon
           #navbarNavDropdown.collapse.navbar-collapse
             ul.navbar-nav.ml-auto.order-12
               li.nav-item.dropdown.active
                 a.nav-link.dropdown-toggle(href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-                  img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`) 
-                  span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.p_name}! 
+                  img.rounded-circle.img-fluid.nav-profile(src = `${user.profile_picture}`)  
+                  span(style = "font-weight: bold; text-shadow: 1px 1px black;")   Welcome, #{user.displayName}! 
                 .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
                   script(src="js/logout.js")
                   form.logout(method="POST", style="margin-block-end: 0px;", onsubmit="logout()")
@@ -72,15 +72,15 @@ html(lang="en")
                     .form-group.optimize-modal
                       label(for='selected_playlist') Playlist:
                       select.form-control(id="selected_playlist", name="selected_playlist")
-                        -var ob = user;
-                        -for(var prop in ob['u_playlists'])
-                          option(value = `${ob['u_playlists'][prop]['p_id']}`) #{ob['u_playlists'][prop]['p_name']}
+                        -var ob = user.playlists;
+                        -for(var prop in ob)
+                          option(value = `${ob[prop]['p_id']}`) #{ob[prop]['p_name']}
                 .modal-footer.modal-buttons
                   button.btn.btn-outline-danger(type='button' data-dismiss='modal') Close
                   button.btn.btn-outline-primary(type = "submit", value = "optimize_existing") Confirm
       .container.track-list
         h1.page-header Suggested Songs
-        -var ob = suggestions;
+        -var ob = user.suggestions;
         -for(var song in ob)
           .track-row
             .track-img-container

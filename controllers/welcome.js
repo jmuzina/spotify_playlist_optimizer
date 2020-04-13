@@ -1,5 +1,6 @@
 const FUNCTIONS = require('../functions.js');
 const SQL = require('../mysql_cfg.js');
+const APP = require('../app.js');
 
 exports.get_welcome = function(req, res, next) {
   var query = "UPDATE playlist_optimizer.stats SET connections=connections+1"
@@ -14,13 +15,8 @@ exports.get_welcome = function(req, res, next) {
   SQL.con.query(query, function(err, result) {
       if (err) throw err;
       else {
-        if (!FUNCTIONS.logged_in(req.session)) {
-          res.render('welcome', { title: 'Spotify Playlist Optimizer'});
-        }
-        else {
-          FUNCTIONS.default_session(req.session);
-          res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.json});  
-        }
+        FUNCTIONS.default_session(req.session);
+        res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP.VERSION});  
       } 
   })
 }

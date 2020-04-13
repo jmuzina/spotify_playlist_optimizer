@@ -5,7 +5,7 @@ const FUNCTIONS = require('../functions.js');
 const CLASSES = require('../classes.js');
 
 exports.get_auth_callback = function(req, res, next) {
-  console.log("get callback called");
+  console.log(req.query);
   api_connection.authorizationCodeGrant(req.query.code).then(
     function(auth_data) {
       var access = auth_data.body['access_token'];
@@ -20,8 +20,8 @@ exports.get_auth_callback = function(req, res, next) {
           req.session.refresh = refresh;
           var user_id = user_data.body['id'];
           var display_name = user_data.body['display_name'];
-          var profile_picture = FUNCTIONS.get_image(res, user_data.body['images'], "profile_picture");
-          FUNCTIONS.update_playlists(req, res, next, new CLASSES.user_info(user_id, display_name, profile_picture, null));
+          var profile_picture = FUNCTIONS.get_image(user_data.body['images'], "profile_picture");
+          FUNCTIONS.update_playlists(req, res, next);
         },
         function(user_err) {
           console.log("[ERROR] [Get Me]:");
@@ -31,6 +31,7 @@ exports.get_auth_callback = function(req, res, next) {
     },
     function(auth_err) {
       console.log("[ERROR] [Authorization Code Grant]:");
+      console.log(auth_err);
       FUNCTIONS.page_not_found(res);
     }
   )
