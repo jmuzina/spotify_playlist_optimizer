@@ -153,17 +153,17 @@ app.get('/', function(req, res, next) {
   res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
 });
 
+app.post('/', function(req, res, next) {
+  FUNCTIONS.default_session(req.session);
+  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});
+})
+
 //app.use('/spotify_auth', spotifyRouter);
 //app.use('/spotify_auth_callback', spotifyCallbackRouter);
 app.use('/home', ensureAuthenticated, homeRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);
 app.use('/suggestions', ensureAuthenticated, suggestionsRouter);
 app.use('/optimize', ensureAuthenticated, optimizeRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -183,7 +183,7 @@ console.log("Started sever on port " + port);
 
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.user) {
     return next();
   }
   console.log("[ERROR] Sent user back to homepage due to authentication expiring");
