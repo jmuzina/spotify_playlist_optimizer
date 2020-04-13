@@ -1,7 +1,6 @@
 var spotify_handler = require('./spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('./classes.js');
-const AUTH = require('./controllers/spotify_auth.js');
 const CRYPTO = require('./crypto.js');
 let User = require('./models/user.js');
 
@@ -348,12 +347,6 @@ exports.post_handler = function(req, res, type) {
     else {
         this.page_not_found(res, type);
     }
-}
-
-exports.re_auth = function(req, res, next) {
-    this.log("[RE-AUTHENTICATION] User " + req.session.json['u_id'] + " authentication failed, starting re-authentication process.")
-    req.session.reauth = true;
-    AUTH.get_login(req, res, next);
 }
 
 exports.update_playlists = function(req, res, next, callback) {

@@ -52,25 +52,12 @@ const logger = require('morgan');
 
 var SpotifyStrategy = require('./node_modules/passport-spotify/lib/passport-spotify/index').Strategy;
 
-const OPTIMIZE = require("./controllers/optimize.js");
-const SUGGESTIONS = require('./controllers/suggestions.js');
 const FUNCTIONS = require('./functions.js');
-const CLASSES = require("./classes.js");
-
-var spotify_handler = require('./spotify_auth_handler.js');
-var api_connection = spotify_handler.spotify_connection;
 
 const SPOTIFY_CFG = require('./spotify_auth_cfg');
-const welcomeRouter = require('./routes/welcome.js');
-const spotifyRouter = require('./routes/spotify_auth.js');
-const spotifyCallbackRouter = require('./routes/spotify_auth_callback.js');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
-
-// controllers
-const callback_ctr = require('./controllers/spotify_auth_callback.js');
-const WELCOME_CTR = require('./controllers/welcome.js');
 
 User = require('./models/user.js');
 
@@ -158,8 +145,6 @@ app.post('/', function(req, res, next) {
   res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});
 })
 
-//app.use('/spotify_auth', spotifyRouter);
-//app.use('/spotify_auth_callback', spotifyCallbackRouter);
 app.use('/home', ensureAuthenticated, homeRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);
 app.use('/suggestions', ensureAuthenticated, suggestionsRouter);

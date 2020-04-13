@@ -3,8 +3,6 @@ var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('../classes.js');
 const FUNCTIONS = require('../functions.js')
 const CRYPTO = require('../crypto.js');
-const CFG = require('../spotify_auth_cfg.js');
-const AUTH = require('./spotify_auth.js');
 const USERS = require('../models/user.js');
 const APP = require('../app.js');
 
