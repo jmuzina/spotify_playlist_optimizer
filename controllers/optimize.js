@@ -17,6 +17,7 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
             tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
           if (songNum === (data.body['tracks']['total'] - 1)) {
+            let selected_playlist = JSON.parse(JSON.stringify(tracks));
             compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.user.suggestions, selected_playlist)));
 
             combined = selected_playlist; // copy selected_playlist data to combined playlist to start
