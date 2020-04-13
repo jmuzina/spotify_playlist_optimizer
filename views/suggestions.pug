@@ -72,7 +72,7 @@ html(lang="en")
                     .form-group.optimize-modal
                       label(for='selected_playlist') Playlist:
                       select.form-control(id="selected_playlist", name="selected_playlist")
-                        -var ob = playlists;
+                        -var ob = user.playlists;
                         -for(var prop in ob)
                           option(value = `${ob[prop]['p_id']}`) #{ob[prop]['p_name']}
                 .modal-footer.modal-buttons
@@ -80,7 +80,7 @@ html(lang="en")
                   button.btn.btn-outline-primary(type = "submit", value = "optimize_existing") Confirm
       .container.track-list
         h1.page-header Suggested Songs
-        -var ob = suggestions;
+        -var ob = user.suggestions;
         -for(var song in ob)
           .track-row
             .track-img-container

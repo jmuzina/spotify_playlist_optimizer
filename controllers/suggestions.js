@@ -22,7 +22,7 @@ exports.get_suggestions = function(req, res, next) {
         if (error) res.redirect('./');
         else {
           FUNCTIONS.update_playlists(req, res, next, function(err, obj) {
-            res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.user.suggestions, playlists: req.session.playlists, version: APP.VERSION});
+            res.render('suggestions', { title: 'Our suggestions', user: req.user, version: APP.VERSION});
           });
         }
       })

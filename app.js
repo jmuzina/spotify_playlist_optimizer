@@ -103,7 +103,10 @@ passport.use(
         profile_picture: FUNCTIONS.get_image(profile.photos, "profile_picture"), 
         keys: {access: CRYPTO.encrypt(accessToken), refresh: CRYPTO.encrypt(refreshToken)}, // Encrypted API keys
         playlists: null,
-        suggestions: null
+        suggestions: null,
+        selected_playlist: null,
+        playlist_optimized: false,
+        playlist_created: false
       }, 
       function(err, user) {
         return done(err, user);

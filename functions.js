@@ -40,11 +40,12 @@ exports.create_playlist = function(req, res, name, public) {
             }
             api_connection.addTracksToPlaylist(data.body['id'], songs_to_add).then(
                 function(track_data) {
-                    req.session.playlist_created = true;
-                    var public_str = "private";
-                    if (public) public_str = "public";
-                    console.log("\n[PLAYLIST CREATION]: " + req.user.id + " created " + public_str + " playlist '" + name + "'\n");
-                    res.redirect(200, '/home');
+                    User.updateCreated(req, true, function() {
+                        var public_str = "private";
+                        if (public) public_str = "public";
+                        console.log("\n[PLAYLIST CREATION]: " + req.user.id + " created " + public_str + " playlist '" + name + "'\n");
+                        res.redirect(200, '/home');
+                    })
                 },
                 function(track_err) {
                     console.log("[ERROR] [Create Playlist] [Add Tracks]:");
@@ -59,14 +60,17 @@ exports.create_playlist = function(req, res, name, public) {
     );
 }
 
-exports.remove_tracks = function(playlist, tracks) {
+exports.remove_tracks = function(req) {
+    const tracks = req.body['remove_song'], 
+    selected_playlist = req.user.selected_playlist;
+   
     var LENGTH = 0, ARR = [];
     api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
     // Handle removing only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
         var track = [{uri: "spotify:track:" + tracks}];
-        api_connection.removeTracksFromPlaylist(playlist, track).then(
+        api_connection.removeTracksFromPlaylist(selected_playlist, track).then(
             function (data) {
                 console.log("Track successfully removed!");
             },
@@ -74,7 +78,7 @@ exports.remove_tracks = function(playlist, tracks) {
                 console.log("Error in removing tracks, single track: ")
                 console.log(err);
                 console.log("playlist: ");
-                console.log(playlist);
+                console.log(selected_playlist);
                 console.log("track: ");
                 console.log(track);
             }
@@ -91,7 +95,7 @@ exports.remove_tracks = function(playlist, tracks) {
             // Last batch of tracks
             // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
             if (i === (CALLS_NEEDED - 1)) {
-                api_connection.removeTracksFromPlaylist(playlist, ARR.slice(i * 100)).then(
+                api_connection.removeTracksFromPlaylist(selected_playlist, ARR.slice(i * 100)).then(
                     function (data) {
                         console.log("Tracks successfully removed!");
                     },
@@ -99,7 +103,7 @@ exports.remove_tracks = function(playlist, tracks) {
                         console.log("Error in removing tracks, last call: ")
                         console.log(err);
                         console.log("playlist: ");
-                        console.log(playlist);
+                        console.log(selected_playlist);
                         console.log("tracks: ");
                         console.log(ARR.slice(i * 100));
                         console.log("CALLS_NEEDED: ");
@@ -112,7 +116,7 @@ exports.remove_tracks = function(playlist, tracks) {
             // a subsequent (but not final) batch of tracks, containing exactly 100 tracks.
             else {
                 var list = ARR.slice((i * 100), ((i * 100) + 100));
-                api_connection.removeTracksFromPlaylist(playlist, list).then(
+                api_connection.removeTracksFromPlaylist(selected_playlist, list).then(
                     function (data) {
                         console.log("Tracks successfully removed!");
                     },
@@ -120,7 +124,7 @@ exports.remove_tracks = function(playlist, tracks) {
                         console.log("Error in removing tracks, normal call: ")
                         console.log(err);
                         console.log("playlist: ");
-                        console.log(playlist);
+                        console.log(selected_playlist);
                         console.log("tracks: ");
                         console.log(ARR.slice((i * 100), ((i * 100) + 100)));
                         console.log("CALLS_NEEDED: ");
@@ -133,13 +137,16 @@ exports.remove_tracks = function(playlist, tracks) {
     console.log("remove_tracks called, removing " + LENGTH + " tracks");
 }
 
-exports.add_tracks = function (playlist, tracks) {
+exports.add_tracks = function (req) {
+    const selected_playlist = req.user.selected_playlist,
+    tracks = req.body['add_song'];
+
     var LENGTH = 0, ARR = [];
     api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
     // Handle adding only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
-        ARR = [{"uri": "spotify:track:" + tracks}];
+        ARR = ["spotify:track:" + tracks];
     }
     else {
         LENGTH = tracks.length;
@@ -149,7 +156,7 @@ exports.add_tracks = function (playlist, tracks) {
     }
     console.log("add_tracks called, adding " + LENGTH + " tracks");
     
-    api_connection.addTracksToPlaylist(playlist, ARR).then(
+    api_connection.addTracksToPlaylist(selected_playlist, ARR).then(
         function (data) {
             console.log("Tracks successfully added!");
         },
@@ -157,7 +164,7 @@ exports.add_tracks = function (playlist, tracks) {
             console.log("Error in adding tracks: \n");
             console.log(err);
             console.log("playlist: ");
-            console.log(playlist);
+            console.log(selected_playlist);
             console.log("tracks:" );
             console.log(ARR);
         }
@@ -320,18 +327,21 @@ exports.post_handler = function(req, res, type) {
       }
     else if (type === "optimize_existing") {
         req.session.selected_playlist_id = req.body['selected_playlist'];
-        res.redirect(200, '/optimize');
+        User.updateSelected(req, function() {
+            res.redirect(200, '/optimize');
+        });
     }  
     else if (type === "save_changes") {
         if (req.body['remove_song']) {
-          this.remove_tracks(req.session.selected_playlist_id, req.body['remove_song']);
+          this.remove_tracks(req);
         }
         if (req.body['add_song']) {
-          this.add_tracks(req.session.selected_playlist_id, req.body['add_song']);
+          this.add_tracks(req);
         }
-        console.log("\n[PLAYLIST OPTIMIZATION]: " + req.session.profile.id + " optimized playlist '" + req.session.selected_playlist_id + "'\n");
-        req.session.playlist_optimized = true;
-        res.redirect(200, '/home');
+        console.log("\n[PLAYLIST OPTIMIZATION]: " + req.user.id + " optimized playlist '" + req.user.selected_playlist + "'\n");
+        User.updateOptimized(req, true, function() {
+            res.redirect(200, '/home');
+        })
     }
     else {
         this.page_not_found(res, type);
