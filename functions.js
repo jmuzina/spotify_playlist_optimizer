@@ -282,10 +282,12 @@ exports.minimum_playlists = function(playlist_arr) {
 }
 
 exports.logout = function(req, res) {
-    console.log("[LOGOUT]: " + req.session.json['u_id'])
-    req.session.destroy(function() {
-        res.redirect('./');
-    });
+    console.log("[LOGOUT]: " + req.user.id)
+    User.deleteUser(req, function() {
+        req.session.destroy(function() {
+            res.redirect('./');
+        });
+    })
 }
 
 exports.page_not_found = function(res, type) {

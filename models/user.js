@@ -126,3 +126,11 @@ exports.updateOptimized = async function(req, val, done) {
         })
     });
 }
+
+exports.deleteUser = async function(req, done) {
+    var query = { id: req.user.id };
+    usr.deleteOne(query, function (err) {
+        if (err) console.log(err);
+        done();
+    });
+}
