@@ -1,0 +1,26 @@
+{
+  "sites": [
+    {
+      "subject": "playlist-optimizer.joemuzina.com",
+      "altnames": [
+        "playlist-optimizer.joemuzina.com"
+      ],
+      "renewAt": 1590588659560
+    }
+  ],
+  "defaults": {
+    "store": {
+      "module": "greenlock-store-fs"
+    },
+    "challenges": {
+      "http-01": {
+        "module": "acme-http-01-standalone"
+      }
+    },
+    "renewOffset": "-45d",
+    "renewStagger": "3d",
+    "accountKeyType": "EC-P256",
+    "serverKeyType": "RSA-2048",
+    "subscriberEmail": "joe.muzina@gmail.com"
+  }
+}
