@@ -12,6 +12,22 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 User = require('./models/user.js');
 
+// Greenlock SSL
+require("greenlock-express")
+    .init({
+        packageRoot: __dirname,
+        configDir: "./greenlock.d",
+
+        // contact for security and critical bug notices
+        maintainerEmail: "joe.muzina@gmail.com",
+
+        // whether or not to run at cloudscale
+        cluster: true
+    })
+    // Serves on 80 and 443
+    // Get's SSL certificates magically!
+    .serve(app);
+
 //mongo connect
 mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false}, function() {
   console.log("Mongo connected!");
@@ -137,7 +153,6 @@ app.get(
 );
 
 app.get('/', function(req, res, next) {
-  console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));
   FUNCTIONS.default_session(req.session);
   res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
 });
@@ -164,9 +179,9 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-port = 80;
-app.listen(port);
-console.log("Started sever on port " + port);
+//port = 80;
+//app.listen(port);
+//console.log("Started sever on port " + port);
 
 
 function ensureAuthenticated(req, res, next) {
