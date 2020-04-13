@@ -20,6 +20,11 @@ exports.User = mongoose.model('User', userSchema);
 
 usr = this.User
 
+exports.deleteAll = async function(done) {
+    usr.deleteMany({}, function (err) {});
+    done();
+}
+
 exports.findOrCreate = async function(user, done) {
     var query = { id: user.id },
     update = { 
