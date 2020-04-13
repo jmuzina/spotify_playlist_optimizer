@@ -6,6 +6,7 @@ const CRYPTO = require('../crypto.js');
 const CFG = require('../spotify_auth_cfg.js');
 const AUTH = require('./spotify_auth.js');
 const USERS = require('../models/user.js');
+const APP = require('../app.js');
 
 exports.get_suggestions = function(req, res, next) {
   api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
@@ -20,7 +21,7 @@ exports.get_suggestions = function(req, res, next) {
       USERS.updateSuggestions(req, suggestions, function(error, result) {
         if (error) res.redirect('./');
         else {
-          res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.user.suggestions, playlists: req.session.playlists});
+          res.render('suggestions', { title: 'Our suggestions', user: req.user, suggestions: req.user.suggestions, playlists: req.session.playlists, version: APP.VERSION});
         }
       })
     },

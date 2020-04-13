@@ -1,3 +1,4 @@
+const APP_VERSION = exports.VERSION = "ALPHA V 1.2";
 const express = require('express');
 var session = require("express-session");
 var passport = require('passport');
@@ -167,7 +168,7 @@ app.get(
 app.get('/', function(req, res, next) {
   console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));
   FUNCTIONS.default_session(req.session);
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user});  
+  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
 });
 
 //app.use('/spotify_auth', spotifyRouter);
