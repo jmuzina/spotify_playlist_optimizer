@@ -2,6 +2,7 @@ var spotify_handler = require('../spotify_auth_handler.js');
 var api_connection = spotify_handler.spotify_connection;
 const CLASSES = require('../classes.js');
 const FUNCTIONS = require('../functions.js');
+const APP = require('../app.js');
 let User = require('../models/user.js');
 
 // Gets sets of playlist tracks 1 <= n <= 100 until end of playlist is reached
@@ -16,14 +17,13 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
             tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
           if (songNum === (data.body['tracks']['total'] - 1)) {
-            ///////
             compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.user.suggestions, selected_playlist)));
 
             combined = selected_playlist; // copy selected_playlist data to combined playlist to start
             for (track in req.user.suggestions) { combined.push(req.session.suggestions_json[track]) }; // add all user suggestions to the combined playlist
             combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize))); // alphabetize, remove duplicates, and parse the combined playlist
 
-            res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared });
+            res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, version: APP.VERSION });
           }
         }
       },
@@ -57,7 +57,7 @@ exports.get_optimize = function(req, res, next) {
         
         combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
         
-        res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared});
+        res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, version: APP.VERSION});
       }
     },
     function(err) {
