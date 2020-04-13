@@ -167,7 +167,7 @@ app.get(
 app.get('/', function(req, res, next) {
   console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));
   FUNCTIONS.default_session(req.session);
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.session.profile});  
+  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user});  
 });
 
 //app.use('/spotify_auth', spotifyRouter);

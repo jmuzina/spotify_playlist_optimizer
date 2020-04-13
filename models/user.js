@@ -49,8 +49,7 @@ exports.updateSuggestions = async function(req, arr, done) {
     usr.updateOne(query, update, {}, async function(error, result) {
         usr.findOne(query, function(err, updated_user){
             req.login(updated_user, function(err){
-                console.log("error reserializing:");
-                console.log(err);
+                // handle this later
             })
             done(error, updated_user);
         })
