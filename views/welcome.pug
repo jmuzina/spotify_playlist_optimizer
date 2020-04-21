@@ -31,14 +31,15 @@ html(lang="en")
                             a.nav-link(href='./about') About
                         li.nav-item.active
                             a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-        .container-fluid.vertical-center
-            .rounded-black.welcome
+        .primary
+            .welcome
                 .logo-title
-                    .col-lg-7.order-lg-2.welcome-title
-                        h1 Spotify Playlist Optimizer
-                        h2 Get in Touch with your Tastes!
-                    .col-lg-5.order-lg-1.logo-container
-                        img.logo(src="/images/logo.png")
+                    .container
+                        .row.welcome-title
+                            h1 Spotify Playlist Optimizer
+                            h2 Get in Touch with your Tastes! 
+                        .row.logo-container
+                            img.logo(src="/images/logo.png")
                 .hook-container
                     span
                         | Tired of skipping song after song in your Spotify playlist?

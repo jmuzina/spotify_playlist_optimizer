@@ -245,6 +245,13 @@ select#selected_playlist{
     color: white;
 }
 
+.typeselect {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
 .spotify-button{
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
@@ -253,7 +260,7 @@ select#selected_playlist{
 
 .hook-container {
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
     justify-content: center;
     border-top: 1px solid white;
 }
@@ -464,6 +471,11 @@ select#selected_playlist{
     display: flex;
     flex-flow: column nowrap;
     max-width: 97%;
+}
+
+.track-list h2 {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px black; 
 }
 
 .track-list h1{
