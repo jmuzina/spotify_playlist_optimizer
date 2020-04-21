@@ -28,29 +28,11 @@ html(lang="en")
                         li.nav-item.active
                             a.nav-link(href='./') Home 
                         li.nav-item.active
-                            a.nav-link(href='./about') About
+                            a.nav-link(href='#') About
                         li.nav-item.active
                             a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
                         li.nav-item.active
                             a.nav-link(href='#') Contact
-        .container-fluid.vertical-center
-            .rounded-black.welcome
-                .logo-title
-                    .col-lg-7.order-lg-2.welcome-title
-                        h1 Spotify Playlist Optimizer
-                        h2 Get in Touch with your Tastes!
-                    .col-lg-5.order-lg-1.logo-container
-                        img.logo(src="/images/logo.png")
-                .hook-container
-                    span
-                        | Tired of skipping song after song in your Spotify playlist?
-                    span
-                        | With just a few clicks, optimize your playlists for your listening tastes!
-                    if (!user)
-                        a.btn.btn-outline-success.spotify-button(href="spotify_auth", role="button") Login to Spotify
-                    else
-                        a.btn.btn-outline-success.spotify-button(href="/home", role="button") Start Optimizing
-
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
         script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')

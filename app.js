@@ -29,7 +29,7 @@ require("greenlock-express")
     .serve(app);
 
 //mongo connect
-mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false}, function() {
+mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true}, function() {
   console.log("Mongo connected!");
   User.deleteAll(function() {
     console.log("All previous userdata deleted!");
@@ -75,6 +75,7 @@ var SpotifyStrategy = require('./node_modules/passport-spotify/lib/passport-spot
 const FUNCTIONS = require('./functions.js');
 
 const SPOTIFY_CFG = require('./spotify_auth_cfg');
+const aboutRouter = require('./routes/about.js');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
@@ -111,7 +112,9 @@ passport.use(
         suggestions: null,
         selected_playlist: null,
         playlist_optimized: false,
-        playlist_created: false
+        playlist_created: false,
+        limit: 1,
+        range: "short_term"
       }, 
       function(err, user) {
         return done(err, user);
@@ -153,16 +156,11 @@ app.get(
 );
 
 app.get('/', function(req, res, next) {
-  FUNCTIONS.default_session(req.session);
   res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
 });
 
-app.post('/', function(req, res, next) {
-  FUNCTIONS.default_session(req.session);
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});
-})
-
 app.use('/home', ensureAuthenticated, homeRouter);
+app.use('/about', aboutRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);
 app.use('/suggestions', ensureAuthenticated, suggestionsRouter);
 app.use('/optimize', ensureAuthenticated, optimizeRouter);
@@ -181,7 +179,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 //port = 80;
 //app.listen(port);
-//console.log("Started sever on port " + port);
+console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
 
 
 function ensureAuthenticated(req, res, next) {

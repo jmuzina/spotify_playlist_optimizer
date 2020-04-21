@@ -11,7 +11,9 @@ const userSchema = new Schema(
         suggestions: [],
         selected_playlist: String,
         playlist_optimized: Boolean,
-        playlist_created: Boolean
+        playlist_created: Boolean,
+        limit: Number,
+        range: String
      },
     {collection: "users"}
 );
@@ -37,7 +39,9 @@ exports.findOrCreate = async function(user, done) {
         suggestions: user.suggestions, 
         selected_playlist: user.selected_playlist,
         playlist_optimized: user.playlist_optimized,
-        playlist_created: user.playlist_created
+        playlist_created: user.playlist_created,
+        limit: user.limit,
+        range: user.range
       },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
@@ -140,4 +144,17 @@ exports.deleteUser = async function(req, done) {
         });
     }
     done();
+}
+
+exports.updateOptimizationParams = async function(req, done) {
+    var query = { id: req.user.id }, 
+    update = { range: req.body.time_range, limit: req.body.limit };
+    usr.updateOne(query, update, {}, async function(error, result) {
+        usr.findOne(query, function(err, updated_user){
+            req.login(updated_user, function(err){
+                // handle this later
+            })
+            done(error, updated_user);
+        })
+    });
 }

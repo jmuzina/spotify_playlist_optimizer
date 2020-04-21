@@ -4,15 +4,6 @@ const CLASSES = require('./classes.js');
 const CRYPTO = require('./crypto.js');
 let User = require('./models/user.js');
 
-exports.default_session = function(session) {
-    if (session.range) delete session.range;
-    if (session.limit) delete session.limit;
-    if (session.suggestions) delete session.suggestions; // deprecate
-    if (session.suggestions_json) delete session.suggestions_json;
-    if (session.selected_playlist_id) delete session.selected_playlist_id;
-    if (session.selected_playlist_json) delete session.selected_playlist_json;
-}
-
 exports.calls_needed = function(limit_per_call, n) {
     return Math.ceil(n / limit_per_call);
 }
@@ -298,28 +289,9 @@ exports.post_handler = function(req, res, type) {
         this.logout(req, res);
     }
     else if (type === "settings") {
-        req.session.range = req.body.time_range;
-        req.session.limit = req.body.limit;
-
-        let set_suggestion_params = new Promise((resolve, reject) =>{
-            req.session.range = req.body.time_range;
-            req.session.limit = req.body.limit;
-            if ((req.session.range != null) && (req.session.limit != null)) {
-                resolve();
-            }
-            else reject("error setting suggestion parameters. Values: range = " + req.session.range + ", limit = " + req.session.limit);
-        });
-
-        set_suggestion_params.then(
-            function(success) {
-                req.session.save(function(err) {
-                    res.redirect(200, '/suggestions');
-                })
-            },
-            function(failure) {
-                console.log(failure);
-            }
-        )
+        User.updateOptimizationParams(req, function() {
+            res.redirect(200, '/suggestions');
+        })
     }
     else if (type === "submit_new") {
         var public = false;
@@ -327,7 +299,6 @@ exports.post_handler = function(req, res, type) {
         this.create_playlist(req, res, req.body.playlist_name, public);
       }
     else if (type === "optimize_existing") {
-        req.session.selected_playlist_id = req.body['selected_playlist'];
         User.updateSelected(req, function() {
             res.redirect(200, '/optimize');
         });
@@ -363,7 +334,7 @@ exports.update_playlists = function(req, res, next, callback) {
                     playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']));
                     num_pushed += 1;
                 }
-                else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1) && (!req.session.json))  {
+                else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1))  {
                     User.updatePlaylists(req, playlists, callback);
                 }
                 num_checked += 1;
