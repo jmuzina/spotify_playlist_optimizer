@@ -6,6 +6,5 @@ exports.get_about = function(req, res, next) {
 }
 
 exports.post_about = function(req, res, next) {
-  //FUNCTIONS.logout(req, res);
-  // post handler
+  FUNCTIONS.post_handler(req, res, req.body['type']);
 }
