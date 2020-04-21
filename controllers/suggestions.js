@@ -8,7 +8,7 @@ const APP = require('../app.js');
 
 exports.get_suggestions = function(req, res, next) {
   api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
-  api_connection.getMyTopTracks({limit: req.session.limit, time_range: req.session.range}).then(
+  api_connection.getMyTopTracks({limit: req.user.limit, time_range: req.user.range}).then(
     function(data) {
       tracks = [];
       for (song in data.body['items']) {

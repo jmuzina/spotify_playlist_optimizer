@@ -21,7 +21,7 @@ function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
             compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.user.suggestions, selected_playlist)));
 
             combined = selected_playlist; // copy selected_playlist data to combined playlist to start
-            for (track in req.user.suggestions) { combined.push(req.session.suggestions_json[track]) }; // add all user suggestions to the combined playlist
+            for (track in req.user.suggestions) { combined.push(req.user.suggestions[track]) }; // add all user suggestions to the combined playlist
             combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize))); // alphabetize, remove duplicates, and parse the combined playlist
 
             res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, version: APP.VERSION });

@@ -22,6 +22,35 @@
     height: 100%;
 }
 
+.about{
+    margin-top: -1%;
+}
+
+.about p {
+    color: white;
+    text-shadow: 1px 0px 0px black;
+}
+
+.about span {
+    color: white;
+    text-shadow: 1px 0px 0px black;
+}
+
+.about li {
+    color: white;
+    text-shadow: 1px 0px 0px black;
+}
+
+.primary {
+    background-color: #2525258a;
+    padding: 3%;
+}
+
+.secondary {
+    background-color: #4242428a;
+    padding: 3%;
+}
+
 .splash{
     display: flex;
     flex-flow: row wrap;
@@ -40,6 +69,19 @@
     text-shadow: 1px 1px black;
     text-align: center;
     font-size: 3vw; 
+}
+
+.about h1, h2, h3 {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    font-size: inherit !important;
+}
+
+@media screen and (max-width: 768px) {
+    .privacy {
+        margin-top: 5%;
+    }
 }
 
 .welcome-title h2 {
