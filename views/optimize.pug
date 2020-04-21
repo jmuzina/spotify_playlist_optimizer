@@ -3,7 +3,7 @@ html(lang="en")
   head
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
     link(rel='stylesheet', href='/css/style.css')
-    script(src="https://kit.fontawesome.com/82d7d212c3.js" crossorigin="anonymous")
+    link(rel='stylesheet', href='https://unpkg.com/aos@next/dist/aos.css')
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
   .container.listing-reg
@@ -33,8 +33,6 @@ html(lang="en")
                 a.nav-link(href='./about') About
               li.nav-item.active
                 a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-              li.nav-item.active
-                a.nav-link(href='#') Contact
       .container.playlist-image(style="margin-top:20px;")
         img(src = `${playlist_images['0']['url']}`)
       .container.track-list
@@ -44,7 +42,7 @@ html(lang="en")
           input(type = "hidden", name = "type", value = "save_changes")
           -for(var song in ob)
             -if (comparison["add"].includes(ob[song]['id']))
-              .track-row.add-song.row
+              .track-row.add-song.row(data-aos="fade" data-aos-anchor-placement="top-bottom")
                 .col-9.title-col.border-right.border-dark
                   .track-img-container
                     img.optimize-img(src=`${ob[song]['image']}`)
@@ -54,7 +52,7 @@ html(lang="en")
                   label.btn.btn-info.active.add-label Add
                     input(type="checkbox", checked, id = `${ob[song]['id']}`, name="add_song", value=`${ob[song]['id']}`)
             -if (comparison["remove"].includes(ob[song]['id']))
-              .track-row.remove-song.row
+              .track-row.remove-song.row(data-aos="fade" data-aos-anchor-placement="top-bottom")
                 .col-9.title-col.border-right.border-dark
                   .track-img-container
                     img.optimize-img(src=`${ob[song]['image']}`)
@@ -64,7 +62,7 @@ html(lang="en")
                   label.btn.btn-warning.active.remove-label Remove
                     input(type="checkbox", checked, id = `${ob[song]['id']}`, name="remove_song", value=`${ob[song]['id']}`)
             -if (comparison["keep"].includes(ob[song]['id']))
-              .track-row.song.row
+              .track-row.song.row(data-aos="fade" data-aos-anchor-placement="top-bottom")
                 .col-9.title-col.border-right.border-dark
                   .track-img-container
                     img.optimize-img(src=`${ob[song]['image']}`)
@@ -80,5 +78,8 @@ html(lang="en")
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
       script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
       script(src="js/optimize_button.js")
+      script(src='https://unpkg.com/aos@next/dist/aos.js')
+      script. 
+        AOS.init();
 
           

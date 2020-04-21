@@ -1,4 +1,4 @@
-const APP_VERSION = exports.VERSION = "ALPHA V 1.2";
+const APP_VERSION = exports.VERSION = "ALPHA V 1.3";
 const express = require('express');
 var session = require("express-session");
 var passport = require('passport');

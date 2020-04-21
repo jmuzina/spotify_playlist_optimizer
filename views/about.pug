@@ -2,6 +2,7 @@ html(lang="en")
   title= `${title}`
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href='https://unpkg.com/aos@next/dist/aos.css')
   meta(charset="UTF-8")
   meta(name="viewport" content="width=device-width, initial-scale=1")
 
@@ -30,22 +31,22 @@ html(lang="en")
                         li.nav-item.active
                             a.nav-link(href='#') About
                         li.nav-item.active
-                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-                        li.nav-item.active
-                            a.nav-link(href='#') Contact
+                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHu
         .about
             .primary
                 .container
                     .row
                         .col-md-6
-                            .mission
+                            .mission(data-aos="fade" data-aos-anchor-placement="top-bottom")
                                 h2 Mission
                                 span Do you have dozens of Spotify playlists with hundreds of songs apiece in them, but still find yourself constantly skipping songs? Spotify’s ease of use has made it incredibly easy to collect vast playlists of your favorite music, but it did not consider what happens when users’ tastes evolve past certain songs. 
                                 br
                                 br
-                                span Spotify Playlist Optimizer was developed by Kent State University Computer Science student Joe Muzina in 2020 to address this problem. By using Spotify’s world-renowned personalization algorithms, SPO’s users can create playlists tailored for their tastes, current to a time period of their choosing, and also compare their existing playlists against the songs they listen to the most, to see if there are songs they should consider adding or removing. 
+                                span Spotify Playlist Optimizer was developed by Kent State University Computer Science student 
+                                a(href="http://joemuzina.com") Joe Muzina
+                                span  in 2020 to address this problem. By using Spotify’s world-renowned personalization algorithms, SPO’s users can create playlists tailored for their tastes, current to a time period of their choosing, and also compare their existing playlists against the songs they listen to the most, to see if there are songs they should consider adding or removing. 
                         .col-md-6
-                            .privacy
+                            .privacy(data-aos="fade" data-aos-anchor-placement="top-bottom")
                                 h2 Privacy Statement
                                 p The following information is stored by SPO:
                                 ul
@@ -59,28 +60,37 @@ html(lang="en")
                                 br
                                 span(style="font-weight: bold;") SPO will never share or sell any of your data. 
                                 br 
-                                span All data is stored only for the length of your login and for the purpose of helping you optimize your Spotify experience. 
+                                span All data is stored only for the duration of your login for the purpose of helping you optimize your Spotify experience. 
             .secondary
                 .tutorial.container
+                    div(data-aos="fade" data-aos-anchor-placement="top-bottom")
                         h2 How to Use
                         ol
                             li Log in using your Spotify credentials on the homepage. 
                             li If this is your first time using SPO, Spotify will prompt you to allow SPO access to some of your account data. In order to best get you in touch with your tastes, SPO needs access to your listening history and permission to create and edit existing playlists. 
                             li On the home page, you must select a time range and a track limit to get your track recommendations. The “Short term” time range will recommend you tracks based on your past month of listening habits. “Medium term” recommends based on the past 6 months, and “Long term” recommends based on several years.
-                            li SPO will present you with a customized list of track recommendations based on your input. At the bottom of the page, you may choose to create a new playlist on your Spotify account with the recommended tracks, or to compare and optimize an existing playlist against the recommendations.
+                            .row
+                                .col-md-6.adjusted-line
+                                    li SPO will present you with a customized list of track recommendations based on your input. At the bottom of the page, you may choose to create a new playlist on your Spotify account with the recommended tracks, or to compare and optimize an existing playlist against the recommendations.
+                                .col-md-6
+                                    img(src="images/about/suggestions.png")
                         p Creating a playlist is as easy as typing a desired playlist name and privacy setting!
-
+                    div(data-aos="fade" data-aos-anchor-placement="top-bottom")
                         h3 Optimizing a Playlist
                         ol
                             li Select a playlist to optimize.
                             li SPO will present you with a color-coded list of tracks. 
-                            li If a track is red, you have not been listening to it much, but it is still in the playlist. These tracks are set to be removed by default.
-                            li If a track is black, you have been listening to it often, and it is already in the playlist. These tracks are set to be kept by default.
-                            li If a track is green, you have been listening to it often, but it is not in the playlist yet. These tracks are set to be added to the playlist by default.
-                            li To alter the action set to be performed on a given track, tap the button next to the track. 
+                            .row
+                                .col-md-6.adjusted-line
+                                    li If a track is red, you have not been listening to it much, but it is still in the playlist. These tracks are set to be removed by default.
+                                    li If a track is black, you have been listening to it often, and it is already in the playlist. These tracks are set to be kept by default.
+                                    li If a track is green, you have been listening to it often, but it is not in the playlist yet. These tracks are set to be added to the playlist by default.
+                                    li To alter the action set to be performed on a given track, tap the button next to the track. 
+                                .col-md-6
+                                    img(src="images/about/optimize.png")
                             li Click save at the bottom of the page, and your playlist will now be optimized!
             .primary
-                .disclaimer.container
+                .disclaimer.container(data-aos="fade" data-aos-anchor-placement="top-bottom")
                         h2 Work In Progress Disclaimer
                         span This app is a work-in-progress, and though it has been tested thoroughly, there may be some bugs. 
                         br 
@@ -91,8 +101,9 @@ html(lang="en")
                         a(href="mailto:joe.muzina@gmail.com") joe.muzina@gmail.com
                         span .
 
-
-
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
         script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
+        script(src='https://unpkg.com/aos@next/dist/aos.js')
+        script. 
+            AOS.init();
