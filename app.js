@@ -1,4 +1,4 @@
-const APP_VERSION = exports.VERSION = "ALPHA V 1.3";
+const APP_VERSION = exports.VERSION = "Playlist Optimizer";
 const express = require('express');
 var session = require("express-session");
 var passport = require('passport');

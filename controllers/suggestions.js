@@ -5,6 +5,7 @@ const FUNCTIONS = require('../functions.js')
 const CRYPTO = require('../crypto.js');
 const USERS = require('../models/user.js');
 const APP = require('../app.js');
+const STATS = require('../models/stats.js');
 
 exports.get_suggestions = function(req, res, next) {
   api_connection.setAccessToken(CRYPTO.decrypt(req.user.keys.access));
@@ -16,13 +17,15 @@ exports.get_suggestions = function(req, res, next) {
         tracks.push(new CLASSES.track_info(data.body['items'][song]['id'], data.body['items'][song]['name'], artists, data.body['items'][song]['uri'], data.body['items'][song]['preview_url'], data.body['items'][song]['album']['images'][0]['url']));   
       }
       var suggestions = JSON.parse(JSON.stringify(tracks.sort(FUNCTIONS.artist_alphabetize)));
-      USERS.updateSuggestions(req, suggestions, function(error, result) {
-        if (error) res.redirect('./');
-        else {
-          FUNCTIONS.update_playlists(req, res, next, function(err, obj) {
-            res.render('suggestions', { title: 'Our suggestions', user: req.user, version: APP.VERSION});
-          });
-        }
+      STATS.updateSuggested(suggestions.length, function() {
+        USERS.updateSuggestions(req, suggestions, function(error, result) {
+          if (error) res.redirect('./');
+          else {
+            FUNCTIONS.update_playlists(req, res, next, function(err, obj) {
+              res.render('suggestions', { title: 'Our suggestions', user: req.user, version: APP.VERSION});
+            });
+          }
+        })
       })
     },
     function(err) {
