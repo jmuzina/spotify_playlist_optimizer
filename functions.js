@@ -216,7 +216,7 @@ exports.tracks_equal = function(t1, t2) {
     return (t1.id === t2.id);
 }
 
-exports.playlist_compare = function(suggested, selected) {
+exports.playlist_compare = function(suggested, selected, done) {
     // Should add
     suggested_not_selected = (suggested.filter(function (n) {
         for (var i = 0; i < selected.length; i++) {
@@ -225,7 +225,7 @@ exports.playlist_compare = function(suggested, selected) {
             }
         }
         return true;
-    })).map(arr => arr.id);
+    }));
 
     // Should remove
     selected_not_suggested = (selected.filter(function (n) {
@@ -235,7 +235,7 @@ exports.playlist_compare = function(suggested, selected) {
             }
         }
         return true;
-    })).map(arr => arr.id);
+    }));
     
     // Should keep
     selected_suggested = (selected.filter(function (n) {
@@ -245,13 +245,13 @@ exports.playlist_compare = function(suggested, selected) {
             }
         }
         return false;
-    })).map(arr => arr.id);
+    }));
 
-    return {
-        "add": suggested_not_selected, 
-        "remove": selected_not_suggested, 
-        "keep": selected_suggested
-    };
+    done(JSON.parse(JSON.stringify({
+        "add": this.remove_duplicates(suggested_not_selected).sort(this.artist_alphabetize), 
+        "remove": this.remove_duplicates(selected_not_suggested).sort(this.artist_alphabetize), 
+        "keep": this.remove_duplicates(selected_suggested).sort(this.artist_alphabetize)
+    })));
 }
 
 exports.remove_duplicates = function(arr) {

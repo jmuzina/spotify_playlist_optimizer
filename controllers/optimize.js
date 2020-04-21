@@ -6,25 +6,29 @@ const APP = require('../app.js');
 let User = require('../models/user.js');
 
 // Gets sets of playlist tracks 1 <= n <= 100 until end of playlist is reached
-function offset_loop(req, res, data, CALLS_NEEDED, tracks) {
+function offset_loop(selected_id, suggestions, data, CALLS_NEEDED, tracks, done) {
   var songNum = 100;
+  obj = {
+    add: [],
+    remove: [],
+    keep: []
+  };
   for (var api_offset = 1; api_offset < CALLS_NEEDED; api_offset = api_offset + 1) {
-    api_connection.getPlaylistTracks(req.user.selected_playlist, { offset: api_offset * 100 }).then(
+    api_connection.getPlaylistTracks(selected_id, { offset: api_offset * 100 }).then(
       function (offset_data) {
         for (track in offset_data.body['items']) {
           if (offset_data.body['items'][track]['track']['id']) {
             songNum = songNum + 1;
             tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
-          if (songNum === (data.body['tracks']['total'] - 1)) {
-            let selected_playlist = JSON.parse(JSON.stringify(tracks));
-            compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.user.suggestions, selected_playlist)));
-
-            combined = selected_playlist; // copy selected_playlist data to combined playlist to start
-            for (track in req.user.suggestions) { combined.push(req.user.suggestions[track]) }; // add all user suggestions to the combined playlist
-            combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize))); // alphabetize, remove duplicates, and parse the combined playlist
-
-            res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, version: APP.VERSION });
+          // last track
+          if (songNum === (data['tracks']['total'] - 1)) {
+            FUNCTIONS.playlist_compare(suggestions, JSON.parse(JSON.stringify(tracks)), function(compared_result) {
+              obj['add'].push(...compared_result['add']);
+              obj['remove'].push(...compared_result['remove']);
+              obj['keep'].push(...compared_result['keep']);
+            })
+            done(obj);
           }
         }
       },
@@ -47,18 +51,14 @@ exports.get_optimize = function(req, res, next) {
       }
       // Handle playlists larger than 100 tracks
       if (CALLS_NEEDED != 1) {
-        offset_loop(req, res, data, CALLS_NEEDED, tracks);
+        offset_loop(req.user.selected_playlist, req.user.suggestions, data.body, CALLS_NEEDED, tracks, function(compared_result) {
+          res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), comparison: compared_result, version: APP.VERSION});
+        });
       }
       else {
-        let selected_playlist_json = JSON.parse(JSON.stringify(tracks));
-        compared = JSON.parse(JSON.stringify(FUNCTIONS.playlist_compare(req.user.suggestions, selected_playlist_json)));
-
-        combined = selected_playlist_json;
-        for (track in req.user.suggestions) {combined.push(req.user.suggestions[track])}; // copy all songs in suggestions into the combined list
-        
-        combined = JSON.parse(JSON.stringify((FUNCTIONS.remove_duplicates(combined)).sort(FUNCTIONS.artist_alphabetize)));
-        
-        res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), combined_songs: combined, comparison: compared, version: APP.VERSION});
+        FUNCTIONS.playlist_compare(req.user.suggestions, JSON.parse(JSON.stringify(tracks)), function(compared_result) {
+          res.render('optimize', { title: 'Optimize ' + data.body['name'], user: req.user, playlist_name: data.body['name'], playlist_images: data.body['images'], playlist_uri: data.body['uri'].substring(17), comparison: compared_result, version: APP.VERSION});
+        })
       }
     },
     function(err) {
