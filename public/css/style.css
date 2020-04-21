@@ -96,6 +96,25 @@
     box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
+.about table {
+    width: 95%;
+}
+
+.about table, th, td {
+    border: 1px solid white;
+    color: white;
+    text-shadow: 1px 0px 0px black;
+    border-radius: 10px;
+    padding: 2%;
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .about img {
+        width: 70vw;
+    }
+}
+
 .adjusted-line {
     display: flex;
     flex-flow: column wrap;

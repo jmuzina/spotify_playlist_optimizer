@@ -1,8 +1,8 @@
 html(lang="en")
   title= `${title}`
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
-  link(rel='stylesheet', href='/css/style.css')
   link(rel='stylesheet', href='https://unpkg.com/aos@next/dist/aos.css')
+  link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
   meta(name="viewport" content="width=device-width, initial-scale=1")
 
@@ -31,7 +31,7 @@ html(lang="en")
                         li.nav-item.active
                             a.nav-link(href='#') About
                         li.nav-item.active
-                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHu
+                            a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
         .about
             .primary
                 .container
@@ -100,6 +100,22 @@ html(lang="en")
                         span . If you encounter a bug that is not listed there, please create an issue on the GitHub page or email me at 
                         a(href="mailto:joe.muzina@gmail.com") joe.muzina@gmail.com
                         span .
+            .secondary
+                .stats.container(data-aos="fade" data-aos-anchor-placement="top-bottom")
+                    h2 Statistics
+                    table
+                        tr
+                            th Tracks suggested
+                            th Playlists created
+                            th Playlists optimized
+                            th Tracks removed
+                            th Tracks added
+                        tr
+                            td #{stats.tracksSuggested}
+                            td #{stats.playlistsCreated}
+                            td #{stats.playlistsOptimized}
+                            td #{stats.tracksRemoved}
+                            td #{stats.tracksAdded}
 
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
@@ -107,3 +123,4 @@ html(lang="en")
         script(src='https://unpkg.com/aos@next/dist/aos.js')
         script. 
             AOS.init();
+        script(src='/js/transpose.js')
