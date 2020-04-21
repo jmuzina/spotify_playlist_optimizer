@@ -17,3 +17,4 @@ greenlock.d/live/playlist-optimizer.joemuzina.com/bundle.pem
 greenlock.d/config.json.bak
 greenlock.d/accounts/acme-v02.api.letsencrypt.org/directory/joe.muzina@gmail.com.json
 .greenlockrc
+mongo_cfg.js
