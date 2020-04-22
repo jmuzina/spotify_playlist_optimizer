@@ -4,6 +4,7 @@ const CLASSES = require('./classes.js');
 const CRYPTO = require('./crypto.js');
 let User = require('./models/user.js');
 let STATS = require('./models/stats.js');
+var underscore = require('underscore');
 
 exports.calls_needed = function(limit_per_call, n) {
     return Math.ceil(n / limit_per_call);
@@ -53,6 +54,81 @@ exports.create_playlist = function(req, res, name, public) {
     );
 }
 
+function remove_with_delay(all_tracks, batch, selected_playlist, i, key) {
+    console.log("remove_with_delay called with i = " + i);
+    const CALLS_NEEDED = exports.calls_needed(100, all_tracks.length)
+    api_connection.setAccessToken(CRYPTO.decrypt(key));
+    // Last batch of tracks
+    // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
+    if (i === (CALLS_NEEDED - 1) && (CALLS_NEEDED != 1)) {
+        api_connection.removeTracksFromPlaylist(selected_playlist, batch).then(
+            function (data) {
+                STATS.updateRemoved(all_tracks.length, function() {
+                    console.log("Tracks successfully removed!");
+                })
+            },
+            function (err) {
+                console.log("Error in removing tracks, last call: ")
+                console.log(err);
+                console.log("playlist: ");
+                console.log(selected_playlist);
+                console.log("tracks: ");
+                console.log(batch);
+                console.log("CALLS_NEEDED: ");
+                console.log(CALLS_NEEDED);
+            }
+        )
+    }
+    // Either :
+    // the first (and only) batch of tracks, containing 1-100 tracks
+    // a nonfinal batch of tracks, containing exactly 100 tracks.
+    else {
+        let t = i;
+        // Wait half a second between batches to avoid overwhelming Spotify's API
+        // (They've gotten cranky with me in the past and thrown internal server errors)
+        setTimeout(function() {
+            if (t === 0 && CALLS_NEEDED != 1) batch = all_tracks.slice((t * 100), ((t * 100) + 100))
+            else if (CALLS_NEEDED === 1) batch = all_tracks;
+            find_batch(all_tracks, CALLS_NEEDED, t, function(batch) {
+                api_connection.removeTracksFromPlaylist(selected_playlist, batch).then(
+                    function (data) {
+                        console.log("Tracks successfully removed!");
+                        console.log(t);
+                        if (t + 1 === CALLS_NEEDED - 1){
+                            remove_with_delay(all_tracks, all_tracks.slice((t + 1) * 100), selected_playlist, t + 1, key) 
+                        } 
+                        else if (CALLS_NEEDED === 1) {
+                            return;
+                        }
+                        else {
+                            remove_with_delay(all_tracks, all_tracks.slice(((t + 1) * 100), (((t + 1) * 100) + 100)), selected_playlist, t + 1, key)
+                        }
+                    },
+                    function (err) {
+                        console.log("Error in removing tracks, normal call: ")
+                        console.log(err);
+                        console.log("playlist: ");
+                        console.log(selected_playlist);
+                        console.log("tracks: ");
+                        console.log(batch);
+                        console.log("CALLS_NEEDED: ");
+                        console.log(CALLS_NEEDED);
+                    }
+                )
+            })
+        }, 500);
+    }
+}
+
+function find_batch(all_tracks, CALLS_NEEDED, t, done) {
+    // First of many batches
+    if (t === 0 && CALLS_NEEDED != 1) done(all_tracks.slice((t * 100), ((t * 100) + 100)));
+    // Only batch
+    else if (CALLS_NEEDED === 1) done(all_tracks);
+    // Middle batches
+    else done(all_tracks.slice(((t + 1) * 100), (((t + 1) * 100) + 100)));
+}
+
 exports.remove_tracks = function(req) {
     const tracks = req.body['remove_song'], 
     selected_playlist = req.user.selected_playlist;
@@ -80,56 +156,17 @@ exports.remove_tracks = function(req) {
         )
     }
     else {
-        LENGTH = tracks.length;
+        let offset = 0;
         for (track in tracks) {
-            ARR[track] = {uri: "spotify:track:" + tracks[track]};
-        }
-        const NUM_REMOVE = LENGTH;
-        const CALLS_NEEDED = this.calls_needed(100, NUM_REMOVE);
-        for (var i = 0; i < CALLS_NEEDED; i = i + 1) {
-            // Last batch of tracks
-            // In large removal calls, the last batch likely contains between 1-100 tracks, not 100 exactly.
-            if (i === (CALLS_NEEDED - 1)) {
-                api_connection.removeTracksFromPlaylist(selected_playlist, ARR.slice(i * 100)).then(
-                    function (data) {
-                        STATS.updateRemoved(LENGTH, function() {
-                            console.log("Tracks successfully removed!");
-                        })
-                    },
-                    function (err) {
-                        console.log("Error in removing tracks, last call: ")
-                        console.log(err);
-                        console.log("playlist: ");
-                        console.log(selected_playlist);
-                        console.log("tracks: ");
-                        console.log(ARR.slice(i * 100));
-                        console.log("CALLS_NEEDED: ");
-                        console.log(CALLS_NEEDED);
-                    }
-                )
-            }
-            // Either :
-            // the first (and only) batch of tracks, containing 1-100 tracks
-            // a subsequent (but not final) batch of tracks, containing exactly 100 tracks.
+            if (tracks[track] != "null") ARR[track - offset] = {uri: "spotify:track:" + tracks[track]};
             else {
-                var list = ARR.slice((i * 100), ((i * 100) + 100));
-                api_connection.removeTracksFromPlaylist(selected_playlist, list).then(
-                    function (data) {
-                        console.log("Tracks successfully removed!");
-                    },
-                    function (err) {
-                        console.log("Error in removing tracks, normal call: ")
-                        console.log(err);
-                        console.log("playlist: ");
-                        console.log(selected_playlist);
-                        console.log("tracks: ");
-                        console.log(ARR.slice((i * 100), ((i * 100) + 100)));
-                        console.log("CALLS_NEEDED: ");
-                        console.log(CALLS_NEEDED);
-                    }
-                )
+                offset = offset + 1
+                console.log("offset now " + offset);
             }
-        } 
+        }
+        LENGTH = ARR.length;
+        var i = 0;
+        remove_with_delay(ARR, ARR, selected_playlist, i, req.user.keys.access);
     }
     console.log("remove_tracks called, removing " + LENGTH + " tracks");
 }
@@ -220,7 +257,7 @@ exports.playlist_compare = function(suggested, selected, done) {
     // Should add
     suggested_not_selected = (suggested.filter(function (n) {
         for (var i = 0; i < selected.length; i++) {
-            if (n.id == selected[i].id) {
+            if (n.uri == selected[i].uri) {
                 return false;
             }
         }
@@ -230,7 +267,7 @@ exports.playlist_compare = function(suggested, selected, done) {
     // Should remove
     selected_not_suggested = (selected.filter(function (n) {
         for (var i = 0; i < suggested.length; i++) {
-            if (n.id == suggested[i].id) {
+            if (n.uri == suggested[i].uri) {
                 return false;
             }
         }
@@ -240,7 +277,7 @@ exports.playlist_compare = function(suggested, selected, done) {
     // Should keep
     selected_suggested = (selected.filter(function (n) {
         for (var i = 0; i < suggested.length; i++) {
-            if (n.id == suggested[i].id) {
+            if (n.uri == suggested[i].uri) {
                 return true;
             }
         }
@@ -255,12 +292,7 @@ exports.playlist_compare = function(suggested, selected, done) {
 }
 
 exports.remove_duplicates = function(arr) {
-    return arr.reduce((unique, o) => {
-        if(!unique.some(obj => obj.id === o.id && obj.name === o.name && obj.artists === o.artists && obj.uri === o.uri && obj.artists === o.artists && obj.preview === o.preview && obj.image === o.image)) {
-          unique.push(o);
-        }
-        return unique;
-    },[])
+    return underscore.uniq(arr, function(d){ return d.uri });
 }
 
 exports.artist_alphabetize = function(a, b){

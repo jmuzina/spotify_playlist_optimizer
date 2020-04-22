@@ -17,7 +17,7 @@ function offset_loop(selected_id, suggestions, data, CALLS_NEEDED, tracks, done)
     api_connection.getPlaylistTracks(selected_id, { offset: api_offset * 100 }).then(
       function (offset_data) {
         for (track in offset_data.body['items']) {
-          if (offset_data.body['items'][track]['track']['id']) {
+          if (offset_data.body['items'][track]['track']['uri']) {
             songNum = songNum + 1;
             tracks.push(new CLASSES.track_info(offset_data.body['items'][track]['track']['id'], offset_data.body['items'][track]['track']['name'], FUNCTIONS.artist_string(offset_data.body['items'][track]['track']['artists']), offset_data.body['items'][track]['track']['uri'], offset_data.body['items'][track]['track']['preview_url'], FUNCTIONS.get_image(offset_data.body['items'][track]['track']['album']['images'], "album_art")));
           }
