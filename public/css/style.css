@@ -1,8 +1,9 @@
 .bg-img {
-    background-image: url("/images/background.jpg");
+    background-image: url("/images/background_blur.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    background-color: black;
     min-height: 100%;
     padding-top: 70px;
 }
@@ -255,7 +256,7 @@ select#selected_playlist{
 .spotify-button{
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
-    background-color: rgba(0, 0, 0, 0.208);
+    background-color: rgba(0, 0, 0, 0.38);
 }
 
 .hook-container {
@@ -291,6 +292,7 @@ select#selected_playlist{
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
+    height: 100%;
 }
 
 .logo-title{
@@ -355,8 +357,18 @@ select#selected_playlist{
     }
 }
 
+.modal-dialog {
+    top: 25%;
+}
+
+@media screen and (max-width: 768px) {
+    .rounded-black{
+        margin-bottom: 20px;
+    }
+}
+
 .home-explanation{
-    border-right: 1px solid #a7a7a7;
+    border-right: 1px solid #69696980;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
@@ -389,11 +401,11 @@ select#selected_playlist{
 }
 
 .home-explanation p{
-    color: rgb(221, 221, 221);
+    color: rgb(248, 248, 248);
     font-weight: bold;
     text-shadow: 1px 1px black;
     text-align: center;
-    font-size: 1.15vw;
+    font-size: 1.45vw;
 }
 
 .optimize-modal{
@@ -415,9 +427,6 @@ select#selected_playlist{
 }
 
 @media screen and (orientation:portrait) {
-    .welcome{
-        height: 90vh;
-    }
     .rounded-black{
         height: 85vh;
     }
