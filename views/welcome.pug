@@ -4,6 +4,11 @@ html(lang="en")
   link(rel='stylesheet', href='/css/style.css')
   meta(charset="UTF-8")
   meta(name="viewport" content="width=device-width, initial-scale=1")
+  meta(property="og:site_name" content=`${version}`)
+  meta(property="og:title" content=`${title}`)
+  meta(property="og:description" content="Tired of skipping song after song in your Spotify playlist? With just a few clicks, optimize your playlists for your listening tastes!")
+  meta(property="og:url" content = "https://playlist-optimizer.joemuzina.com")
+  meta(property="og:image" content="https://playlist-optimizer.joemuzina.com/images/logo.png")
 
   block content
     body.bg-img
@@ -31,24 +36,23 @@ html(lang="en")
                             a.nav-link(href='./about') About
                         li.nav-item.active
                             a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-        .primary
-            .welcome
-                .logo-title
-                    .container
-                        .row.welcome-title
-                            h1 Spotify Playlist Optimizer
-                            h2 Get in Touch with your Tastes! 
-                        .row.logo-container
-                            img.logo(src="/images/logo.png")
-                .hook-container
-                    span
-                        | Tired of skipping song after song in your Spotify playlist?
-                    span
-                        | With just a few clicks, optimize your playlists for your listening tastes!
-                    if (!user)
-                        a.btn.btn-outline-success.spotify-button(href="spotify_auth", role="button") Login to Spotify
-                    else
-                        a.btn.btn-outline-success.spotify-button(href="/home", role="button") Start Optimizing
+        .welcome
+            .logo-title
+                .container
+                    .row.welcome-title
+                        h1 Spotify Playlist Optimizer
+                        h2 Get in Touch with your Tastes! 
+                    .row.logo-container
+                        img.logo(src="/images/logo.png")
+            .hook-container
+                span
+                    | Tired of skipping song after song in your Spotify playlist?
+                span
+                    | With just a few clicks, optimize your playlists for your listening tastes!
+                if (!user)
+                    a.btn.btn-outline-success.spotify-button(href="spotify_auth", role="button") Login to Spotify
+                else
+                    a.btn.btn-outline-success.spotify-button(href="/home", role="button") Start Optimizing
 
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')

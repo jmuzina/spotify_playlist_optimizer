@@ -61,7 +61,7 @@ app.use(session({
   cookie: { maxAge: 3600000, sameSite: true, secure: false, httpOnly: false } // 1 hr
 }))
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false, parameterLimit: 2000 }));
 app.use(bodyParser.json({ limit: '150mb' }));
 var jsonParser = bodyParser.json();
 app.use(passport.initialize());

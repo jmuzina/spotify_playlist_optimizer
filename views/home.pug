@@ -8,6 +8,11 @@ html(lang="en")
         link(rel='stylesheet', href='/css/style.css')
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1")
+        meta(property="og:site_name" content=`${version}`)
+        meta(property="og:title" content=`${title}`)
+        meta(property="og:description" content="Tired of skipping song after song in your Spotify playlist? With just a few clicks, optimize your playlists for your listening tastes!")
+        meta(property="og:url" content = "https://playlist-optimizer.joemuzina.com/home")
+        meta(property="og:image" content="https://playlist-optimizer.joemuzina.com/images/logo.png")
     .container.listing-reg
 
     block content
@@ -42,7 +47,7 @@ html(lang="en")
             else if optimization_success
                 h2.page-header Playlist successfully optimized! Thank you for using Spotify Playlist Optimizer!
                 br
-            .rounded-black.row
+            .row(style="padding: 10%;")
                 .col-lg-7.home-explanation
                     p How deep into your roots do you want to dig?
                     p We can suggest songs for you based on varying periods of Spotify data.
