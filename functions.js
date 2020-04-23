@@ -55,7 +55,6 @@ exports.create_playlist = function(req, res, name, public) {
 }
 
 function remove_with_delay(all_tracks, batch, selected_playlist, i, key) {
-    console.log("remove_with_delay called with i = " + i);
     const CALLS_NEEDED = exports.calls_needed(100, all_tracks.length)
     api_connection.setAccessToken(CRYPTO.decrypt(key));
     // Last batch of tracks
@@ -93,7 +92,6 @@ function remove_with_delay(all_tracks, batch, selected_playlist, i, key) {
                 api_connection.removeTracksFromPlaylist(selected_playlist, batch).then(
                     function (data) {
                         console.log("Tracks successfully removed!");
-                        console.log(t);
                         if (t + 1 === CALLS_NEEDED - 1){
                             remove_with_delay(all_tracks, all_tracks.slice((t + 1) * 100), selected_playlist, t + 1, key) 
                         } 
@@ -122,11 +120,11 @@ function remove_with_delay(all_tracks, batch, selected_playlist, i, key) {
 
 function find_batch(all_tracks, CALLS_NEEDED, t, done) {
     // First of many batches
-    if (t === 0 && CALLS_NEEDED != 1) done(all_tracks.slice((t * 100), ((t * 100) + 100)));
+    if (t === 0 && CALLS_NEEDED != 1) done(all_tracks.slice(0, 100));
     // Only batch
     else if (CALLS_NEEDED === 1) done(all_tracks);
     // Middle batches
-    else done(all_tracks.slice(((t + 1) * 100), (((t + 1) * 100) + 100)));
+    else done(all_tracks.slice(((t) * 100), (((t) * 100) + 100)));
 }
 
 exports.remove_tracks = function(req) {
@@ -161,7 +159,6 @@ exports.remove_tracks = function(req) {
             if (tracks[track] != "null") ARR[track - offset] = {uri: "spotify:track:" + tracks[track]};
             else {
                 offset = offset + 1
-                console.log("offset now " + offset);
             }
         }
         LENGTH = ARR.length;
@@ -398,12 +395,13 @@ function playlist_batch(id, collected_playlists, limit, offset, done) {
                 else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1))  {
                     // No more calls needed
                     if (num_checked != 49) {
-                        done(collected_playlists);
+                        if (offset != 0) done(collected_playlists);
+                        else done(playlists);
                     }
                     // Further calls needed
                     else {
                         collected_playlists.push(...playlists);
-                        playlist_batch(id, collected_playlists, limit, offset + 49, done);
+                        playlist_batch(id, collected_playlists, 50, offset + 49, done);
                     }
                 }
                 num_checked += 1;

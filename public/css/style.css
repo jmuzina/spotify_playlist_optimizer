@@ -328,6 +328,12 @@ select#selected_playlist{
     box-sizing: border-box;  
 }
 
+@media screen and (max-width:768px) {
+    .logo{
+        width: 75vw;
+    }
+}
+
 .rounded-black{
     background-color: rgba(20, 20, 20, 0.45); 
     border-radius: 25px;
