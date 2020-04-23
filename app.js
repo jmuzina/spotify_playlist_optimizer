@@ -5,6 +5,7 @@ var passport = require('passport');
 const mongoose = require('mongoose');
 const MONGO_CFG = require('./mongo_cfg.js');
 const CRYPTO = require('./crypto.js');
+
 bodyParser = require("body-parser");
 const app = express();
 app.set('trust proxy', 1) // trust first proxy
