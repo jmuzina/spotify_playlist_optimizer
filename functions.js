@@ -377,8 +377,12 @@ exports.post_handler = function(req, res, type) {
     }
 }
 
-exports.update_playlists = function(req, res, next, callback) {
-    api_connection.getUserPlaylists(req.user.id, {limit: 50}).then(
+function has_access(user, playlist) {
+    return ((playlist['owner']['id'] == user) || (playlist['collaborative']));
+}
+
+function playlist_batch(id, collected_playlists, limit, offset, done) {
+    api_connection.getUserPlaylists(id, {limit: limit, offset: offset}).then(
         function(playlist_data) {
             if (playlist_data.body['items'].length === 0) {
                 return res.redirect(200, '/home');
@@ -387,19 +391,33 @@ exports.update_playlists = function(req, res, next, callback) {
             num_pushed = 0;
             num_checked = 0;
             for (playlist in playlist_data.body['items']) {
-                if ((playlist_data.body['items'][playlist]['owner']['id'] == req.user.id || playlist_data.body['items'][playlist]['collaborative']) && (num_pushed != Object.keys(playlist_data.body['items']).length - 1)) {
+                if ((has_access(id, playlist_data.body['items'][playlist])) && (num_checked != Object.keys(playlist_data.body['items']).length - 1)) {
                     playlists.push(new CLASSES.playlist_info(playlist_data.body['items'][playlist]['id'], playlist_data.body['items'][playlist]['name'], playlist_data.body['items'][playlist]['images'], playlist_data.body['items'][playlist]['uri']));
                     num_pushed += 1;
                 }
                 else if ((num_checked == Object.keys(playlist_data.body['items']).length - 1))  {
-                    User.updatePlaylists(req, playlists, callback);
+                    // No more calls needed
+                    if (num_checked != 49) {
+                        done(collected_playlists);
+                    }
+                    // Further calls needed
+                    else {
+                        collected_playlists.push(...playlists);
+                        playlist_batch(id, collected_playlists, limit, offset + 49, done);
+                    }
                 }
                 num_checked += 1;
-            }
+            }  
         },
         function(playlist_err) {
             console.log("[ERROR] [Update Playlists]:");
             console.log(playlist_err);
         }
-    );
+    )
+}
+
+exports.update_playlists = function(req, res, next, callback) {
+    playlist_batch(req.user.id, [], 50, 0, function(collected_playlists) {
+        User.updatePlaylists(req, collected_playlists, callback);
+    });
 }

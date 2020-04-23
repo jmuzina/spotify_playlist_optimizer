@@ -5,7 +5,10 @@
     background-size: cover;
     background-color: black;
     min-height: 100%;
-    padding-top: 70px;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
 }
 
 .vertical-center{
@@ -290,7 +293,7 @@ select#selected_playlist{
 
 .welcome {
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
     justify-content: center;
     height: 100%;
 }
@@ -303,6 +306,7 @@ select#selected_playlist{
     -moz-box-sizing: border-box;
     box-sizing: border-box;  
     padding-bottom: 4%;
+    
 }
 
 .logo-container{
@@ -316,7 +320,7 @@ select#selected_playlist{
 
 .logo{
     object-fit: contain;
-    width: 100%;
+    width: 40vw;
     max-height: 286px;
 
     -webkit-box-sizing: border-box;
@@ -619,6 +623,10 @@ button-col + custom-control::before {
     flex-flow: column wrap;
     justify-content: flex-start;
     padding: 0;
+}
+
+body {
+    padding-top: 60px;
 }
 
 .artists-col {
