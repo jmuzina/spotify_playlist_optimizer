@@ -80,6 +80,7 @@ const aboutRouter = require('./routes/about.js');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
+const errorRouter = require('./routes/error.js');
 
 // Add user to DB
 passport.serializeUser(function(user, done) {
@@ -165,6 +166,7 @@ app.use('/about', aboutRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);
 app.use('/suggestions', ensureAuthenticated, suggestionsRouter);
 app.use('/optimize', ensureAuthenticated, optimizeRouter);
+app.use('/error', errorRouter)
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -174,7 +176,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.redirect(200, '/error');
 });
 
 module.exports = app;
@@ -182,7 +184,7 @@ module.exports = app;
 //app.listen(port);
 console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
 
-
+// Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
