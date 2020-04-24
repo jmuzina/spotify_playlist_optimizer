@@ -60,7 +60,7 @@ html(lang="en")
                   span #{ob.add[song]['name']} by #{ob.add[song]['artists']}
               .col-3.button-col.btn-group-toggle(data-toggle="buttons")
                 label.btn.btn-info.active.add-label Add
-                  input(type="checkbox", checked, id = `${ob.add[song]['uri']}`, name="add_song", value=`${ob.add[song]['id']}`)
+                  input(type="checkbox", checked, id = `${ob.add[song]['uri']}`, name="add_song", value=`${ob.add[song]['uri']}`)
         .container.track-list.remove-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
           h2 Tracks to Remove
           -for (var song in ob.remove)
@@ -72,7 +72,7 @@ html(lang="en")
                   span #{ob.remove[song]['name']} by #{ob.remove[song]['artists']}
               .col-3.button-col.btn-group-toggle(data-toggle="buttons")
                 label.btn.btn-warning.active.remove-label Remove
-                  input(type="checkbox", checked, id = `${ob.remove[song]['uri']}`, name="remove_song", value=`${ob.remove[song]['id']}`)
+                  input(type="checkbox", checked, id = `${ob.remove[song]['uri']}`, name="remove_song", value=`${ob.remove[song]['uri']}`)
         .container.track-list.keep-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
           h2 Tracks to Keep
           -for (var song in ob.keep)
@@ -84,7 +84,7 @@ html(lang="en")
                   span #{ob.keep[song]['name']} by #{ob.keep[song]['artists']}
               .col-3.button-col.btn-group-toggle(data-toggle="buttons")
                 label.btn.btn-primary.active.keep-label Keep
-                  input(type="checkbox", id = `${ob.keep[song]['uri']}`, name="remove_song", value=`${ob.keep[song]['id']}`)
+                  input(type="checkbox", id = `${ob.keep[song]['uri']}`, name="remove_song", value=`${ob.keep[song]['uri']}`)
             
         button.btn.btn-primary.mt-4(type="submit" name = "button_type", value = "save_changes") Save Changes
 
