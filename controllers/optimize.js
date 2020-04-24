@@ -7,12 +7,21 @@ const CRYPTO = require('../crypto.js');
 let User = require('../models/user.js');
 
 function track_data(arr, done) {
-  let result = [];
+  let result = [], 
+  num_local = 0;
   for (track in arr) {
-    if (arr[track]['track']['uri']) {
-      result.push(new CLASSES.track_info(arr[track]['track']['id'], arr[track]['track']['name'], FUNCTIONS.artist_string(arr[track]['track']['artists']), arr[track]['track']['uri'], arr[track]['track']['preview_url'], FUNCTIONS.get_image(arr[track]['track']['album']['images'], "album_art")));
+    if (arr[track]['track']['is_local'] === false) {
+      result.push(new CLASSES.track_info(
+        arr[track]['track']['id'], 
+        arr[track]['track']['name'], 
+        FUNCTIONS.artist_string(arr[track]['track']['artists']), 
+        ('linked_from' in arr[track]['track'] ? arr[track]['track']['linked_from']['uri'] : arr[track]['track']['uri']), 
+        arr[track]['track']['preview_url'], 
+        FUNCTIONS.get_image(arr[track]['track']['album']['images'], "album_art")
+      ));
     }
-    if (track == arr.length - 1) done(result);
+    else num_local += 1;
+    if (track == (arr.length - 1)) done(result, num_local);
   }
 }
 
@@ -21,13 +30,13 @@ function offset_loop(user, tracks, offset, checked, CALLS_NEEDED, done) {
   api_connection.setAccessToken(CRYPTO.decrypt(user.keys.access));
   api_connection.getPlaylistTracks(user.selected_playlist, { offset: offset * 100 }).then(
     function(playlist_data) {
-      track_data(playlist_data.body['items'], function(obj) {
+      track_data(playlist_data.body['items'], function(obj, num_local) {
         tracks.push(...obj);
-        if (checked + obj.length === (playlist_data.body['total']) && (offset === CALLS_NEEDED - 1)) {
+        if ((checked + obj.length + num_local === (playlist_data.body['total'])) && (offset === CALLS_NEEDED - 1)) {
           done(tracks);
         }
         else {
-          offset_loop(user, tracks, offset + 1, checked + obj.length, CALLS_NEEDED, done);
+          offset_loop(user, tracks, offset + 1, checked + obj.length + num_local, CALLS_NEEDED, done);
         }
       })
     }, 

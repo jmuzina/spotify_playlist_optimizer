@@ -136,7 +136,7 @@ exports.remove_tracks = function(req) {
     // Handle removing only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
-        var track = [{uri: "spotify:track:" + tracks}];
+        var track = [{uri: tracks}];
         api_connection.removeTracksFromPlaylist(selected_playlist, track).then(
             function (data) {
                 STATS.updateRemoved(1, function() {
@@ -156,7 +156,7 @@ exports.remove_tracks = function(req) {
     else {
         let offset = 0;
         for (track in tracks) {
-            if (tracks[track] != "null") ARR[track - offset] = {uri: "spotify:track:" + tracks[track]};
+            if (tracks[track] != "null") ARR[track - offset] = {uri: tracks[track]};
             else {
                 offset = offset + 1
             }
@@ -177,12 +177,12 @@ exports.add_tracks = function (req) {
     // Handle adding only 1 track
     if (typeof(tracks) === "string") {
         LENGTH = 1;
-        ARR = ["spotify:track:" + tracks];
+        ARR = [tracks];
     }
     else {
         LENGTH = tracks.length;
         for (track in tracks) {
-            ARR[track] = "spotify:track:" + tracks[track];
+            ARR[track] = tracks[track];
         }
     }
     console.log("add_tracks called, adding " + LENGTH + " tracks");
@@ -288,8 +288,18 @@ exports.playlist_compare = function(suggested, selected, done) {
     })));
 }
 
+// Replace URIs for out-of-market songs with appropriate URIs
+function check_link(arr) {
+    console.log("received: ");
+    console.log(arr);
+    for (track in arr) {
+        if ('linked_from' in arr) arr[track]['uri'] = arr[track]['linked_from']['uri'];
+    }
+    return arr;
+}
+
 exports.remove_duplicates = function(arr) {
-    return underscore.uniq(arr, function(d){ return d.uri });
+    return check_link(underscore.uniq(arr, function(d){ return d.uri }));
 }
 
 exports.artist_alphabetize = function(a, b){
