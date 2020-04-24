@@ -11,6 +11,18 @@
     justify-content: center;
 }
 
+@media screen and (max-width: 768px) {
+    .bg-img{
+        background-image: none;
+        background-color: #282828;
+    }
+    .welcome {
+        background-color: #3a3a3a;
+        border-radius: 8px;
+        padding-top: 4%;
+    }
+}
+
 .vertical-center{
     display: flex;
     flex-flow: column nowrap;
@@ -670,6 +682,10 @@ body {
 .button-col label {
     width: 90%;
     align-self: center;
+}
+
+.typeselect .active{
+    box-shadow: 0px -1px 8px white;
 }
 
 .site-stats {
