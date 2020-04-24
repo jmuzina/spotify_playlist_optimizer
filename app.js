@@ -76,6 +76,7 @@ var SpotifyStrategy = require('./node_modules/passport-spotify/lib/passport-spot
 const FUNCTIONS = require('./functions.js');
 
 const SPOTIFY_CFG = require('./spotify_auth_cfg');
+const welcomeRouter = require('./routes/welcome.js');
 const aboutRouter = require('./routes/about.js');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
@@ -157,10 +158,7 @@ app.get(
   }
 );
 
-app.get('/', function(req, res, next) {
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
-});
-
+app.use('/', welcomeRouter);
 app.use('/home', ensureAuthenticated, homeRouter);
 app.use('/about', aboutRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);

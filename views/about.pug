@@ -1,4 +1,6 @@
 html(lang="en")
+  head 
+    script(data-ad-client="ca-pub-9106621079135904" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
   title= `${title}`
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet', href='https://unpkg.com/aos@next/dist/aos.css')
@@ -37,6 +39,9 @@ html(lang="en")
                             a.nav-link(href='#') About
                         li.nav-item.active
                             a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
+        .ads
+            script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+            ins.adsbygoogle(style="display:block;" data-ad-client="ca-pub-9106621079135904" data-ad-slot="8265072752" data-ad-format="auto" data-full-width-responsive="true")
         .about
             .primary
                 .container
@@ -84,7 +89,7 @@ html(lang="en")
                         h3 Optimizing a Playlist
                         ol
                             li Select a playlist to optimize.
-                            li SPO will present you with a color-coded list of tracks. 
+                            li SPO organizes recommendations on separate pages. Click the appropriate buttons at the top of the page to see the corresponding recommendations.
                             .row
                                 .col-md-6.adjusted-line
                                     li If a track is red, you have not been listening to it much, but it is still in the playlist. These tracks are set to be removed by default.
@@ -93,7 +98,8 @@ html(lang="en")
                                     li To alter the action set to be performed on a given track, tap the button next to the track. 
                                 .col-md-6
                                     img(src="images/about/optimize.png")
-                            li Click save at the bottom of the page, and your playlist will now be optimized!
+                            li The "finalize" page shows what your playlist will look like if you save it. Click save at the bottom of this page, and your playlist will now be optimized!
+                            span Note that SPO cannot remove locally added tracks from your playlist - you must remove these yourself in the Spotify client or app. 
             .primary
                 .stats.container(data-aos="fade" data-aos-anchor-placement="top-bottom")
                     h2 Statistics
