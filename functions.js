@@ -379,6 +379,7 @@ exports.logout = function(req, res) {
 
 // Routing errors, etc.
 exports.page_not_found = function(res, type) {
+    console.log(type);
     res.redirect(200, '/error');
 }
 
