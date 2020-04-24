@@ -48,6 +48,7 @@ html(lang="en")
           a.btn.btn-success.select-add.active Add
           a.btn.btn-danger.select-remove Remove
           a.btn.btn-secondary.select-keep Keep
+          a.btn.btn-info.select-final Finalize
         -var ob = comparison;
         .container.track-list.add-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
           h2 Tracks to Add
@@ -85,8 +86,33 @@ html(lang="en")
               .col-3.button-col.btn-group-toggle(data-toggle="buttons")
                 label.btn.btn-primary.active.keep-label Keep
                   input(type="checkbox", id = `${ob.keep[song]['uri']}`, name="remove_song", value=`${ob.keep[song]['uri']}`)
+        .container.track-list.final-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
+          h2 Optimized Playlist
+          -for (var song in ob.add)
+            .track-row.song.row.final-shown(name=`${ob.add[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.add[song]['image']}`)
+                .title-text-container
+                  span #{ob.add[song]['name']} by #{ob.add[song]['artists']}
+          -for (var song in ob.remove)
+            .track-row.song.row.final-hidden(name=`${ob.remove[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.remove[song]['image']}`)
+                .title-text-container
+                  span #{ob.remove[song]['name']} by #{ob.remove[song]['artists']}
+          -for (var song in ob.keep)
+            .track-row.song.row.final-shown(name=`${ob.keep[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.keep[song]['image']}`)
+                .title-text-container
+                  span #{ob.keep[song]['name']} by #{ob.keep[song]['artists']}
+              
+                  
             
-        button.btn.btn-primary.mt-4(type="submit" name = "button_type", value = "save_changes") Save Changes
+          button.btn.btn-primary.mt-4(type="submit" name = "button_type", value = "save_changes") Save Changes
 
       script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')

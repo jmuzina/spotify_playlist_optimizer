@@ -34,7 +34,7 @@ exports.get_suggestions = function(req, res, next) {
       })
     },
     function(err) {
-      FUNCTIONS.page_note_found(req, err);
+      FUNCTIONS.page_not_found(req, err);
     }
   );
 }
