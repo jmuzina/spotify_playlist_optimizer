@@ -23,6 +23,11 @@
     }
 }
 
+.opt-head span {
+    text-align: center;
+    color: white;
+}
+
 .vertical-center{
     display: flex;
     flex-flow: column nowrap;

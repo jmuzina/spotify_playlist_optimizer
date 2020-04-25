@@ -28,7 +28,9 @@ exports.create_playlist = function(req, res, name, public) {
                         var public_str = "private";
                         if (public) public_str = "public";
                         STATS.updateCreated(1, function() {
-                            res.redirect(200, '/home');
+                            STATS.updateAdded(songs_to_add.length, function() {
+                                res.redirect(200, '/home');
+                            })
                         })
                     })
                 },

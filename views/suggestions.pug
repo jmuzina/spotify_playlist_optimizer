@@ -87,8 +87,12 @@ html(lang="en")
       //.ads
         script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
         ins.adsbygoogle(style="display:block;" data-ad-client="ca-pub-9106621079135904" data-ad-slot="8265072752" data-ad-format="auto" data-full-width-responsive="true")
-      .container.track-list
+      .container.track-list(style="margin-bottom:15px;")
         h1.page-header Suggested Songs
+        .suggestions-buttons-container
+          .suggestion-buttons
+            button.btn.btn-outline-success.spotify-button(type='button' data-toggle='modal' data-target='#create') Create new playlist
+            button.btn.btn-outline-success.spotify-button(type='button' data-toggle='modal' data-target='#optimize') Optimize existing playlist
         -var ob = user.suggestions;
         -for(var song in ob)
           .track-row(data-aos="fade" data-aos-anchor-placement="top-bottom")
@@ -96,10 +100,6 @@ html(lang="en")
               img(src=`${ob[song]['image']}`)
             .track-details-container
               span #{ob[song]['name']} by #{ob[song]['artists']}  
-      .suggestions-buttons-container
-        .suggestion-buttons
-          button.btn.btn-outline-success.spotify-button(type='button' data-toggle='modal' data-target='#create') Create new playlist
-          button.btn.btn-outline-success.spotify-button(type='button' data-toggle='modal' data-target='#optimize') Optimize existing playlist
       script(src='https://unpkg.com/aos@next/dist/aos.js')
       script. 
         AOS.init();
