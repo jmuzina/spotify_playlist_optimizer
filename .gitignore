@@ -11,3 +11,5 @@ mongo_cfg.js
 mysql_cfg.js
 redis_session_cfg.js
 spotify_auth_cfg.js
+redis_session_cfg.js
+spotify_auth_cfg.js
