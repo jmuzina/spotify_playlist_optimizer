@@ -1,11 +1,18 @@
 html(lang="en")
+  head 
+    script(data-ad-client="ca-pub-9106621079135904" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
   title= `${title}`
   head
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
     link(rel='stylesheet', href='/css/style.css')
-    script(src="https://kit.fontawesome.com/82d7d212c3.js" crossorigin="anonymous")
+    link(rel='stylesheet', href='https://unpkg.com/aos@next/dist/aos.css')
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(property="og:site_name" content=`${version}`)
+    meta(property="og:title" content=`${title}`)
+    meta(property="og:description" content="Tired of skipping song after song in your Spotify playlist? With just a few clicks, optimize your playlists for your listening tastes!")
+    meta(property="og:url" content = "https://playlist-optimizer.joemuzina.com")
+    meta(property="og:image" content="https://playlist-optimizer.joemuzina.com/images/logo.png")
   .container.listing-reg
 
   block content
@@ -30,55 +37,112 @@ html(lang="en")
               li.nav-item.active
                 a.nav-link(href='./') Home 
               li.nav-item.active
-                a.nav-link(href='#') About
+                a.nav-link(href='./about') About
               li.nav-item.active
                 a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-              li.nav-item.active
-                a.nav-link(href='#') Contact
+      //.ads
+        script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+        ins.adsbygoogle(style="display:block;" data-ad-client="ca-pub-9106621079135904" data-ad-slot="8265072752" data-ad-format="auto" data-full-width-responsive="true")
       .container.playlist-image(style="margin-top:20px;")
         img(src = `${playlist_images['0']['url']}`)
-      .container.track-list
-        h1.mt-3.playlist-title Optimizing #{playlist_name}
-        -var ob = combined_songs;
-        form.optimize-form(method="POST")
-          input(type = "hidden", name = "type", value = "save_changes")
-          -for(var song in ob)
-            -if (comparison["add"].includes(ob[song]['id']))
-              .track-row.add-song.row
-                .col-9.title-col.border-right.border-dark
-                  .track-img-container
-                    img.optimize-img(src=`${ob[song]['image']}`)
-                  .title-text-container
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
-                  label.btn.btn-info.active.add-label Add
-                    input(type="checkbox", checked, id = `${ob[song]['id']}`, name="add_song", value=`${ob[song]['id']}`)
-            -if (comparison["remove"].includes(ob[song]['id']))
-              .track-row.remove-song.row
-                .col-9.title-col.border-right.border-dark
-                  .track-img-container
-                    img.optimize-img(src=`${ob[song]['image']}`)
-                  .title-text-container
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
-                  label.btn.btn-warning.active.remove-label Remove
-                    input(type="checkbox", checked, id = `${ob[song]['id']}`, name="remove_song", value=`${ob[song]['id']}`)
-            -if (comparison["keep"].includes(ob[song]['id']))
-              .track-row.song.row
-                .col-9.title-col.border-right.border-dark
-                  .track-img-container
-                    img.optimize-img(src=`${ob[song]['image']}`)
-                  .title-text-container
-                    span #{ob[song]['name']} by #{ob[song]['artists']}
-                .col-3.button-col.btn-group-toggle(data-toggle="buttons")
-                  label.btn.btn-primary.active.keep-label Keep
-                    input(type="checkbox", id = `${ob[song]['id']}`, name="remove_song", value=`${ob[song]['id']}`)
-        
-          button.btn.btn-primary.mt-4(type="submit" name = "button_type", value = "save_changes") Save Changes
+
+      h1.mt-3.playlist-title Optimizing #{playlist_name}
+      form.optimize-form(method="POST")
+        input(type = "hidden", name = "type", value = "save_changes")
+        .typeselect
+          a.btn.btn-success.select-add.active Add
+          a.btn.btn-danger.select-remove Remove
+          a.btn.btn-secondary.select-keep Keep
+          a.btn.btn-info.select-final.mb- Save
+        -var ob = comparison;
+        .container.track-list.add-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
+          -if (ob.add.length != 0)
+            h2 Tracks to Add
+            .row.opt-head
+              .col-9
+              .col-3(style="display:flex;flex-flow:row wrap;justify-content:center;")
+                span Choice
+          -else 
+            h2 No Tracks to Add
+          -for(var song in ob.add)
+            .track-row.add-song.row
+              .col-9.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.add[song]['image']}`)
+                .title-text-container
+                  span #{ob.add[song]['name']} by #{ob.add[song]['artists']}
+              .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                label.btn.btn-info.active.add-label Add
+                  input(type="checkbox", checked, id = `${ob.add[song]['uri']}`, name="add_song", value=`${ob.add[song]['uri']}`)
+        .container.track-list.remove-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
+          -if (ob.remove.length != 0)
+            h2 Tracks to Remove
+            .row.opt-head
+              .col-9
+              .col-3(style="display:flex;flex-flow:row wrap;justify-content:center;")
+                span Choice
+          -else 
+            h2 No Tracks to Remove
+          -for (var song in ob.remove)
+            .track-row.remove-song.row
+              .col-9.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.remove[song]['image']}`)
+                .title-text-container
+                  span #{ob.remove[song]['name']} by #{ob.remove[song]['artists']}
+              .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                label.btn.btn-warning.active.remove-label Remove
+                  input(type="checkbox", checked, id = `${ob.remove[song]['uri']}`, name="remove_song", value=`${ob.remove[song]['uri']}`)
+        .container.track-list.keep-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
+          -if (ob.add.length != 0)
+            h2 Tracks to Keep
+            .row.opt-head
+              .col-9
+              .col-3(style="display:flex;flex-flow:row wrap;justify-content:center;")
+                span Choice
+          -else
+            h2 No Tracks to Keep
+          -for (var song in ob.keep)
+            .track-row.song.row
+              .col-9.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.keep[song]['image']}`)
+                .title-text-container
+                  span #{ob.keep[song]['name']} by #{ob.keep[song]['artists']}
+              .col-3.button-col.btn-group-toggle(data-toggle="buttons")
+                label.btn.btn-primary.active.keep-label Keep
+                  input(type="checkbox", id = `${ob.keep[song]['uri']}`, name="remove_song", value=`${ob.keep[song]['uri']}`)
+        .container.track-list.final-list(data-aos="fade" data-aos-anchor-placement="top-bottom")
+          h2 Optimized Playlist
+          button.btn.btn-primary.mt-4.mb-3(type="submit" name = "button_type", value = "save_changes") Save Changes
+          -for (var song in ob.add)
+            .track-row.song.row.final-shown(name=`${ob.add[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.add[song]['image']}`)
+                .title-text-container
+                  span #{ob.add[song]['name']} by #{ob.add[song]['artists']}
+          -for (var song in ob.remove)
+            .track-row.song.row.final-hidden(name=`${ob.remove[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.remove[song]['image']}`)
+                .title-text-container
+                  span #{ob.remove[song]['name']} by #{ob.remove[song]['artists']}
+          -for (var song in ob.keep)
+            .track-row.song.row.final-shown(name=`${ob.keep[song]['uri']}`)
+              .col-12.title-col.border-right.border-dark
+                .track-img-container
+                  img.optimize-img(src=`${ob.keep[song]['image']}`)
+                .title-text-container
+                  span #{ob.keep[song]['name']} by #{ob.keep[song]['artists']}
 
       script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
       script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
       script(src="js/optimize_button.js")
+      script(src='https://unpkg.com/aos@next/dist/aos.js')
+      script. 
+        AOS.init();
 
           

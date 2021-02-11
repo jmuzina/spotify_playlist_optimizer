@@ -1,10 +1,11 @@
-const APP_VERSION = exports.VERSION = "ALPHA V 1.2";
+const APP_VERSION = exports.VERSION = "Playlist Optimizer";
 const express = require('express');
 var session = require("express-session");
 var passport = require('passport');
 const mongoose = require('mongoose');
 const MONGO_CFG = require('./mongo_cfg.js');
 const CRYPTO = require('./crypto.js');
+
 bodyParser = require("body-parser");
 const app = express();
 app.set('trust proxy', 1) // trust first proxy
@@ -12,8 +13,24 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 User = require('./models/user.js');
 
+// Greenlock SSL
+require("greenlock-express")
+    .init({
+        packageRoot: __dirname,
+        configDir: "./greenlock.d",
+
+        // contact for security and critical bug notices
+        maintainerEmail: "joe.muzina@gmail.com",
+
+        // whether or not to run at cloudscale
+        cluster: true
+    })
+    // Serves on 80 and 443
+    // Get's SSL certificates magically!
+    .serve(app);
+
 //mongo connect
-mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false}, function() {
+mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true}, function() {
   console.log("Mongo connected!");
   User.deleteAll(function() {
     console.log("All previous userdata deleted!");
@@ -45,7 +62,7 @@ app.use(session({
   cookie: { maxAge: 3600000, sameSite: true, secure: false, httpOnly: false } // 1 hr
 }))
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false, parameterLimit: 2000 }));
 app.use(bodyParser.json({ limit: '150mb' }));
 var jsonParser = bodyParser.json();
 app.use(passport.initialize());
@@ -59,9 +76,12 @@ var SpotifyStrategy = require('./node_modules/passport-spotify/lib/passport-spot
 const FUNCTIONS = require('./functions.js');
 
 const SPOTIFY_CFG = require('./spotify_auth_cfg');
+const welcomeRouter = require('./routes/welcome.js');
+const aboutRouter = require('./routes/about.js');
 const homeRouter = require('./routes/home.js');
 const optimizeRouter = require('./routes/optimize.js');
 const suggestionsRouter = require('./routes/suggestions.js');
+const errorRouter = require('./routes/error.js');
 
 // Add user to DB
 passport.serializeUser(function(user, done) {
@@ -95,7 +115,9 @@ passport.use(
         suggestions: null,
         selected_playlist: null,
         playlist_optimized: false,
-        playlist_created: false
+        playlist_created: false,
+        limit: 1,
+        range: "short_term"
       }, 
       function(err, user) {
         return done(err, user);
@@ -136,39 +158,32 @@ app.get(
   }
 );
 
-app.get('/', function(req, res, next) {
-  console.log("[CONNECTION] " + req.connection.remoteAddress.substring(7));
-  FUNCTIONS.default_session(req.session);
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});  
-});
-
-app.post('/', function(req, res, next) {
-  FUNCTIONS.default_session(req.session);
-  res.render('welcome', { title: 'Spotify Playlist Optimizer', user: req.user, version: APP_VERSION});
-})
-
+app.use('/', welcomeRouter);
 app.use('/home', ensureAuthenticated, homeRouter);
+app.use('/about', aboutRouter);
 app.use('/options', ensureAuthenticated, optimizeRouter);
 app.use('/suggestions', ensureAuthenticated, suggestionsRouter);
 app.use('/optimize', ensureAuthenticated, optimizeRouter);
+app.use('/error', errorRouter)
 
 // error handler
 app.use(function(err, req, res, next) {
+  console.log(err);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.redirect(200, '/error');
 });
 
 module.exports = app;
-port = 80;
-app.listen(port);
-console.log("Started sever on port " + port);
+//port = 80;
+//app.listen(port);
+console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
 
-
+// Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();

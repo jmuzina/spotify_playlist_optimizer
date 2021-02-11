@@ -1,0 +1,11 @@
+User-Agent: *
+Disallow: 
+Disallow: /spotify_auth
+Disallow: /spotify_auth_callback
+Disallow: /home
+Disallow: /suggestions
+Disallow: /optimize
+Allow: /about
+Allow: /
+
+Sitemap: https://playlist-optimizer.joemuzina.com/sitemap.xml
