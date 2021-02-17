@@ -13,6 +13,7 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 User = require('./models/user.js');
 
+/*
 // Greenlock SSL
 require("greenlock-express")
     .init({
@@ -28,6 +29,7 @@ require("greenlock-express")
     // Serves on 80 and 443
     // Get's SSL certificates magically!
     .serve(app);
+*/
 
 //mongo connect
 mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true}, function() {
@@ -101,7 +103,7 @@ passport.use(
     {
       clientID: SPOTIFY_CFG.CLIENT_ID,
       clientSecret: SPOTIFY_CFG.CLIENT_SECRET,
-      callbackURL: "http://playlist-optimizer.joemuzina.com/spotify_auth_callback",
+      callbackURL: "http://joemuzina.com:8080/spotify_auth_callback",
       passReqToCallback: true
     },
     function(req, accessToken, refreshToken, expires_in, profile, done) {
@@ -179,9 +181,9 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-//port = 80;
-//app.listen(port);
-console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
+port = 8080;
+app.listen(port);
+//console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
 
 // Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
