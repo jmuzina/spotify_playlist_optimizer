@@ -8,7 +8,9 @@
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
+    "dot-prop": "^6.0.1",
     "https": "^1.0.0",
+    "ini": "^2.0.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pug": "^3.0.2",
