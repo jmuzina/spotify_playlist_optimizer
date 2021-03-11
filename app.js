@@ -23,7 +23,6 @@ var redirectAddress = 8081;
 var httpsAddress = 8082;
 
 function tcpConnection(conn) {
-  //console.log("tcp");
   conn.once('data', function (buf) {
       // A TLS handshake record starts with byte 22.
       var address = (buf[0] === 22) ? httpsAddress : redirectAddress;
@@ -35,23 +34,16 @@ function tcpConnection(conn) {
 }
 
 function httpConnection(req, res) {
-  //console.log("http");
   var host = req.headers['host'];
   res.writeHead(301, { "Location": "https://" + host + req.url });
   res.end();
 }
 
 function httpsConnection(req, res) {
-  //console.log("https");
-  //res.writeHead(200, { 'Content-Length': '5' });
-  //res.redirect('https://' + req.headers.host + req.url);
-  //res.end();
-  //res.end('HTTPS');
+  res.writeHead(200, { 'Content-Length': '5' });
   res.redirect(200, 'https://' + req.headers.host + req.url);
 
 }
-
-//console.log("Loaded options", options);
 
 bodyParser = require("body-parser");
 const app = express();
@@ -125,7 +117,7 @@ passport.deserializeUser(function(user, done) {
     done(err, obj);
   })
 });
-//console.log(SPOTIFY_CFG.CLIENT_ID, SPOTIFY_CFG.CLIENT_SECRET);
+
 // Passport configuration
 passport.use(
   new SpotifyStrategy(
@@ -230,9 +222,6 @@ console.log("using helmet");
 app.use(helmet());
 
 module.exports = app;
-//const port = 8080;
-
-//app.listen(port);
 https.createServer(options, app).listen(httpsAddress);
 
 net.createServer(tcpConnection).listen(baseAddress);
