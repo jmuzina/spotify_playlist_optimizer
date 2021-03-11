@@ -322,7 +322,7 @@ select#selected_playlist{
     -moz-box-sizing: border-box;
     box-sizing: border-box;  
     padding-bottom: 4%;
-    
+    padding-top:3.5%;   
 }
 
 .logo-container{

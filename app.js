@@ -5,6 +5,53 @@ var passport = require('passport');
 const mongoose = require('mongoose');
 const MONGO_CFG = require('./mongo_cfg.js');
 const CRYPTO = require('./crypto.js');
+var net = require('net');
+var http = require('http');
+
+const https = require("https"),
+  fs = require("fs"),
+  helmet = require("helmet");
+
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/fullchain.pem"),
+  dhparam: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/dh-strong.pem")
+};
+
+var baseAddress = 8080;
+var redirectAddress = 8081;
+var httpsAddress = 8082;
+
+function tcpConnection(conn) {
+  //console.log("tcp");
+  conn.once('data', function (buf) {
+      // A TLS handshake record starts with byte 22.
+      var address = (buf[0] === 22) ? httpsAddress : redirectAddress;
+      var proxy = net.createConnection(address, function () {
+          proxy.write(buf);
+          conn.pipe(proxy).pipe(conn);
+      });
+  });
+}
+
+function httpConnection(req, res) {
+  //console.log("http");
+  var host = req.headers['host'];
+  res.writeHead(301, { "Location": "https://" + host + req.url });
+  res.end();
+}
+
+function httpsConnection(req, res) {
+  //console.log("https");
+  //res.writeHead(200, { 'Content-Length': '5' });
+  //res.redirect('https://' + req.headers.host + req.url);
+  //res.end();
+  //res.end('HTTPS');
+  res.redirect(200, 'https://' + req.headers.host + req.url);
+
+}
+
+//console.log("Loaded options", options);
 
 bodyParser = require("body-parser");
 const app = express();
@@ -12,24 +59,6 @@ app.set('trust proxy', 1) // trust first proxy
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 User = require('./models/user.js');
-
-/*
-// Greenlock SSL
-require("greenlock-express")
-    .init({
-        packageRoot: __dirname,
-        configDir: "./greenlock.d",
-
-        // contact for security and critical bug notices
-        maintainerEmail: "joe.muzina@gmail.com",
-
-        // whether or not to run at cloudscale
-        cluster: true
-    })
-    // Serves on 80 and 443
-    // Get's SSL certificates magically!
-    .serve(app);
-*/
 
 //mongo connect
 mongoose.connect(MONGO_CFG.credentials.uri, {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true}, function() {
@@ -103,7 +132,7 @@ passport.use(
     {
       clientID: SPOTIFY_CFG.CLIENT_ID,
       clientSecret: SPOTIFY_CFG.CLIENT_SECRET,
-      callbackURL: "http://joemuzina.com:8080/spotify_auth_callback",
+      callbackURL: "https://joemuzina.com:8080/spotify_auth_callback",
       passReqToCallback: true
     },
     function(req, accessToken, refreshToken, expires_in, profile, done) {
@@ -148,7 +177,6 @@ app.get(
   function(req, res) {
     // The request will be redirected to spotify for authentication, so this
     // function will not be called.
-//    console.log("spauth");
   }
 );
 
@@ -156,11 +184,38 @@ app.get(
   '/spotify_auth_callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function(req, res) {
-  //  console.log("redirecting");
     // Successful authentication, redirect home.
     res.redirect(200, '/home');
   }
 );
+
+// error handler
+app.use(function(err, req, res, next) {
+  console.log(err);
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  /*
+  if (!req.secure) {
+    console.log("redirecting to TLS");
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+  else if (err) {
+    console.log("secure, error")
+    // render the error page
+    res.status(err.status || 500);
+    res.redirect(200, '/error');
+  }
+  else {
+    console.log("valid req");
+    next();
+  }
+  */
+  if (err) {
+    res.status(err.status || 500);
+    res.redirect(200, '/error');
+  }
+});
 
 app.use('/', welcomeRouter);
 app.use('/home', ensureAuthenticated, homeRouter);
@@ -170,22 +225,21 @@ app.use('/suggestions', ensureAuthenticated, suggestionsRouter);
 app.use('/optimize', ensureAuthenticated, optimizeRouter);
 app.use('/error', errorRouter)
 
-// error handler
-app.use(function(err, req, res, next) {
-  console.log(err);
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+console.log("using helmet");
 
-  // render the error page
-  res.status(err.status || 500);
-  res.redirect(200, '/error');
-});
+app.use(helmet());
 
 module.exports = app;
-port = 8080;
-app.listen(port);
-//console.log("Spotify Playlist Optimizer has successfully launched!\nListening on Ports 443(HTTPS) and 80(HTTP).");
+//const port = 8080;
+
+//app.listen(port);
+https.createServer(options, app).listen(httpsAddress);
+
+net.createServer(tcpConnection).listen(baseAddress);
+http.createServer(httpConnection).listen(redirectAddress);
+//https.createServer(options, httpsConnection).listen(httpsAddress);
+
+console.log("SPO launched on " + baseAddress, redirectAddress, httpsAddress);
 
 // Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
