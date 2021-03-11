@@ -96,7 +96,7 @@ passport.deserializeUser(function(user, done) {
     done(err, obj);
   })
 });
-
+//console.log(SPOTIFY_CFG.CLIENT_ID, SPOTIFY_CFG.CLIENT_SECRET);
 // Passport configuration
 passport.use(
   new SpotifyStrategy(
@@ -148,6 +148,7 @@ app.get(
   function(req, res) {
     // The request will be redirected to spotify for authentication, so this
     // function will not be called.
+//    console.log("spauth");
   }
 );
 
@@ -155,6 +156,7 @@ app.get(
   '/spotify_auth_callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function(req, res) {
+  //  console.log("redirecting");
     // Successful authentication, redirect home.
     res.redirect(200, '/home');
   }

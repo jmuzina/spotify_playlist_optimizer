@@ -1,6 +1,4 @@
 html(lang="en")
-  head 
-    script(data-ad-client="ca-pub-9106621079135904" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
   title= `${title}`
   head
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
@@ -11,8 +9,8 @@ html(lang="en")
     meta(property="og:site_name" content=`${version}`)
     meta(property="og:title" content=`${title}`)
     meta(property="og:description" content="Tired of skipping song after song in your Spotify playlist? With just a few clicks, optimize your playlists for your listening tastes!")
-    meta(property="og:url" content = "https://playlist-optimizer.joemuzina.com")
-    meta(property="og:image" content="https://playlist-optimizer.joemuzina.com/images/logo.png")
+    meta(property="og:url" content = "http://joemuzina.com:8080")
+    meta(property="og:image" content="http://joemuzina.com:8080/images/logo.png")
   .container.listing-reg
 
   block content
@@ -42,9 +40,7 @@ html(lang="en")
                 a.nav-link(href='https://joemuzina.com' target="_blank") Developer
               li.nav-item.active
                 a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-      //.ads
-        script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
-        ins.adsbygoogle(style="display:block;" data-ad-client="ca-pub-9106621079135904" data-ad-slot="8265072752" data-ad-format="auto" data-full-width-responsive="true")
+
       .container.playlist-image(style="margin-top:20px;")
         img(src = `${playlist_images['0']['url']}`)
 

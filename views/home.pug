@@ -1,6 +1,4 @@
 html(lang="en")
-    head 
-        script(data-ad-client="ca-pub-9106621079135904" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
     title= `${title}`
     head
         script(src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous")
@@ -13,8 +11,8 @@ html(lang="en")
         meta(property="og:site_name" content=`${version}`)
         meta(property="og:title" content=`${title}`)
         meta(property="og:description" content="Tired of skipping song after song in your Spotify playlist? With just a few clicks, optimize your playlists for your listening tastes!")
-        meta(property="og:url" content = "https://playlist-optimizer.joemuzina.com/home")
-        meta(property="og:image" content="https://playlist-optimizer.joemuzina.com/images/logo.png")
+        meta(property="og:url" content = "http://joemuzina.com:8080/home")
+        meta(property="og:image" content="http://joemuzina.com:8080/images/logo.png")
     .container.listing-reg
 
     block content
@@ -44,9 +42,6 @@ html(lang="en")
                                 a.nav-link(href='https://joemuzina.com' target="_blank") Developer
                             li.nav-item.active
                                 a.nav-link(href='https://github.com/joemuzina/spotify_playlist_optimizer' target="_blank") GitHub
-        //.ads
-            script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
-            ins.adsbygoogle(style="display:block;" data-ad-client="ca-pub-9106621079135904" data-ad-slot="8265072752" data-ad-format="auto" data-full-width-responsive="true")
         .main
             if creation_success
                 h2.page-header Playlist successfully created! Thank you for using Spotify Playlist Optimizer!

@@ -6,23 +6,24 @@
     "start": "nodemon app.js --ext js,pug,json --legacy-watch . --legacy-watch views"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
     "https": "^1.0.0",
-    "morgan": "~1.9.1",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
     "pug": "^2.0.4",
     "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
-    "connect-redis": "^4.0.3",
-    "express": "^4.16.4",
-    "express-session": "^1.17.0",
+    "connect-redis": "^4.0.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "greenlock": "^4.0.4",
     "greenlock-express": "^4.0.3",
-    "http-errors": "^1.6.3",
+    "http-errors": "^1.8.0",
     "mongodb": "^3.5.5",
-    "mongoose": "^5.9.7",
+    "mongoose": "^5.11.17",
     "mongoose-findorcreate": "^3.0.0",
     "mysql": "^2.18.1",
     "nodemon": "^1.19.4",
@@ -33,6 +34,6 @@
     "simple-oauth2": "^3.1.0",
     "spotify-web-api-node": "^4.0.0",
     "superagent": "^5.1.0",
-    "underscore": "^1.10.2"
+    "underscore": "^1.12.0"
   }
 }

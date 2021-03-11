@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -15,7 +16,7 @@ const statsSchema = new Schema(
 
 exports.Stats = mongoose.model('Stats', statsSchema);
 
-stats = this.Stats
+stats = this.Stats;
 
 exports.findOrCreate = async function(stat, done) {
     var query = { id: 0 },
