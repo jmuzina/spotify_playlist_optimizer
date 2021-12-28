@@ -795,3 +795,7 @@ body {
     text-align: center;
     font-size: 28px;
 }
+
+body {
+    height: 100% !important;
+}
