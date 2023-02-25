@@ -13,9 +13,9 @@ const https = require("https"),
   helmet = require("helmet");
 
 const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/fullchain.pem"),
-  dhparam: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com/dh-strong.pem")
+  key: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com-0001/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/joemuzina.com-0001/fullchain.pem"),
+//  dhparam: fs.readFileSync("/etc/letsencrypt/live/portfolio.joemuzina.com/dh-strong.pem")
 };
 
 var baseAddress = 8080;
@@ -222,10 +222,10 @@ console.log("using helmet");
 app.use(helmet());
 
 module.exports = app;
-https.createServer(options, app).listen(httpsAddress);
+https.createServer(options, app).listen(httpsAddress).on('error', function(err) { console.log(err); });
 
 net.createServer(tcpConnection).listen(baseAddress);
-http.createServer(httpConnection).listen(redirectAddress);
+http.createServer(httpConnection).listen(redirectAddress).on('error', function(err) { console.log(err); });
 //https.createServer(options, httpsConnection).listen(httpsAddress);
 
 console.log("SPO launched on " + baseAddress, redirectAddress, httpsAddress);
