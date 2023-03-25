@@ -1,4 +1,6 @@
-# Playlist Optimizer (Legacy)
+# Spotify Playlist Optimizer
+
+:no_entry: [DEPRECATED] This app will soon be replaced by [Playlist Optimizer](https://github.com/jmuzina/playlist_optimizer_frontend).
 
 Playlist Optimzer is an open-source web application that allows users to analyze their music listening preferences and create playlists accordingly. 
 
