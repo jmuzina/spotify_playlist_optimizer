@@ -1,26 +1,12 @@
-const APP_VERSION = (exports.VERSION = "Playlist Optimizer");
 const express = require("express");
 var session = require("express-session");
 var passport = require("passport");
 const mongoose = require("mongoose");
 const MONGO_CFG = require("./mongo_cfg.js");
 const CRYPTO = require("./crypto.js");
-var net = require("net");
 var http = require("http");
 
-const https = require("https"),
-  fs = require("fs"),
-  helmet = require("helmet");
-
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/playlist-optimizer.jmuzina.io/privkey.pem"),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/playlist-optimizer.jmuzina.io/fullchain.pem"
-  ),
-};
-
-var httpsAddress = 8443;
-
+const helmet = require("helmet");
 
 bodyParser = require("body-parser");
 const app = express();
@@ -220,12 +206,8 @@ console.log("using helmet");
 app.use(helmet());
 
 module.exports = app;
-https
-  .createServer(options, app)
-  .listen(httpsAddress)
-  .on("error", function (err) {
-    console.log(err);
-  });
+
+http.createServer(app).listen(8080);
 
 // Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
