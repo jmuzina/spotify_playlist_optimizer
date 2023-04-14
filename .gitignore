@@ -11,11 +11,11 @@ redis_session_cfg.js
 spotify_auth_cfg.js
 redis_session_cfg.js
 spotify_auth_cfg.js
-greenlock.d/live/playlist-optimizer.joemuzina.com/privkey.pem
-greenlock.d/live/playlist-optimizer.joemuzina.com/fullchain.pem
-greenlock.d/live/playlist-optimizer.joemuzina.com/chain.pem
-greenlock.d/live/playlist-optimizer.joemuzina.com/cert.pem
-greenlock.d/live/playlist-optimizer.joemuzina.com/bundle.pem
+greenlock.d/live/playlist-optimizer.jmuzina.io/privkey.pem
+greenlock.d/live/playlist-optimizer.jmuzina.io/fullchain.pem
+greenlock.d/live/playlist-optimizer.jmuzina.io/chain.pem
+greenlock.d/live/playlist-optimizer.jmuzina.io/cert.pem
+greenlock.d/live/playlist-optimizer.jmuzina.io/bundle.pem
 greenlock.d/config.json.bak
 .greenlockrc
 greenlock.d/accounts/acme-v02.api.letsencrypt.org/directory/joe.muzina@gmail.com.json

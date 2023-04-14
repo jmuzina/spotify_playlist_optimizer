@@ -8,4 +8,4 @@ Disallow: /optimize
 Allow: /about
 Allow: /
 
-Sitemap: https://playlist-optimizer.joemuzina.com/sitemap.xml
+Sitemap: https://playlist-optimizer.jmuzina.io/sitemap.xml
