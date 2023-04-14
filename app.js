@@ -1,4 +1,5 @@
 const express = require("express");
+const APP_VERSION = (exports.VERSION = "Playlist Optimizer");
 var session = require("express-session");
 var passport = require("passport");
 const mongoose = require("mongoose");
