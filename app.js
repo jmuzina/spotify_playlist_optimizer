@@ -17,34 +17,10 @@ const options = {
   cert: fs.readFileSync(
     "/etc/letsencrypt/live/playlist-optimizer.jmuzina.io/fullchain.pem"
   ),
-  //  dhparam: fs.readFileSync("/etc/letsencrypt/live/portfolio.jmuzina.io/dh-strong.pem")
 };
 
-var baseAddress = 8080;
-var redirectAddress = 8081;
-var httpsAddress = 8082;
+var httpsAddress = 8443;
 
-function tcpConnection(conn) {
-  conn.once("data", function (buf) {
-    // A TLS handshake record starts with byte 22.
-    var address = buf[0] === 22 ? httpsAddress : redirectAddress;
-    var proxy = net.createConnection(address, function () {
-      proxy.write(buf);
-      conn.pipe(proxy).pipe(conn);
-    });
-  });
-}
-
-function httpConnection(req, res) {
-  var host = req.headers["host"];
-  res.writeHead(301, { Location: "https://" + host + req.url });
-  res.end();
-}
-
-function httpsConnection(req, res) {
-  res.writeHead(200, { "Content-Length": "5" });
-  res.redirect(200, "https://" + req.headers.host + req.url);
-}
 
 bodyParser = require("body-parser");
 const app = express();
@@ -250,17 +226,6 @@ https
   .on("error", function (err) {
     console.log(err);
   });
-
-net.createServer(tcpConnection).listen(baseAddress);
-http
-  .createServer(httpConnection)
-  .listen(redirectAddress)
-  .on("error", function (err) {
-    console.log(err);
-  });
-//https.createServer(options, httpsConnection).listen(httpsAddress);
-
-console.log("SPO launched on " + baseAddress, redirectAddress, httpsAddress);
 
 // Make sure user is logged in on appropriate pages
 function ensureAuthenticated(req, res, next) {
