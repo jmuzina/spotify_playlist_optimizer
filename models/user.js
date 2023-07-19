@@ -23,8 +23,10 @@ exports.User = mongoose.model('User', userSchema);
 usr = this.User
 
 exports.deleteAll = async function(done) {
-    usr.deleteMany({}, function (err) {});
-    done();
+    usr.deleteMany({})
+    .then(() => {
+        done()
+    })
 }
 
 exports.findOrCreate = async function(user, done) {
@@ -46,14 +48,18 @@ exports.findOrCreate = async function(user, done) {
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
     // Find the document
-    usr.findOneAndUpdate(query, update, options, function(error, result) {
-        done(error, result);
-    });
+    usr.findOneAndUpdate(query, update, options)
+    .then((result) => {done(null, result)})
+    .catch((err) => done(err, null))
 }
 
 exports.find = async function(user, done) {
-    usr.findOne(user, function(err, obj) {
-        done(err, obj);
+    return usr.findOne(user)
+    .then((obj) => {
+        done(null, obj)
+    })
+    .catch((err) => {
+        done(err, null)
     })
 }
 
@@ -61,23 +67,29 @@ exports.updateKey = async function(user, keys, done) {
     var query = { id: user.id },
     update = { access: keys.access, refresh: keys.refresh };
 
-    usr.updateOne(query, update, {}, function(error, result) {
-        done(error, result);
-    });
+    return usr.updateOne(query, update, {})
+        .then((result) => {
+            done(null, result)
+        })
+        .catch((err) => {
+            done(err, null)
+        })
 }
 
 exports.updateSuggestions = async function(req, arr, done) {
     var query = { id: req.user.id }, 
     update = { suggestions: JSON.parse(JSON.stringify(arr)) };
+    let updated_user = null;
 
-    usr.updateOne(query, update, {}, async function(error, result) {
-        usr.findOne(query, function(err, updated_user){
-            req.login(updated_user, function(err){
-                // handle this later
-            })
-            done(error, updated_user);
+    return usr.updateOne(query, update, {})
+        .then((result) => usr.findOne(query))
+        .then((usr) => {
+            updated_user = usr;
+            return req.login(usr);
         })
-    });
+        .then(() => {
+            done(null, updated_user);
+        })
 }
 
 exports.updatePlaylists = async function(req, arr, done) {
